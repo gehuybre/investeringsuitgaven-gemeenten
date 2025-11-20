@@ -58,11 +58,69 @@
             min-height: 500px;
             width: 100%;
         }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .chart-view-toggle {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-view-toggle {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-view-toggle:hover {
+            background: #f0f0f0;
+            border-color: #0055cc;
+        }
+
+        .btn-view-toggle:focus {
+            outline: 2px solid #0055cc;
+            outline-offset: 2px;
+        }
         
         .chart-wrapper {
             position: relative;
             height: 400px;
             width: 100%;
+        }
+
+        .small-multiples-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .small-multiple-chart {
+            background: #fafafa;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .small-multiple-chart h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .small-multiple-chart canvas {
+            max-height: 200px;
         }
         
         .info-panel {
@@ -91,9 +149,200 @@
             font-size: 1rem;
         }
 
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
+        }
+
+        .tab-button:hover {
+            color: #0055cc;
+            background: rgba(0, 85, 204, 0.05);
+        }
+
+        .tab-button.active {
+            color: #0055cc;
+            border-bottom-color: #0055cc;
+            font-weight: 600;
+        }
+
+        .tab-button:focus {
+            outline: 2px solid #0055cc;
+            outline-offset: 2px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Search Container */
+        .search-container {
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #0055cc;
+            box-shadow: 0 0 0 3px rgba(0, 85, 204, 0.1);
+        }
+
+        .search-input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        /* Checkbox List */
+        .checkbox-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0.5rem;
+            background: #fafafa;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.25rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            background: #e8f0fe;
+        }
+
+        .checkbox-item:focus-within {
+            background: #e8f0fe;
+            outline: 2px solid #0055cc;
+            outline-offset: -2px;
+        }
+
+        .checkbox-item.hidden {
+            display: none;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 0.75rem;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #0055cc;
+        }
+
+        .checkbox-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #333;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked + label {
+            font-weight: 600;
+            color: #0055cc;
+        }
+
+        /* Select All Container */
+        .select-all-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn-select-all,
+        .btn-deselect-all {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-select-all:hover {
+            background: #0055cc;
+            color: white;
+            border-color: #0055cc;
+        }
+
+        .btn-deselect-all:hover {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .btn-select-all:focus,
+        .btn-deselect-all:focus {
+            outline: 2px solid #0055cc;
+            outline-offset: 2px;
+        }
+
         @media (max-width: 768px) {
             .dashboard-grid {
                 flex-direction: column;
+            }
+
+            .tab-navigation {
+                flex-wrap: wrap;
+            }
+
+            .tab-button {
+                flex: 1;
+                min-width: 0;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .checkbox-list {
+                max-height: 250px;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .small-multiples-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -171,29 +420,79 @@
             <div class="dashboard-grid">
                 <!-- Chart Area -->
                 <div class="dashboard-chart-container">
-                    <h3 id="selected-label" class="mb-sm">Vlaanderen (gemiddelde)</h3>
-                    <p id="dashboard-subtitle" class="text-muted mb-md">Investeringsuitgaven per inwoner (€)</p>
+                    <div class="chart-header">
+                        <div>
+                            <h3 id="selected-label" class="mb-sm">Vlaanderen (gemiddelde)</h3>
+                            <p id="dashboard-subtitle" class="text-muted mb-md">Investeringsuitgaven per inwoner (€)</p>
+                        </div>
+                        <div class="chart-view-toggle">
+                            <button id="view-toggle-btn" class="btn-view-toggle" title="Wissel weergave">
+                                <span id="view-toggle-text">Automatisch</span>
+                            </button>
+                        </div>
+                    </div>
                     
-                    <div class="chart-wrapper">
+                    <div class="chart-wrapper" id="chart-wrapper">
                         <canvas id="investmentChart"></canvas>
+                    </div>
+                    <div class="small-multiples-container" id="small-multiples-container" style="display: none;">
+                        <!-- Small multiples will be generated here -->
                     </div>
                 </div>
 
                 <!-- Controls Below Chart -->
                 <div class="dashboard-controls">
                     <h3>Instellingen</h3>
-                    <div class="control-group">
-                        <label for="region-select">Selecteer regio / gemeente</label>
-                        <select id="region-select" class="form-select">
-                            <option value="vlaanderen" selected>Vlaanderen (gemiddelde)</option>
-                            <optgroup label="Provincies" id="optgroup-provinces">
-                                <!-- Provinces populated by JS -->
-                            </optgroup>
-                            <optgroup label="Gemeenten" id="optgroup-municipalities">
-                                <!-- Municipalities populated by JS -->
-                            </optgroup>
-                        </select>
+                    
+                    <!-- Tab Navigation -->
+                    <div class="tab-navigation">
+                        <button class="tab-button active" data-tab="vlaanderen">Vlaanderen</button>
+                        <button class="tab-button" data-tab="provincies">Provincies</button>
+                        <button class="tab-button" data-tab="gemeenten">Gemeenten</button>
                     </div>
+
+                    <!-- Vlaanderen Tab -->
+                    <div class="tab-content active" id="tab-vlaanderen">
+                        <div class="search-container">
+                            <input type="text" class="search-input" id="search-vlaanderen" placeholder="Zoek..." disabled>
+                        </div>
+                        <div class="checkbox-list" id="checkbox-list-vlaanderen">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="select-all-container">
+                            <button class="btn-select-all" data-tab="vlaanderen">Selecteer alles</button>
+                            <button class="btn-deselect-all" data-tab="vlaanderen">Deselecteer alles</button>
+                        </div>
+                    </div>
+
+                    <!-- Provincies Tab -->
+                    <div class="tab-content" id="tab-provincies">
+                        <div class="search-container">
+                            <input type="text" class="search-input" id="search-provincies" placeholder="Zoek provincie...">
+                        </div>
+                        <div class="checkbox-list" id="checkbox-list-provincies">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="select-all-container">
+                            <button class="btn-select-all" data-tab="provincies">Selecteer alles</button>
+                            <button class="btn-deselect-all" data-tab="provincies">Deselecteer alles</button>
+                        </div>
+                    </div>
+
+                    <!-- Gemeenten Tab -->
+                    <div class="tab-content" id="tab-gemeenten">
+                        <div class="search-container">
+                            <input type="text" class="search-input" id="search-gemeenten" placeholder="Zoek gemeente...">
+                        </div>
+                        <div class="checkbox-list" id="checkbox-list-gemeenten">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="select-all-container">
+                            <button class="btn-select-all" data-tab="gemeenten">Selecteer alles</button>
+                            <button class="btn-deselect-all" data-tab="gemeenten">Deselecteer alles</button>
+                        </div>
+                    </div>
+
                     <div class="info-text text-muted">
                         <small>Gebruik de zoekfunctie in de lijst of klik op de kaart om een gemeente te selecteren.</small>
                     </div>
