@@ -10,6 +10,8 @@ let averagesData = null;
 let selectedRegions = new Set(['vlaanderen']); // Store selected values
 let currentViewMode = 'auto'; // 'auto', 'bar', 'line', 'small-multiples'
 let smallMultipleCharts = []; // Store small multiple chart instances
+let cpiData = null; // CPI data for inflation adjustment
+let inflationAdjusted = false; // Track if inflation adjustment is enabled
 
 async function initApp() {
     map = L.map('map').setView([51.05, 4.4], 9);
@@ -86,17 +88,23 @@ async function initApp() {
     });
 
     try {
-        const [geoResponse, avgResponse] = await Promise.all([
+        const [geoResponse, avgResponse, cpiResponse] = await Promise.all([
             fetch('municipalities.geojson'),
-            fetch('averages.json')
+            fetch('averages.json'),
+            fetch('cpi.json')
         ]);
         
         municipalitiesData = await geoResponse.json();
         averagesData = await avgResponse.json();
+        cpiData = await cpiResponse.json();
+        
+        // Process CPI data into a simple year -> CPI mapping
+        processCPIData();
         
         setupMap(municipalitiesData);
         setupControls(municipalitiesData, averagesData);
         setupViewToggle();
+        setupInflationToggle();
         updateDashboard(); // Initial update
 
     } catch (error) {
@@ -499,6 +507,24 @@ function getLineStyle(index) {
     return lineStyles[index % lineStyles.length];
 }
 
+function processCPIData() {
+    if (!cpiData || !cpiData.facts) return;
+    
+    // Create a simple year -> CPI mapping (using unique years only)
+    const cpiMap = {};
+    cpiData.facts.forEach(fact => {
+        const year = parseInt(fact.Jaar);
+        if (!cpiMap[year]) {
+            cpiMap[year] = fact.Consumptieprijsindex;
+        }
+    });
+    cpiData.map = cpiMap;
+    
+    // Set 2024 as reference year for inflation adjustment
+    cpiData.referenceYear = 2024;
+    cpiData.referenceCPI = cpiMap[2024] || 132.04;
+}
+
 function setupViewToggle() {
     const toggleBtn = document.getElementById('view-toggle-btn');
     const toggleText = document.getElementById('view-toggle-text');
@@ -520,6 +546,25 @@ function setupViewToggle() {
         }
         updateDashboard();
     });
+}
+
+function setupInflationToggle() {
+    const inflationCheckbox = document.getElementById('inflation-adjust');
+    
+    inflationCheckbox.addEventListener('change', (e) => {
+        inflationAdjusted = e.target.checked;
+        updateDashboard();
+    });
+}
+
+function adjustForInflation(value, year) {
+    if (!inflationAdjusted || !cpiData || !cpiData.map) return value;
+    
+    const yearCPI = cpiData.map[year];
+    if (!yearCPI) return value;
+    
+    // Adjust to 2024 prices: value * (2024 CPI / year CPI)
+    return value * (cpiData.referenceCPI / yearCPI);
 }
 
 function updateDashboard() {
@@ -556,6 +601,14 @@ function updateDashboard() {
     document.getElementById('selected-label').textContent = count > 0 
         ? `${count} regio('s) geselecteerd` 
         : 'Selecteer een regio';
+    
+    // Update subtitle based on inflation adjustment
+    const subtitleText = document.getElementById('subtitle-text');
+    if (subtitleText) {
+        subtitleText.textContent = inflationAdjusted 
+            ? 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2024 prijzen)' 
+            : 'Investeringsuitgaven per inwoner (€)';
+    }
     
     // Sync checkbox states
     syncCheckboxStates();
@@ -631,7 +684,7 @@ function renderMainChart(viewMode) {
     if (selectedRegions.has('vlaanderen')) {
         datasets.push(createDataset(
             'Vlaanderen (gemiddelde)', 
-            years.map(y => averagesData.Vlaanderen[y]),
+            years.map(y => adjustForInflation(averagesData.Vlaanderen[y], y)),
             getColorForRegion('vlaanderen', 0, ''),
             viewMode,
             datasetIndex++
@@ -644,7 +697,7 @@ function renderMainChart(viewMode) {
             const provName = val.split(':')[1];
             datasets.push(createDataset(
                 provName,
-                years.map(y => averagesData.Provincies[provName][y]),
+                years.map(y => adjustForInflation(averagesData.Provincies[provName][y], y)),
                 getColorForRegion('province', provinceIndex++, provName),
                 viewMode,
                 datasetIndex++
@@ -660,7 +713,7 @@ function renderMainChart(viewMode) {
             if (feature) {
                 datasets.push(createDataset(
                     munName,
-                    years.map(y => feature.properties[String(y)]),
+                    years.map(y => adjustForInflation(feature.properties[String(y)], y)),
                     getColorForRegion('municipality', municipalityIndex++, munName),
                     viewMode,
                     datasetIndex++
@@ -704,7 +757,7 @@ function renderSmallMultiples() {
     if (selectedRegions.has('vlaanderen')) {
         regions.push({
             name: 'Vlaanderen (gemiddelde)',
-            data: years.map(y => averagesData.Vlaanderen[y]),
+            data: years.map(y => adjustForInflation(averagesData.Vlaanderen[y], y)),
             color: getColorForRegion('vlaanderen', 0, ''),
             index: 0
         });
@@ -715,7 +768,7 @@ function renderSmallMultiples() {
             const provName = val.split(':')[1];
             regions.push({
                 name: provName,
-                data: years.map(y => averagesData.Provincies[provName][y]),
+                data: years.map(y => adjustForInflation(averagesData.Provincies[provName][y], y)),
                 color: getColorForRegion('province', provinceIndex++, provName),
                 index: regions.length
             });
@@ -729,7 +782,7 @@ function renderSmallMultiples() {
             if (feature) {
                 regions.push({
                     name: munName,
-                    data: years.map(y => feature.properties[String(y)]),
+                    data: years.map(y => adjustForInflation(feature.properties[String(y)], y)),
                     color: getColorForRegion('municipality', municipalityIndex++, munName),
                     index: regions.length
                 });

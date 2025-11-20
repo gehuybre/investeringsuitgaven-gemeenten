@@ -1,0 +1,115 @@
+{
+  "facts" : [ {
+    "Jaar" : "2011",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 96.17000000000034
+  }, {
+    "Jaar" : "2012",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 98.90000000000036
+  }, {
+    "Jaar" : "2013",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 100.0
+  }, {
+    "Jaar" : "2013",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 100.0
+  }, {
+    "Jaar" : "2014",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 100.34000000000036
+  }, {
+    "Jaar" : "2014",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 100.34000000000036
+  }, {
+    "Jaar" : "2015",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 100.90000000000036
+  }, {
+    "Jaar" : "2015",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 100.90000000000036
+  }, {
+    "Jaar" : "2016",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 102.89000000000037
+  }, {
+    "Jaar" : "2016",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 102.89000000000037
+  }, {
+    "Jaar" : "2017",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 105.08000000000037
+  }, {
+    "Jaar" : "2017",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 105.08000000000037
+  }, {
+    "Jaar" : "2018",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 107.24000000000038
+  }, {
+    "Jaar" : "2018",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 107.24000000000038
+  }, {
+    "Jaar" : "2019",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 108.78000000000038
+  }, {
+    "Jaar" : "2019",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 108.78000000000038
+  }, {
+    "Jaar" : "2020",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 109.59000000000039
+  }, {
+    "Jaar" : "2020",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 109.59000000000039
+  }, {
+    "Jaar" : "2021",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 112.2600000000004
+  }, {
+    "Jaar" : "2021",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 112.2600000000004
+  }, {
+    "Jaar" : "2022",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 123.03000000000044
+  }, {
+    "Jaar" : "2022",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 123.03000000000044
+  }, {
+    "Jaar" : "2023",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 128.02000000000046
+  }, {
+    "Jaar" : "2023",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 128.02000000000046
+  }, {
+    "Jaar" : "2024",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 132.04000000000048
+  }, {
+    "Jaar" : "2024",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 132.04000000000048
+  }, {
+    "Jaar" : "2025",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 135.1100000000005
+  }, {
+    "Jaar" : "2025",
+    "Basisjaar" : "2013 = 100",
+    "Consumptieprijsindex" : 135.1100000000005
+  } ]
+}

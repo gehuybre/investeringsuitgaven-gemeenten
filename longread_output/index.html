@@ -427,13 +427,19 @@
                     <div class="chart-header">
                         <div>
                             <h3 id="selected-label" class="mb-sm">Vlaanderen (gemiddelde)</h3>
-                            <p id="dashboard-subtitle" class="text-muted mb-md">Investeringsuitgaven per inwoner (€)</p>
+                            <p id="dashboard-subtitle" class="text-muted mb-md">
+                        <span id="subtitle-text">Investeringsuitgaven per inwoner (€)</span>
+                    </p>
                         </div>
-                        <div class="chart-view-toggle">
-                            <button id="view-toggle-btn" class="btn-view-toggle" title="Wissel weergave">
-                                <span id="view-toggle-text">Automatisch</span>
-                            </button>
-                        </div>
+                    <div class="chart-view-toggle">
+                        <label class="inflation-toggle" style="margin-right: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="inflation-adjust" style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="font-size: 0.9rem;">Inflatie-gecorrigeerd (2024 €)</span>
+                        </label>
+                        <button id="view-toggle-btn" class="btn-view-toggle" title="Wissel weergave">
+                            <span id="view-toggle-text">Automatisch</span>
+                        </button>
+                    </div>
                     </div>
                     
                     <div class="chart-wrapper" id="chart-wrapper">
