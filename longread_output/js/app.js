@@ -549,11 +549,20 @@ function setupViewToggle() {
 }
 
 function setupInflationToggle() {
-    const inflationSelect = document.getElementById('inflation-mode');
+    const segmentedButtons = document.querySelectorAll('.segmented-btn');
     
-    inflationSelect.addEventListener('change', (e) => {
-        inflationMode = e.target.value;
-        updateDashboard();
+    segmentedButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            segmentedButtons.forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button
+            btn.classList.add('active');
+            
+            // Update mode and refresh dashboard
+            inflationMode = btn.dataset.mode;
+            updateDashboard();
+        });
     });
 }
 
