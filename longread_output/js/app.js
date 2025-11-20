@@ -520,9 +520,9 @@ function processCPIData() {
     });
     cpiData.map = cpiMap;
     
-    // Set 2024 as reference year for inflation adjustment
-    cpiData.referenceYear = 2024;
-    cpiData.referenceCPI = cpiMap[2024] || 132.04;
+    // Set 2014 as reference year for inflation adjustment
+    cpiData.referenceYear = 2014;
+    cpiData.referenceCPI = cpiMap[2014] || 100.34;
 }
 
 function setupViewToggle() {
@@ -563,7 +563,7 @@ function adjustForInflation(value, year) {
     const yearCPI = cpiData.map[year];
     if (!yearCPI) return value;
     
-    // Adjust to 2024 prices: value * (2024 CPI / year CPI)
+    // Adjust to 2014 prices: value * (2014 CPI / year CPI)
     return value * (cpiData.referenceCPI / yearCPI);
 }
 
@@ -606,9 +606,9 @@ function updateDashboard() {
     const subtitleText = document.getElementById('subtitle-text');
     if (subtitleText) {
         if (inflationMode === 'adjusted') {
-            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2024 prijzen)';
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2014 prijzen)';
         } else if (inflationMode === 'both') {
-            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal en gecorrigeerd naar 2024)';
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal en gecorrigeerd naar 2014)';
         } else {
             subtitleText.textContent = 'Investeringsuitgaven per inwoner (€)';
         }
@@ -697,7 +697,7 @@ function renderMainChart(viewMode) {
         if (inflationMode === 'adjusted' || inflationMode === 'both') {
             const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
             const ds = createDataset(
-                inflationMode === 'both' ? `${name} (2024 €)` : name,
+                inflationMode === 'both' ? `${name} (2014 €)` : name,
                 adjustedData,
                 color,
                 viewMode,
@@ -818,7 +818,7 @@ function renderSmallMultiples() {
         if (inflationMode === 'adjusted' || inflationMode === 'both') {
             const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
             datasets.push({
-                label: inflationMode === 'both' ? '2024 €' : name,
+                label: inflationMode === 'both' ? '2014 €' : name,
                 data: adjustedData,
                 backgroundColor: color + '99',
                 borderColor: color,
