@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="nl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investeringsuitgaven Gemeenten</title>
+    <meta name="description" content="Een visualisatie van de gemeentelijke investeringsuitgaven in Vlaanderen.">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="css/layout-template.css">
+    <link rel="stylesheet" href="css/longread-custom.css">
+    
+    <style>
+        /* Specific overrides */
+        .hero-main {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1596433852652-f5eb5a8c35a6?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .map-container {
+            height: 600px;
+            width: 100%;
+            background: #f0f0f0;
+            border-radius: 8px;
+            z-index: 1;
+        }
+        
+        .dashboard-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+
+        .dashboard-chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-height: 500px;
+            width: 100%;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        
+        .info-panel {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-left: 4px solid #0055cc;
+            margin-bottom: 2rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__container">
+            <div class="header__logo">
+                <img src="../assets/logo.png" alt="Logo" style="height: 40px; max-width: 200px;">
+            </div>
+            <div class="header__menu">
+                <nav class="header__navigation">
+                    <a href="#intro">Info</a>
+                    <a href="#kaart">Kaart</a>
+                    <a href="#dashboard">Dashboard</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-main">
+        <div class="hero__content">
+            <h1 class="hero__title" style="font-size: 4rem; margin-bottom: 1rem;">Investeringsuitgaven gemeenten</h1>
+            <p class="hero__subtitle">Een analyse van de jaarrekeningen per inwoner (2014-2024)</p>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section id="intro" class="content-section">
+        <div class="container">
+            <h2 class="mb-md">Wat zijn investeringsuitgaven?</h2>
+            <div class="info-panel">
+                <h3>I.1 Investeringsuitgaven - per inwoner</h3>
+                <p>
+                    Deze indicator is gebaseerd op de jaarrekeningen van de lokale besturen (BBC). 
+                    Het omvat de uitgaven voor de verwerving van duurzame goederen zoals gronden, gebouwen, 
+                    wegen en ander infrastructuurwerken. Het cijfer wordt uitgedrukt per inwoner om een 
+                    eerlijke vergelijking tussen gemeenten mogelijk te maken.
+                </p>
+                <p class="mt-sm">
+                    <small>Bron: Agentschap Binnenlands Bestuur, verwerking Embuild Vlaanderen</small>
+                </p>
+            </div>
+            <p class="lead">
+                Lokale besturen spelen een cruciale rol in publieke investeringen. Van de aanleg van nieuwe fietspaden 
+                tot de renovatie van sportcentra en de vergroening van dorpskernen. Deze data toont de evolutie 
+                van deze inspanningen over het afgelopen decennium.
+            </p>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="kaart" class="content-section bg-gray">
+        <div class="container">
+            <h2 class="mb-md">Investeringen in beeld (2024)</h2>
+            <p class="mb-md">
+                De onderstaande kaart toont de investeringsuitgaven per inwoner voor het jaar 2024. 
+                Klik op een gemeente om de details te bekijken.
+            </p>
+            
+            <div id="map" class="map-container"></div>
+            <div class="legend mt-sm text-center text-muted">
+                <small>Kleurintensiteit geeft de hoogte van de investering aan (donkerder = hoger)</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="content-section">
+        <div class="container">
+            <h2 class="mb-md">Dashboard: Evolutie 2014-2024</h2>
+            
+            <div class="dashboard-grid">
+                <!-- Chart Area -->
+                <div class="dashboard-chart-container">
+                    <h3 id="selected-label" class="mb-sm">Vlaanderen (gemiddelde)</h3>
+                    <p id="dashboard-subtitle" class="text-muted mb-md">Investeringsuitgaven per inwoner (€)</p>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="investmentChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Controls Below Chart -->
+                <div class="dashboard-controls">
+                    <h3>Instellingen</h3>
+                    <div class="control-group">
+                        <label for="region-select">Selecteer regio / gemeente</label>
+                        <select id="region-select" class="form-select">
+                            <option value="vlaanderen" selected>Vlaanderen (gemiddelde)</option>
+                            <optgroup label="Provincies" id="optgroup-provinces">
+                                <!-- Provinces populated by JS -->
+                            </optgroup>
+                            <optgroup label="Gemeenten" id="optgroup-municipalities">
+                                <!-- Municipalities populated by JS -->
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="info-text text-muted">
+                        <small>Gebruik de zoekfunctie in de lijst of klik op de kaart om een gemeente te selecteren.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="text-center text-muted">
+                Data visualisatie | Bron: Agentschap Binnenlands Bestuur, verwerking Embuild Vlaanderen | Verwerking 2025 (fusies inbegrepen)
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- App Logic -->
+    <script src="js/app.js"></script>
+</body>
+</html>

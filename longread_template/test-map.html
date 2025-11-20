@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kaart Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #test-map { height: 100vh; width: 100%; }
+        #debug { position: fixed; top: 10px; left: 10px; background: white; padding: 10px; z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div id="debug">Debug info...</div>
+    <div id="test-map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        const debug = document.getElementById('debug');
+        debug.innerHTML = 'Leaflet loaded: ' + (typeof L !== 'undefined' ? 'YES' : 'NO');
+        
+        try {
+            // Create map
+            const map = L.map('test-map', {
+                center: [51.15, 4.4],
+                zoom: 9,
+                zoomControl: true,
+                scrollWheelZoom: true,
+                dragging: true
+            });
+            
+            debug.innerHTML += '<br>Map created: YES';
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: 'Test'
+            }).addTo(map);
+            
+            debug.innerHTML += '<br>Tiles added: YES';
+            
+            // Add a test marker
+            L.marker([51.15, 4.4]).addTo(map)
+                .bindPopup('Test marker - center of map');
+            
+            debug.innerHTML += '<br>Marker added: YES';
+            debug.innerHTML += '<br><strong>✅ Everything works!</strong>';
+            
+            // Test dragging
+            map.on('dragend', () => {
+                debug.innerHTML += '<br>Drag detected!';
+            });
+            
+        } catch (error) {
+            debug.innerHTML += '<br>ERROR: ' + error.message;
+            console.error('Map error:', error);
+        }
+    </script>
+</body>
+</html>
