@@ -24,22 +24,25 @@ async function initApp() {
     const legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
+        div.id = 'map-legend';
         div.style.backgroundColor = 'white';
-        div.style.padding = '6px 8px';
+        div.style.padding = '10px 12px';
         div.style.font = '14px/16px Arial, Helvetica, sans-serif';
         div.style.background = 'white';
         div.style.boxShadow = '0 0 15px rgba(0,0,0,0.2)';
         div.style.borderRadius = '5px';
+        div.style.minWidth = '200px';
         
-        // Gradient definition
+        // Initial legend content (will be updated after data loads)
         div.innerHTML = '<strong>Investeringen 2024</strong><br>' +
                         '<small>(€ per inwoner)</small><br>' +
-                        '<i style="background:#08306b; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> > 90%<br>' +
-                        '<i style="background:#08519c; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> 70-90%<br>' +
-                        '<i style="background:#2171b5; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> 50-70%<br>' +
-                        '<i style="background:#4292c6; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> 30-50%<br>' +
-                        '<i style="background:#9ecae1; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> 10-30%<br>' +
-                        '<i style="background:#deebf7; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> < 10%';
+                        '<div style="margin-top: 8px; font-size: 12px; color: #666;">Kleuren gebaseerd op percentielen van het maximum</div>' +
+                        '<i style="background:#d73027; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-top90">> 90% (hoog)</span><br>' +
+                        '<i style="background:#f46d43; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-70-90">70-90%</span><br>' +
+                        '<i style="background:#fdae61; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-50-70">50-70%</span><br>' +
+                        '<i style="background:#abd9e9; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-30-50">30-50%</span><br>' +
+                        '<i style="background:#74add1; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-10-30">10-30%</span><br>' +
+                        '<i style="background:#4575b4; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-low10">&lt; 10% (laag)</span>';
         return div;
     };
     legend.addTo(map);
@@ -101,20 +104,56 @@ async function initApp() {
     }
 }
 
+// Store min/max values globally for legend
+let mapMinValue = null;
+let mapMaxValue = null;
+
 function setupMap(data) {
     const values2024 = data.features
         .map(f => f.properties['2024'])
         .filter(v => v !== null && !isNaN(v));
     
-    const maxVal = Math.max(...values2024);
-    const minVal = Math.min(...values2024);
+    mapMaxValue = Math.max(...values2024);
+    mapMinValue = Math.min(...values2024);
 
     geojsonLayer = L.geoJSON(data, {
-        style: (feature) => style(feature, minVal, maxVal),
+        style: (feature) => style(feature, mapMinValue, mapMaxValue),
         onEachFeature: onEachFeature
     }).addTo(map);
 
     map.fitBounds(geojsonLayer.getBounds());
+    
+    // Update legend with actual values
+    updateLegend();
+}
+
+function updateLegend() {
+    if (mapMinValue === null || mapMaxValue === null) return;
+    
+    const legend = document.getElementById('map-legend');
+    if (!legend) return;
+    
+    // Calculate threshold values
+    const top90 = mapMaxValue * 0.9;
+    const top70 = mapMaxValue * 0.7;
+    const top50 = mapMaxValue * 0.5;
+    const top30 = mapMaxValue * 0.3;
+    const top10 = mapMaxValue * 0.1;
+    
+    // Update legend text with actual values
+    const legendTop90 = document.getElementById('legend-top90');
+    const legend70_90 = document.getElementById('legend-70-90');
+    const legend50_70 = document.getElementById('legend-50-70');
+    const legend30_50 = document.getElementById('legend-30-50');
+    const legend10_30 = document.getElementById('legend-10-30');
+    const legendLow10 = document.getElementById('legend-low10');
+    
+    if (legendTop90) legendTop90.innerHTML = `> 90% (≥ €${top90.toFixed(0)})`;
+    if (legend70_90) legend70_90.innerHTML = `70-90% (€${top70.toFixed(0)}-${top90.toFixed(0)})`;
+    if (legend50_70) legend50_70.innerHTML = `50-70% (€${top50.toFixed(0)}-${top70.toFixed(0)})`;
+    if (legend30_50) legend30_50.innerHTML = `30-50% (€${top30.toFixed(0)}-${top50.toFixed(0)})`;
+    if (legend10_30) legend10_30.innerHTML = `10-30% (€${top10.toFixed(0)}-${top30.toFixed(0)})`;
+    if (legendLow10) legendLow10.innerHTML = `< 10% (< €${top10.toFixed(0)})`;
 }
 
 function setupControls(geoData, avgData) {
@@ -816,15 +855,19 @@ function onEachFeature(feature, layer) {
     layer.bindTooltip(`<strong>${name}</strong><br>2024: €${val2024 ? val2024.toFixed(2) : '-'}`);
 }
 
-// Styling
+// Styling - Intuitive color scale: warm colors (red/orange) = high, cool colors (green/blue) = low
+// This makes it immediately clear which municipalities have high vs low investment
 function getColor(d, min, max) {
     const t = (d - min) / (max - min);
-    return d > max * 0.9 ? '#08306b' :
-           d > max * 0.7 ? '#08519c' :
-           d > max * 0.5 ? '#2171b5' :
-           d > max * 0.3 ? '#4292c6' :
-           d > max * 0.1 ? '#9ecae1' :
-                           '#deebf7';
+    
+    // Intuitive gradient: Red/Orange (high) → Yellow → Light Green → Green → Blue (low)
+    // Warm colors = high investment, cool colors = low investment
+    if (t >= 0.9) return '#d73027';      // Top 10% - Bright red (high) - clearly highest
+    if (t >= 0.7) return '#f46d43';      // 70-90% - Orange-red - high
+    if (t >= 0.5) return '#fdae61';      // 50-70% - Orange-yellow - medium-high
+    if (t >= 0.3) return '#abd9e9';      // 30-50% - Light blue - medium-low
+    if (t >= 0.1) return '#74add1';      // 10-30% - Blue - low
+    return '#4575b4';                    // Bottom 10% - Dark blue (low) - clearly lowest
 }
 
 function style(feature, min, max) {
