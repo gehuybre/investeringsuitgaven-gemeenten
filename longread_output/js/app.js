@@ -11,7 +11,8 @@ let selectedRegions = new Set(['vlaanderen']); // Store selected values
 let currentViewMode = 'auto'; // 'auto', 'bar', 'line', 'small-multiples'
 let smallMultipleCharts = []; // Store small multiple chart instances
 let cpiData = null; // CPI data for inflation adjustment
-let inflationMode = 'nominal'; // 'nominal', 'adjusted', or 'both'
+let showNominal = true; // Show nominal prices
+let showAdjusted = false; // Show inflation-adjusted prices
 
 async function initApp() {
     map = L.map('map').setView([51.05, 4.4], 9);
@@ -549,20 +550,33 @@ function setupViewToggle() {
 }
 
 function setupInflationToggle() {
-    const segmentedButtons = document.querySelectorAll('.segmented-btn');
+    const nominalBtn = document.getElementById('toggle-nominal');
+    const adjustedBtn = document.getElementById('toggle-adjusted');
     
-    segmentedButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            segmentedButtons.forEach(b => b.classList.remove('active'));
-            
-            // Add active class to clicked button
-            btn.classList.add('active');
-            
-            // Update mode and refresh dashboard
-            inflationMode = btn.dataset.mode;
-            updateDashboard();
-        });
+    nominalBtn.addEventListener('click', () => {
+        showNominal = !showNominal;
+        nominalBtn.classList.toggle('active', showNominal);
+        
+        // Ensure at least one is always active
+        if (!showNominal && !showAdjusted) {
+            showAdjusted = true;
+            adjustedBtn.classList.add('active');
+        }
+        
+        updateDashboard();
+    });
+    
+    adjustedBtn.addEventListener('click', () => {
+        showAdjusted = !showAdjusted;
+        adjustedBtn.classList.toggle('active', showAdjusted);
+        
+        // Ensure at least one is always active
+        if (!showNominal && !showAdjusted) {
+            showNominal = true;
+            nominalBtn.classList.add('active');
+        }
+        
+        updateDashboard();
     });
 }
 
@@ -614,10 +628,10 @@ function updateDashboard() {
     // Update subtitle based on inflation adjustment
     const subtitleText = document.getElementById('subtitle-text');
     if (subtitleText) {
-        if (inflationMode === 'adjusted') {
-            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2014 prijzen)';
-        } else if (inflationMode === 'both') {
+        if (showNominal && showAdjusted) {
             subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal en gecorrigeerd naar 2014)';
+        } else if (showAdjusted) {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2014 prijzen)';
         } else {
             subtitleText.textContent = 'Investeringsuitgaven per inwoner (€)';
         }
@@ -691,9 +705,11 @@ function renderMainChart(viewMode) {
 
     // Helper function to add datasets for a region
     const addRegionDatasets = (name, nominalData, color, datasetIndex) => {
-        if (inflationMode === 'nominal' || inflationMode === 'both') {
+        const showBoth = showNominal && showAdjusted;
+        
+        if (showNominal) {
             const ds = createDataset(
-                inflationMode === 'both' ? `${name} (nominaal)` : name,
+                showBoth ? `${name} (nominaal)` : name,
                 nominalData,
                 color,
                 viewMode,
@@ -703,10 +719,10 @@ function renderMainChart(viewMode) {
             datasetIndex++;
         }
         
-        if (inflationMode === 'adjusted' || inflationMode === 'both') {
+        if (showAdjusted) {
             const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
             const ds = createDataset(
-                inflationMode === 'both' ? `${name} (2014 €)` : name,
+                showBoth ? `${name} (2014 €)` : name,
                 adjustedData,
                 color,
                 viewMode,
@@ -714,7 +730,7 @@ function renderMainChart(viewMode) {
             );
             
             // Make adjusted data visually distinct when showing both
-            if (inflationMode === 'both') {
+            if (showBoth) {
                 if (viewMode === 'line') {
                     ds.borderDash = [5, 5]; // Dashed line for adjusted
                     ds.borderWidth = 2;
@@ -812,10 +828,11 @@ function renderSmallMultiples() {
     // Helper to create region data (with nominal and/or adjusted)
     const createRegionData = (name, nominalData, color, index) => {
         const datasets = [];
+        const showBoth = showNominal && showAdjusted;
         
-        if (inflationMode === 'nominal' || inflationMode === 'both') {
+        if (showNominal) {
             datasets.push({
-                label: inflationMode === 'both' ? 'Nominaal' : name,
+                label: showBoth ? 'Nominaal' : name,
                 data: nominalData,
                 backgroundColor: color,
                 borderColor: color,
@@ -824,15 +841,15 @@ function renderSmallMultiples() {
             });
         }
         
-        if (inflationMode === 'adjusted' || inflationMode === 'both') {
+        if (showAdjusted) {
             const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
             datasets.push({
-                label: inflationMode === 'both' ? '2014 €' : name,
+                label: showBoth ? '2014 €' : name,
                 data: adjustedData,
                 backgroundColor: color + '99',
                 borderColor: color,
                 borderWidth: 2,
-                borderDash: inflationMode === 'both' ? [5, 5] : [],
+                borderDash: showBoth ? [5, 5] : [],
                 fill: false
             });
         }
