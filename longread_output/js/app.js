@@ -11,7 +11,7 @@ let selectedRegions = new Set(['vlaanderen']); // Store selected values
 let currentViewMode = 'auto'; // 'auto', 'bar', 'line', 'small-multiples'
 let smallMultipleCharts = []; // Store small multiple chart instances
 let cpiData = null; // CPI data for inflation adjustment
-let inflationAdjusted = false; // Track if inflation adjustment is enabled
+let inflationMode = 'nominal'; // 'nominal', 'adjusted', or 'both'
 
 async function initApp() {
     map = L.map('map').setView([51.05, 4.4], 9);
@@ -549,16 +549,16 @@ function setupViewToggle() {
 }
 
 function setupInflationToggle() {
-    const inflationCheckbox = document.getElementById('inflation-adjust');
+    const inflationSelect = document.getElementById('inflation-mode');
     
-    inflationCheckbox.addEventListener('change', (e) => {
-        inflationAdjusted = e.target.checked;
+    inflationSelect.addEventListener('change', (e) => {
+        inflationMode = e.target.value;
         updateDashboard();
     });
 }
 
 function adjustForInflation(value, year) {
-    if (!inflationAdjusted || !cpiData || !cpiData.map) return value;
+    if (!cpiData || !cpiData.map) return value;
     
     const yearCPI = cpiData.map[year];
     if (!yearCPI) return value;
@@ -605,9 +605,13 @@ function updateDashboard() {
     // Update subtitle based on inflation adjustment
     const subtitleText = document.getElementById('subtitle-text');
     if (subtitleText) {
-        subtitleText.textContent = inflationAdjusted 
-            ? 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2024 prijzen)' 
-            : 'Investeringsuitgaven per inwoner (€)';
+        if (inflationMode === 'adjusted') {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2024 prijzen)';
+        } else if (inflationMode === 'both') {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal en gecorrigeerd naar 2024)';
+        } else {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€)';
+        }
     }
     
     // Sync checkbox states
@@ -676,32 +680,75 @@ function renderMainChart(viewMode) {
         return base;
     };
 
+    // Helper function to add datasets for a region
+    const addRegionDatasets = (name, nominalData, color, datasetIndex) => {
+        if (inflationMode === 'nominal' || inflationMode === 'both') {
+            const ds = createDataset(
+                inflationMode === 'both' ? `${name} (nominaal)` : name,
+                nominalData,
+                color,
+                viewMode,
+                datasetIndex
+            );
+            datasets.push(ds);
+            datasetIndex++;
+        }
+        
+        if (inflationMode === 'adjusted' || inflationMode === 'both') {
+            const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
+            const ds = createDataset(
+                inflationMode === 'both' ? `${name} (2024 €)` : name,
+                adjustedData,
+                color,
+                viewMode,
+                datasetIndex
+            );
+            
+            // Make adjusted data visually distinct when showing both
+            if (inflationMode === 'both') {
+                if (viewMode === 'line') {
+                    ds.borderDash = [5, 5]; // Dashed line for adjusted
+                    ds.borderWidth = 2;
+                } else if (viewMode === 'bar') {
+                    ds.backgroundColor = color + '99'; // More transparent
+                    ds.borderWidth = 2;
+                    ds.borderColor = color;
+                }
+            }
+            
+            datasets.push(ds);
+            datasetIndex++;
+        }
+        
+        return datasetIndex;
+    };
+
     // Track indices for provinces and municipalities separately for color assignment
     let provinceIndex = 0;
     let municipalityIndex = 0;
 
     // 1. Vlaanderen
     if (selectedRegions.has('vlaanderen')) {
-        datasets.push(createDataset(
-            'Vlaanderen (gemiddelde)', 
-            years.map(y => adjustForInflation(averagesData.Vlaanderen[y], y)),
+        const nominalData = years.map(y => averagesData.Vlaanderen[y]);
+        datasetIndex = addRegionDatasets(
+            'Vlaanderen (gemiddelde)',
+            nominalData,
             getColorForRegion('vlaanderen', 0, ''),
-            viewMode,
-            datasetIndex++
-        ));
+            datasetIndex
+        );
     }
 
     // 2. Provinces
     selectedRegions.forEach(val => {
         if (val.startsWith('prov:')) {
             const provName = val.split(':')[1];
-            datasets.push(createDataset(
+            const nominalData = years.map(y => averagesData.Provincies[provName][y]);
+            datasetIndex = addRegionDatasets(
                 provName,
-                years.map(y => adjustForInflation(averagesData.Provincies[provName][y], y)),
+                nominalData,
                 getColorForRegion('province', provinceIndex++, provName),
-                viewMode,
-                datasetIndex++
-            ));
+                datasetIndex
+            );
         }
     });
 
@@ -711,13 +758,13 @@ function renderMainChart(viewMode) {
             const munName = val.split(':')[1];
             const feature = municipalitiesData.features.find(f => f.properties.municipality === munName);
             if (feature) {
-                datasets.push(createDataset(
+                const nominalData = years.map(y => feature.properties[String(y)]);
+                datasetIndex = addRegionDatasets(
                     munName,
-                    years.map(y => adjustForInflation(feature.properties[String(y)], y)),
+                    nominalData,
                     getColorForRegion('municipality', municipalityIndex++, munName),
-                    viewMode,
-                    datasetIndex++
-                ));
+                    datasetIndex
+                );
             }
         }
     });
@@ -753,25 +800,58 @@ function renderSmallMultiples() {
     let provinceIndex = 0;
     let municipalityIndex = 0;
     
+    // Helper to create region data (with nominal and/or adjusted)
+    const createRegionData = (name, nominalData, color, index) => {
+        const datasets = [];
+        
+        if (inflationMode === 'nominal' || inflationMode === 'both') {
+            datasets.push({
+                label: inflationMode === 'both' ? 'Nominaal' : name,
+                data: nominalData,
+                backgroundColor: color,
+                borderColor: color,
+                borderWidth: 2,
+                fill: false
+            });
+        }
+        
+        if (inflationMode === 'adjusted' || inflationMode === 'both') {
+            const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
+            datasets.push({
+                label: inflationMode === 'both' ? '2024 €' : name,
+                data: adjustedData,
+                backgroundColor: color + '99',
+                borderColor: color,
+                borderWidth: 2,
+                borderDash: inflationMode === 'both' ? [5, 5] : [],
+                fill: false
+            });
+        }
+        
+        return { name, datasets, color, index };
+    };
+    
     // Collect all selected regions
     if (selectedRegions.has('vlaanderen')) {
-        regions.push({
-            name: 'Vlaanderen (gemiddelde)',
-            data: years.map(y => adjustForInflation(averagesData.Vlaanderen[y], y)),
-            color: getColorForRegion('vlaanderen', 0, ''),
-            index: 0
-        });
+        const nominalData = years.map(y => averagesData.Vlaanderen[y]);
+        regions.push(createRegionData(
+            'Vlaanderen (gemiddelde)',
+            nominalData,
+            getColorForRegion('vlaanderen', 0, ''),
+            0
+        ));
     }
     
     selectedRegions.forEach(val => {
         if (val.startsWith('prov:')) {
             const provName = val.split(':')[1];
-            regions.push({
-                name: provName,
-                data: years.map(y => adjustForInflation(averagesData.Provincies[provName][y], y)),
-                color: getColorForRegion('province', provinceIndex++, provName),
-                index: regions.length
-            });
+            const nominalData = years.map(y => averagesData.Provincies[provName][y]);
+            regions.push(createRegionData(
+                provName,
+                nominalData,
+                getColorForRegion('province', provinceIndex++, provName),
+                regions.length
+            ));
         }
     });
     
@@ -780,12 +860,13 @@ function renderSmallMultiples() {
             const munName = val.split(':')[1];
             const feature = municipalitiesData.features.find(f => f.properties.municipality === munName);
             if (feature) {
-                regions.push({
-                    name: munName,
-                    data: years.map(y => adjustForInflation(feature.properties[String(y)], y)),
-                    color: getColorForRegion('municipality', municipalityIndex++, munName),
-                    index: regions.length
-                });
+                const nominalData = years.map(y => feature.properties[String(y)]);
+                regions.push(createRegionData(
+                    munName,
+                    nominalData,
+                    getColorForRegion('municipality', municipalityIndex++, munName),
+                    regions.length
+                ));
             }
         }
     });
@@ -809,15 +890,10 @@ function renderSmallMultiples() {
             type: 'bar',
             data: {
                 labels: years,
-                datasets: [{
-                    label: region.name,
-                    data: region.data,
-                    backgroundColor: region.color + 'CC',
-                    borderColor: region.color,
-                    borderWidth: 2,
-                    borderRadius: 4,
-                    borderDash: lineStyle.borderDash
-                }]
+                datasets: region.datasets.map(ds => ({
+                    ...ds,
+                    borderRadius: 4
+                }))
             },
             options: {
                 responsive: true,

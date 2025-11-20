@@ -433,8 +433,12 @@
                         </div>
                     <div class="chart-view-toggle">
                         <label class="inflation-toggle" style="margin-right: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <input type="checkbox" id="inflation-adjust" style="width: 18px; height: 18px; cursor: pointer;">
-                            <span style="font-size: 0.9rem;">Inflatie-gecorrigeerd (2024 €)</span>
+                            <span style="font-size: 0.9rem;">Prijzen:</span>
+                            <select id="inflation-mode" style="padding: 0.3rem 0.5rem; font-size: 0.9rem; cursor: pointer; border: 1px solid #ccc; border-radius: 4px;">
+                                <option value="nominal">Nominaal</option>
+                                <option value="adjusted">Gecorrigeerd (2024 €)</option>
+                                <option value="both">Beide</option>
+                            </select>
                         </label>
                         <button id="view-toggle-btn" class="btn-view-toggle" title="Wissel weergave">
                             <span id="view-toggle-text">Automatisch</span>
