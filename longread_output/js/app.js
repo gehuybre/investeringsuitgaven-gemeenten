@@ -90,7 +90,7 @@ async function initApp() {
 
     try {
         const [geoResponse, avgResponse, cpiResponse] = await Promise.all([
-            fetch('municipalities.geojson'),
+            fetch('municipalities_enriched.geojson'),
             fetch('averages.json'),
             fetch('cpi.json')
         ]);
@@ -975,6 +975,9 @@ function onEachFeature(feature, layer) {
             const name = feature.properties.municipality;
             const value = `mun:${name}`;
             
+            // Show detail panel
+            showMunicipalityDetail(feature.properties);
+            
             // Toggle selection logic - update checkbox state
             // Sanitize ID to match the one used in populateGemeentenTab
             const safeId = `checkbox-mun-${name.replace(/[^a-zA-Z0-9]/g, '-')}`;
@@ -1036,3 +1039,96 @@ function style(feature, min, max) {
         fillOpacity: 0.7
     };
 }
+
+// Show municipality detail panel
+function showMunicipalityDetail(properties) {
+    const detailPanel = document.getElementById('municipality-detail');
+    const detailName = document.getElementById('detail-municipality-name');
+    const detailProvince = document.getElementById('detail-municipality-province');
+    const detailTotal2024 = document.getElementById('detail-total-2024');
+    const detailSumDetails = document.getElementById('detail-sum-details');
+    const detailDifference = document.getElementById('detail-difference');
+    const detailNumRekeningen = document.getElementById('detail-num-rekeningen');
+    const detailWarning = document.getElementById('detail-warning');
+    const detailTableBody = document.getElementById('detail-rekeningen-tbody');
+    
+    // Fill basic info
+    detailName.textContent = properties.municipality;
+    detailProvince.textContent = properties.province || 'Provincie onbekend';
+    
+    const total2024 = properties['2024'];
+    detailTotal2024.textContent = total2024 ? `€ ${total2024.toFixed(2)}` : '€ -';
+    
+    // Check if detail_2024 exists
+    if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+        const detail2024 = properties.detail_2024;
+        
+        // Fill statistics
+        detailSumDetails.textContent = `€ ${detail2024.totaal_details.toFixed(2)}`;
+        detailNumRekeningen.textContent = detail2024.aantal_rekeningen;
+        
+        const diff = detail2024.verschil_met_totaal;
+        detailDifference.textContent = `verschil: € ${diff.toFixed(2)}`;
+        
+        // Show/hide warning based on difference
+        const diffPercent = Math.abs(diff / total2024 * 100);
+        if (diffPercent > 1) {
+            detailWarning.style.display = 'flex';
+        } else {
+            detailWarning.style.display = 'none';
+        }
+        
+        // Fill table with top rekeningen
+        detailTableBody.innerHTML = '';
+        if (detail2024.top_rekeningen && detail2024.top_rekeningen.length > 0) {
+            detail2024.top_rekeningen.forEach(rek => {
+                const row = document.createElement('tr');
+                // Remove code prefix from naam if it starts with the code
+                let displayName = rek.naam;
+                if (displayName.startsWith(rek.code)) {
+                    displayName = displayName.substring(rek.code.length).trim();
+                    // Remove leading hyphen or dash if present
+                    if (displayName.startsWith('-')) {
+                        displayName = displayName.substring(1).trim();
+                    }
+                }
+                row.innerHTML = `
+                    <td class="code-col">${rek.code}</td>
+                    <td>${displayName}</td>
+                    <td class="bedrag-col">€ ${rek.bedrag.toFixed(2)}</td>
+                `;
+                detailTableBody.appendChild(row);
+            });
+        } else {
+            const row = document.createElement('tr');
+            row.innerHTML = '<td colspan="3" class="text-center text-muted">Geen gedetailleerde rekeningen beschikbaar</td>';
+            detailTableBody.appendChild(row);
+        }
+    } else {
+        // No detail data available
+        detailSumDetails.textContent = '€ -';
+        detailNumRekeningen.textContent = '-';
+        detailDifference.textContent = 'geen details beschikbaar';
+        detailWarning.style.display = 'none';
+        
+        detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen gedetailleerde data beschikbaar voor deze gemeente</td></tr>';
+    }
+    
+    // Show panel and scroll to it
+    detailPanel.classList.add('active');
+    detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Hide municipality detail panel
+function hideMunicipalityDetail() {
+    const detailPanel = document.getElementById('municipality-detail');
+    detailPanel.classList.remove('active');
+}
+
+// Setup close button for detail panel
+document.addEventListener('DOMContentLoaded', () => {
+    const closeBtn = document.getElementById('detail-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideMunicipalityDetail);
+    }
+});
