@@ -25,7 +25,10 @@ Thumbs.db
 *.geojson
 *.csv
 !longread_output/municipalities.geojson
+!longread_output/municipalities_enriched.geojson
+!longread_output/municipality_details_2024.json
 !longread_output/averages.json
+!longread_output/cpi.json
 
 # Logs
 *.log
