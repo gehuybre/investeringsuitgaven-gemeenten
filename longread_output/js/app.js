@@ -596,11 +596,11 @@ function updateDashboard() {
     if (currentViewMode === 'auto') {
         const toggleText = document.getElementById('view-toggle-text');
         if (count <= 3) {
-            toggleText.textContent = 'Automatisch (Staaf)';
+            toggleText.textContent = 'Automatisch (staafgrafiek)';
         } else if (count <= 7) {
-            toggleText.textContent = 'Automatisch (Lijn)';
+            toggleText.textContent = 'Automatisch (lijngrafiek)';
         } else {
-            toggleText.textContent = 'Automatisch (Multiples)';
+            toggleText.textContent = 'Automatisch (kleine grafieken)';
         }
     }
     
@@ -1059,6 +1059,9 @@ function showMunicipalityDetail(properties) {
     
     const total2024 = properties['2024'];
     detailTotal2024.textContent = total2024 ? `€ ${total2024.toFixed(2)}` : '€ -';
+    
+    // Render the table based on current view
+    renderDetailTable(properties, currentDetailView);
     
     // Show panel and scroll to it
     detailPanel.classList.add('active');
