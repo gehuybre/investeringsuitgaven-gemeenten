@@ -84,11 +84,11 @@
 
         .btn-view-toggle:hover {
             background: #f0f0f0;
-            border-color: #0055cc;
+            border-color: #029453;
         }
 
         .btn-view-toggle:focus {
-            outline: 2px solid #0055cc;
+            outline: 2px solid #029453;
             outline-offset: 2px;
         }
         
@@ -117,13 +117,13 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid #0055cc;
+            border-bottom: 2px solid #029453;
             padding-bottom: 1rem;
         }
 
         .detail-header h3 {
             margin: 0;
-            color: #0055cc;
+            color: #029453;
         }
 
         .detail-close {
@@ -158,7 +158,7 @@
             background: #f8f9fa;
             padding: 1rem;
             border-radius: 6px;
-            border-left: 3px solid #0055cc;
+            border-left: 3px solid #029453;
         }
 
         .stat-box .stat-label {
@@ -243,20 +243,20 @@
         }
 
         .detail-toggle-btn:hover {
-            border-color: #0055cc;
-            color: #0055cc;
+            border-color: #029453;
+            color: #029453;
             background: #f8f9fa;
         }
 
         .detail-toggle-btn.active {
-            border-color: #0055cc;
-            background: #0055cc;
+            border-color: #029453;
+            background: #029453;
             color: white;
             font-weight: 600;
         }
 
         .detail-toggle-btn:focus {
-            outline: 2px solid #0055cc;
+            outline: 2px solid #029453;
             outline-offset: 2px;
         }
 
@@ -347,7 +347,7 @@
         .info-panel {
             background: #f8f9fa;
             padding: 1.5rem;
-            border-left: 4px solid #0055cc;
+            border-left: 4px solid #029453;
             margin-bottom: 2rem;
         }
 
@@ -392,18 +392,18 @@
         }
 
         .tab-button:hover {
-            color: #0055cc;
-            background: rgba(0, 85, 204, 0.05);
+            color: #029453;
+            background: rgba(2, 148, 83, 0.05);
         }
 
         .tab-button.active {
-            color: #0055cc;
-            border-bottom-color: #0055cc;
+            color: #029453;
+            border-bottom-color: #029453;
             font-weight: 600;
         }
 
         .tab-button:focus {
-            outline: 2px solid #0055cc;
+            outline: 2px solid #029453;
             outline-offset: 2px;
         }
 
@@ -432,8 +432,8 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #0055cc;
-            box-shadow: 0 0 0 3px rgba(0, 85, 204, 0.1);
+            border-color: #029453;
+            box-shadow: 0 0 0 3px rgba(2, 148, 83, 0.1);
         }
 
         .search-input:disabled {
@@ -462,12 +462,12 @@
         }
 
         .checkbox-item:hover {
-            background: #e8f0fe;
+            background: #e8f4f0;
         }
 
         .checkbox-item:focus-within {
-            background: #e8f0fe;
-            outline: 2px solid #0055cc;
+            background: #e8f4f0;
+            outline: 2px solid #029453;
             outline-offset: -2px;
         }
 
@@ -480,7 +480,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
-            accent-color: #0055cc;
+            accent-color: #029453;
         }
 
         .checkbox-item label {
@@ -494,7 +494,7 @@
 
         .checkbox-item input[type="checkbox"]:checked + label {
             font-weight: 600;
-            color: #0055cc;
+            color: #029453;
         }
 
         /* Select All Container */
@@ -520,9 +520,9 @@
         }
 
         .btn-select-all:hover {
-            background: #0055cc;
+            background: #029453;
             color: white;
-            border-color: #0055cc;
+            border-color: #029453;
         }
 
         .btn-deselect-all:hover {
@@ -531,54 +531,60 @@
             border-color: #dc3545;
         }
 
-        /* Segmented Control for Inflation Toggle */
+        /* Checkbox Toggle for Inflation */
         .inflation-toggle-group {
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            flex-direction: column;
+            gap: 0.5rem;
             margin-right: 1.5rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
         }
 
         .toggle-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .segmented-control {
-            display: inline-flex;
-            background: #f2f4f5;
-            border-radius: 6px;
-            padding: 3px;
-            gap: 2px;
-        }
-
-        .segmented-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            background: transparent;
-            color: #555;
             font-size: 0.85rem;
             font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .price-checkbox-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .price-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
+            accent-color: #029453;
         }
 
-        .segmented-btn:hover {
-            color: #029453;
+        .price-checkbox-item label {
+            font-size: 0.85rem;
+            color: #555;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        .segmented-btn.active {
-            background: white;
+        .price-checkbox-item input[type="checkbox"]:checked + label {
             color: #029453;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
         }
 
         .btn-select-all:focus,
         .btn-deselect-all:focus {
-            outline: 2px solid #0055cc;
+            outline: 2px solid #029453;
             outline-offset: 2px;
         }
 
@@ -717,12 +723,12 @@
                 </div>
 
                 <div class="detail-table-header">
-                    <h4 class="mt-md mb-sm" id="detail-table-title">Top 10 Investeringscategorieën</h4>
+                    <h4 class="mt-md mb-sm" id="detail-table-title">Top 10 per beleidsveld</h4>
                     <div class="detail-view-toggle">
-                        <button class="detail-toggle-btn active" data-view="uitgavenpost" id="toggle-uitgavenpost">
+                        <button class="detail-toggle-btn" data-view="uitgavenpost" id="toggle-uitgavenpost">
                             Per uitgavenpost
                         </button>
-                        <button class="detail-toggle-btn" data-view="beleidsveld" id="toggle-beleidsveld">
+                        <button class="detail-toggle-btn active" data-view="beleidsveld" id="toggle-beleidsveld">
                             Per beleidsveld
                         </button>
                     </div>
@@ -746,7 +752,7 @@
     <!-- Dashboard Section -->
     <section id="dashboard" class="content-section">
         <div class="container">
-            <h2 class="mb-md">Dashboard: Evolutie 2014-2024</h2>
+            <h2 class="mb-md">Dashboard: evolutie 2014-2024</h2>
             
             <div class="dashboard-grid">
                 <!-- Chart Area -->
@@ -760,10 +766,16 @@
                         </div>
                     <div class="chart-view-toggle">
                         <div class="inflation-toggle-group">
-                            <span class="toggle-label">Prijzen:</span>
-                            <div class="segmented-control">
-                                <button class="segmented-btn active" data-mode="nominal" id="toggle-nominal">Nominaal</button>
-                                <button class="segmented-btn" data-mode="adjusted" id="toggle-adjusted">Reëel (2014)</button>
+                            <span class="toggle-label">Toon prijzen:</span>
+                            <div class="price-checkbox-container">
+                                <div class="price-checkbox-item">
+                                    <input type="checkbox" id="toggle-nominal" checked>
+                                    <label for="toggle-nominal">Nominaal</label>
+                                </div>
+                                <div class="price-checkbox-item">
+                                    <input type="checkbox" id="toggle-adjusted">
+                                    <label for="toggle-adjusted">Reëel (2014)</label>
+                                </div>
                             </div>
                         </div>
                         <button id="view-toggle-btn" class="btn-view-toggle" title="Wissel weergave">

@@ -550,30 +550,28 @@ function setupViewToggle() {
 }
 
 function setupInflationToggle() {
-    const nominalBtn = document.getElementById('toggle-nominal');
-    const adjustedBtn = document.getElementById('toggle-adjusted');
+    const nominalCheckbox = document.getElementById('toggle-nominal');
+    const adjustedCheckbox = document.getElementById('toggle-adjusted');
     
-    nominalBtn.addEventListener('click', () => {
-        showNominal = !showNominal;
-        nominalBtn.classList.toggle('active', showNominal);
+    nominalCheckbox.addEventListener('change', () => {
+        showNominal = nominalCheckbox.checked;
         
-        // Ensure at least one is always active
+        // Ensure at least one is always checked
         if (!showNominal && !showAdjusted) {
             showAdjusted = true;
-            adjustedBtn.classList.add('active');
+            adjustedCheckbox.checked = true;
         }
         
         updateDashboard();
     });
     
-    adjustedBtn.addEventListener('click', () => {
-        showAdjusted = !showAdjusted;
-        adjustedBtn.classList.toggle('active', showAdjusted);
+    adjustedCheckbox.addEventListener('change', () => {
+        showAdjusted = adjustedCheckbox.checked;
         
-        // Ensure at least one is always active
+        // Ensure at least one is always checked
         if (!showNominal && !showAdjusted) {
             showNominal = true;
-            nominalBtn.classList.add('active');
+            nominalCheckbox.checked = true;
         }
         
         updateDashboard();
@@ -629,16 +627,13 @@ function updateDashboard() {
     const subtitleText = document.getElementById('subtitle-text');
     if (subtitleText) {
         if (showNominal && showAdjusted) {
-            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal en gecorrigeerd naar 2014)';
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€) - beide weergaven getoond';
         } else if (showAdjusted) {
-            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, gecorrigeerd naar 2014 prijzen)';
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, reëel 2014 prijzen)';
         } else {
-            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€)';
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal)';
         }
     }
-    
-    // Sync checkbox states
-    syncCheckboxStates();
 }
 
 function determineViewMode(count) {
@@ -1041,7 +1036,7 @@ function style(feature, min, max) {
 }
 
 // Global variable to track current detail view
-let currentDetailView = 'uitgavenpost'; // 'uitgavenpost' or 'beleidsveld'
+let currentDetailView = 'beleidsveld'; // 'uitgavenpost' or 'beleidsveld'
 let currentMunicipalityProperties = null; // Store current municipality data
 
 // Show municipality detail panel
