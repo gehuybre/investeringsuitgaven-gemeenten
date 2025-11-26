@@ -45,7 +45,9 @@ async function initApp() {
                         '<i style="background:#fdae61; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-50-70">50-70%</span><br>' +
                         '<i style="background:#abd9e9; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-30-50">30-50%</span><br>' +
                         '<i style="background:#74add1; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-10-30">10-30%</span><br>' +
-                        '<i style="background:#4575b4; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-low10">&lt; 10% (laag)</span>';
+                        '<i style="background:#4575b4; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-low10">&lt; 10% (laag)</span><br>' +
+                        '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;"></div>' +
+                        '<i style="background:#999999; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.5; margin-top: 4px; border: 2px dashed #666;"></i> <span style="font-size: 12px;">Onbetrouwbare data</span>';
         return div;
     };
     legend.addTo(map);
@@ -1025,6 +1027,20 @@ function getColor(d, min, max) {
 
 function style(feature, min, max) {
     const val = feature.properties['2024'];
+    const municipalityName = feature.properties.municipality;
+    
+    // Special styling for Kaprijke due to unreliable data (large discrepancies)
+    if (municipalityName === 'Kaprijke') {
+        return {
+            fillColor: '#999999',  // Gray color
+            weight: 2,
+            opacity: 1,
+            color: '#666666',
+            dashArray: '5, 5',     // Dashed pattern for hatching effect
+            fillOpacity: 0.5
+        };
+    }
+    
     return {
         fillColor: getColor(val, min, max),
         weight: 1,
@@ -1047,18 +1063,47 @@ function showMunicipalityDetail(properties) {
     const detailName = document.getElementById('detail-municipality-name');
     const detailProvince = document.getElementById('detail-municipality-province');
     const detailTotal2024 = document.getElementById('detail-total-2024');
-    const detailSumDetails = document.getElementById('detail-sum-details');
-    const detailDifference = document.getElementById('detail-difference');
-    const detailNumRekeningen = document.getElementById('detail-num-rekeningen');
+    const detailSumBeleidsdomein = document.getElementById('detail-sum-beleidsdomein');
+    const detailDifferenceBeleidsdomein = document.getElementById('detail-difference-beleidsdomein');
+    const detailSumRekeningen = document.getElementById('detail-sum-rekeningen');
+    const detailDifferenceRekeningen = document.getElementById('detail-difference-rekeningen');
     const detailWarning = document.getElementById('detail-warning');
     const detailTableBody = document.getElementById('detail-rekeningen-tbody');
     
     // Fill basic info
     detailName.textContent = properties.municipality;
+    
+    // Add warning badge for Kaprijke
+    if (properties.municipality === 'Kaprijke') {
+        detailName.innerHTML = properties.municipality + ' <span style="background: #999; color: white; padding: 2px 8px; border-radius: 3px; font-size: 0.7em; margin-left: 8px;">⚠ Data onbetrouwbaar</span>';
+    }
+    
     detailProvince.textContent = properties.province || 'Provincie onbekend';
     
     const total2024 = properties['2024'];
     detailTotal2024.textContent = total2024 ? `€ ${total2024.toFixed(2)}` : '€ -';
+    
+    // Fill beleidsdomein sum
+    if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
+        const totaalBeleidsdomein = properties.beleidsdomein_2024.totaal_beleidsdomein;
+        detailSumBeleidsdomein.textContent = `€ ${totaalBeleidsdomein.toFixed(2)}`;
+        const diffBeleidsdomein = properties.beleidsdomein_2024.verschil_met_totaal;
+        detailDifferenceBeleidsdomein.textContent = `verschil: € ${diffBeleidsdomein.toFixed(2)}`;
+    } else {
+        detailSumBeleidsdomein.textContent = '€ -';
+        detailDifferenceBeleidsdomein.textContent = 'geen data';
+    }
+    
+    // Fill rekeningen sum
+    if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+        const totaalRekeningen = properties.detail_2024.totaal_details;
+        detailSumRekeningen.textContent = `€ ${totaalRekeningen.toFixed(2)}`;
+        const diffRekeningen = properties.detail_2024.verschil_met_totaal;
+        detailDifferenceRekeningen.textContent = `verschil: € ${diffRekeningen.toFixed(2)}`;
+    } else {
+        detailSumRekeningen.textContent = '€ -';
+        detailDifferenceRekeningen.textContent = 'geen data';
+    }
     
     // Render the table based on current view
     renderDetailTable(properties, currentDetailView);
@@ -1070,9 +1115,6 @@ function showMunicipalityDetail(properties) {
 
 // Render detail table based on view (uitgavenpost or beleidsveld)
 function renderDetailTable(properties, viewType) {
-    const detailSumDetails = document.getElementById('detail-sum-details');
-    const detailDifference = document.getElementById('detail-difference');
-    const detailNumRekeningen = document.getElementById('detail-num-rekeningen');
     const detailWarning = document.getElementById('detail-warning');
     const detailTableBody = document.getElementById('detail-rekeningen-tbody');
     const detailTableTitle = document.getElementById('detail-table-title');
@@ -1088,19 +1130,32 @@ function renderDetailTable(properties, viewType) {
         if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
             const detail2024 = properties.detail_2024;
         
-            // Fill statistics
-            detailSumDetails.textContent = `€ ${detail2024.totaal_details.toFixed(2)}`;
-            detailNumRekeningen.textContent = detail2024.aantal_rekeningen;
+            // Check for warnings (significant differences)
+            const diffRekeningen = detail2024.verschil_met_totaal;
+            const diffRekeningenPercent = Math.abs(diffRekeningen / total2024 * 100);
             
-            const diff = detail2024.verschil_met_totaal;
-            detailDifference.textContent = `verschil: € ${diff.toFixed(2)}`;
+            let showWarning = false;
+            if (diffRekeningenPercent > 1) {
+                showWarning = true;
+            }
             
-            // Show/hide warning based on difference
-            const diffPercent = Math.abs(diff / total2024 * 100);
-            if (diffPercent > 1) {
+            // Also check beleidsdomein difference if available
+            if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
+                const diffBeleidsdomein = properties.beleidsdomein_2024.verschil_met_totaal;
+                const diffBeleidsdoeinPercent = Math.abs(diffBeleidsdomein / total2024 * 100);
+                if (diffBeleidsdoeinPercent > 1) {
+                    showWarning = true;
+                }
+            }
+            
+            // Update warning text for Kaprijke
+            const detailWarningText = document.getElementById('detail-warning-text');
+            if (properties.municipality === 'Kaprijke') {
+                detailWarningText.innerHTML = '<strong>Data onbetrouwbaar:</strong> Het verschil tussen de verschillende totalen is extreem groot (> 80%). De getoonde investeringsgegevens voor deze gemeente zijn niet betrouwbaar en mogen niet gebruikt worden voor analyses.';
                 detailWarning.style.display = 'flex';
             } else {
-                detailWarning.style.display = 'none';
+                detailWarningText.textContent = 'Er is een verschil tussen de som van de details en het totaal. Dit kan duiden op ontbrekende rekeningen in de gedetailleerde data.';
+                detailWarning.style.display = showWarning ? 'flex' : 'none';
             }
             
             // Fill table with top rekeningen
@@ -1131,9 +1186,6 @@ function renderDetailTable(properties, viewType) {
             }
         } else {
             // No detail data available
-            detailSumDetails.textContent = '€ -';
-            detailNumRekeningen.textContent = '-';
-            detailDifference.textContent = 'geen details beschikbaar';
             detailWarning.style.display = 'none';
             
             detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen gedetailleerde data beschikbaar voor deze gemeente</td></tr>';
@@ -1147,19 +1199,32 @@ function renderDetailTable(properties, viewType) {
         if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
             const beleidsdomein2024 = properties.beleidsdomein_2024;
             
-            // Fill statistics
-            detailSumDetails.textContent = `€ ${beleidsdomein2024.totaal_beleidsdomein.toFixed(2)}`;
-            detailNumRekeningen.textContent = beleidsdomein2024.aantal_beleidsvelden;
+            // Check for warnings (significant differences)
+            const diffBeleidsdomein = beleidsdomein2024.verschil_met_totaal;
+            const diffBeleidsdoeinPercent = Math.abs(diffBeleidsdomein / total2024 * 100);
             
-            const diff = beleidsdomein2024.verschil_met_totaal;
-            detailDifference.textContent = `verschil: € ${diff.toFixed(2)}`;
+            let showWarning = false;
+            if (diffBeleidsdoeinPercent > 1) {
+                showWarning = true;
+            }
             
-            // Show/hide warning based on difference
-            const diffPercent = Math.abs(diff / total2024 * 100);
-            if (diffPercent > 1) {
+            // Also check rekeningen difference if available
+            if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+                const diffRekeningen = properties.detail_2024.verschil_met_totaal;
+                const diffRekeningenPercent = Math.abs(diffRekeningen / total2024 * 100);
+                if (diffRekeningenPercent > 1) {
+                    showWarning = true;
+                }
+            }
+            
+            // Update warning text for Kaprijke
+            const detailWarningText = document.getElementById('detail-warning-text');
+            if (properties.municipality === 'Kaprijke') {
+                detailWarningText.innerHTML = '<strong>Data onbetrouwbaar:</strong> Het verschil tussen de verschillende totalen is extreem groot (> 80%). De getoonde investeringsgegevens voor deze gemeente zijn niet betrouwbaar en mogen niet gebruikt worden voor analyses.';
                 detailWarning.style.display = 'flex';
             } else {
-                detailWarning.style.display = 'none';
+                detailWarningText.textContent = 'Er is een verschil tussen de som van de details en het totaal. Dit kan duiden op ontbrekende rekeningen in de gedetailleerde data.';
+                detailWarning.style.display = showWarning ? 'flex' : 'none';
             }
             
             // Fill table with top beleidsvelden
@@ -1181,9 +1246,6 @@ function renderDetailTable(properties, viewType) {
             }
         } else {
             // No beleidsdomein data available
-            detailSumDetails.textContent = '€ -';
-            detailNumRekeningen.textContent = '-';
-            detailDifference.textContent = 'geen beleidsdomein data beschikbaar';
             detailWarning.style.display = 'none';
             
             detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen beleidsdomein data beschikbaar voor deze gemeente</td></tr>';
