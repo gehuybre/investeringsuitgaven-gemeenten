@@ -213,6 +213,53 @@
             font-size: 0.9rem;
         }
 
+        .detail-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-table-header h4 {
+            margin: 0;
+        }
+
+        .detail-view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .detail-toggle-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .detail-toggle-btn:hover {
+            border-color: #0055cc;
+            color: #0055cc;
+            background: #f8f9fa;
+        }
+
+        .detail-toggle-btn.active {
+            border-color: #0055cc;
+            background: #0055cc;
+            color: white;
+            font-weight: 600;
+        }
+
+        .detail-toggle-btn:focus {
+            outline: 2px solid #0055cc;
+            outline-offset: 2px;
+        }
+
         .warning-box {
             background: #fff3cd;
             border: 1px solid #ffc107;
@@ -253,6 +300,22 @@
             
             .detail-panel {
                 padding: 1rem;
+            }
+
+            .detail-table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .detail-view-toggle {
+                width: 100%;
+            }
+
+            .detail-toggle-btn {
+                flex: 1;
+                padding: 0.5rem 0.5rem;
+                font-size: 0.85rem;
             }
         }
 
@@ -653,12 +716,22 @@
                     </div>
                 </div>
 
-                <h4 class="mt-md mb-sm">Top 10 Investeringscategorieën</h4>
+                <div class="detail-table-header">
+                    <h4 class="mt-md mb-sm" id="detail-table-title">Top 10 Investeringscategorieën</h4>
+                    <div class="detail-view-toggle">
+                        <button class="detail-toggle-btn active" data-view="uitgavenpost" id="toggle-uitgavenpost">
+                            Per uitgavenpost
+                        </button>
+                        <button class="detail-toggle-btn" data-view="beleidsveld" id="toggle-beleidsveld">
+                            Per beleidsveld
+                        </button>
+                    </div>
+                </div>
                 <table class="rekeningen-table" id="detail-rekeningen-table">
                     <thead>
                         <tr>
                             <th class="code-col">Code</th>
-                            <th>Rekening</th>
+                            <th id="detail-table-header-col">Rekening</th>
                             <th class="bedrag-col">Bedrag</th>
                         </tr>
                     </thead>

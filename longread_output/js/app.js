@@ -1040,8 +1040,14 @@ function style(feature, min, max) {
     };
 }
 
+// Global variable to track current detail view
+let currentDetailView = 'uitgavenpost'; // 'uitgavenpost' or 'beleidsveld'
+let currentMunicipalityProperties = null; // Store current municipality data
+
 // Show municipality detail panel
 function showMunicipalityDetail(properties) {
+    currentMunicipalityProperties = properties; // Store for view switching
+    
     const detailPanel = document.getElementById('municipality-detail');
     const detailName = document.getElementById('detail-municipality-name');
     const detailProvince = document.getElementById('detail-municipality-province');
@@ -1059,8 +1065,29 @@ function showMunicipalityDetail(properties) {
     const total2024 = properties['2024'];
     detailTotal2024.textContent = total2024 ? `€ ${total2024.toFixed(2)}` : '€ -';
     
-    // Check if detail_2024 exists
-    if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+    // Show panel and scroll to it
+    detailPanel.classList.add('active');
+    detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Render detail table based on view (uitgavenpost or beleidsveld)
+function renderDetailTable(properties, viewType) {
+    const detailSumDetails = document.getElementById('detail-sum-details');
+    const detailDifference = document.getElementById('detail-difference');
+    const detailNumRekeningen = document.getElementById('detail-num-rekeningen');
+    const detailWarning = document.getElementById('detail-warning');
+    const detailTableBody = document.getElementById('detail-rekeningen-tbody');
+    const detailTableTitle = document.getElementById('detail-table-title');
+    const detailTableHeaderCol = document.getElementById('detail-table-header-col');
+    
+    const total2024 = properties['2024'];
+    
+    if (viewType === 'uitgavenpost') {
+        // Render uitgavenpost (detail_2024) view
+        detailTableTitle.textContent = 'Top 10 per uitgavenpost';
+        detailTableHeaderCol.textContent = 'Rekening';
+        
+        if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
         const detail2024 = properties.detail_2024;
         
         // Fill statistics
@@ -1114,9 +1141,56 @@ function showMunicipalityDetail(properties) {
         detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen gedetailleerde data beschikbaar voor deze gemeente</td></tr>';
     }
     
-    // Show panel and scroll to it
-    detailPanel.classList.add('active');
-    detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else if (viewType === 'beleidsveld') {
+        // Render beleidsveld (beleidsdomein_2024) view
+        detailTableTitle.textContent = 'Top 10 per beleidsveld';
+        detailTableHeaderCol.textContent = 'Beleidsveld';
+        
+        if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
+            const beleidsdomein2024 = properties.beleidsdomein_2024;
+            
+            // Fill statistics
+            detailSumDetails.textContent = `€ ${beleidsdomein2024.totaal_beleidsdomein.toFixed(2)}`;
+            detailNumRekeningen.textContent = beleidsdomein2024.aantal_beleidsvelden;
+            
+            const diff = beleidsdomein2024.verschil_met_totaal;
+            detailDifference.textContent = `verschil: € ${diff.toFixed(2)}`;
+            
+            // Show/hide warning based on difference
+            const diffPercent = Math.abs(diff / total2024 * 100);
+            if (diffPercent > 1) {
+                detailWarning.style.display = 'flex';
+            } else {
+                detailWarning.style.display = 'none';
+            }
+            
+            // Fill table with top beleidsvelden
+            detailTableBody.innerHTML = '';
+            if (beleidsdomein2024.top_beleidsvelden && beleidsdomein2024.top_beleidsvelden.length > 0) {
+                beleidsdomein2024.top_beleidsvelden.forEach(beleid => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="code-col">${beleid.code}</td>
+                        <td>${beleid.naam}</td>
+                        <td class="bedrag-col">€ ${beleid.bedrag.toFixed(2)}</td>
+                    `;
+                    detailTableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3" class="text-center text-muted">Geen beleidsdomein data beschikbaar</td>';
+                detailTableBody.appendChild(row);
+            }
+        } else {
+            // No beleidsdomein data available
+            detailSumDetails.textContent = '€ -';
+            detailNumRekeningen.textContent = '-';
+            detailDifference.textContent = 'geen beleidsdomein data beschikbaar';
+            detailWarning.style.display = 'none';
+            
+            detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen beleidsdomein data beschikbaar voor deze gemeente</td></tr>';
+        }
+    }
 }
 
 // Hide municipality detail panel
@@ -1125,10 +1199,38 @@ function hideMunicipalityDetail() {
     detailPanel.classList.remove('active');
 }
 
-// Setup close button for detail panel
+// Setup close button and toggle buttons for detail panel
 document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('detail-close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', hideMunicipalityDetail);
+    }
+    
+    // Setup detail view toggle buttons
+    const toggleUitgavenpost = document.getElementById('toggle-uitgavenpost');
+    const toggleBeleidsveld = document.getElementById('toggle-beleidsveld');
+    
+    if (toggleUitgavenpost) {
+        toggleUitgavenpost.addEventListener('click', () => {
+            currentDetailView = 'uitgavenpost';
+            toggleUitgavenpost.classList.add('active');
+            toggleBeleidsveld.classList.remove('active');
+            
+            if (currentMunicipalityProperties) {
+                renderDetailTable(currentMunicipalityProperties, currentDetailView);
+            }
+        });
+    }
+    
+    if (toggleBeleidsveld) {
+        toggleBeleidsveld.addEventListener('click', () => {
+            currentDetailView = 'beleidsveld';
+            toggleBeleidsveld.classList.add('active');
+            toggleUitgavenpost.classList.remove('active');
+            
+            if (currentMunicipalityProperties) {
+                renderDetailTable(currentMunicipalityProperties, currentDetailView);
+            }
+        });
     }
 });
