@@ -1086,58 +1086,58 @@ function renderDetailTable(properties, viewType) {
         detailTableHeaderCol.textContent = 'Rekening';
         
         if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
-        const detail2024 = properties.detail_2024;
+            const detail2024 = properties.detail_2024;
         
-        // Fill statistics
-        detailSumDetails.textContent = `€ ${detail2024.totaal_details.toFixed(2)}`;
-        detailNumRekeningen.textContent = detail2024.aantal_rekeningen;
-        
-        const diff = detail2024.verschil_met_totaal;
-        detailDifference.textContent = `verschil: € ${diff.toFixed(2)}`;
-        
-        // Show/hide warning based on difference
-        const diffPercent = Math.abs(diff / total2024 * 100);
-        if (diffPercent > 1) {
-            detailWarning.style.display = 'flex';
-        } else {
-            detailWarning.style.display = 'none';
-        }
-        
-        // Fill table with top rekeningen
-        detailTableBody.innerHTML = '';
-        if (detail2024.top_rekeningen && detail2024.top_rekeningen.length > 0) {
-            detail2024.top_rekeningen.forEach(rek => {
-                const row = document.createElement('tr');
-                // Remove code prefix from naam if it starts with the code
-                let displayName = rek.naam;
-                if (displayName.startsWith(rek.code)) {
-                    displayName = displayName.substring(rek.code.length).trim();
-                    // Remove leading hyphen or dash if present
-                    if (displayName.startsWith('-')) {
-                        displayName = displayName.substring(1).trim();
+            // Fill statistics
+            detailSumDetails.textContent = `€ ${detail2024.totaal_details.toFixed(2)}`;
+            detailNumRekeningen.textContent = detail2024.aantal_rekeningen;
+            
+            const diff = detail2024.verschil_met_totaal;
+            detailDifference.textContent = `verschil: € ${diff.toFixed(2)}`;
+            
+            // Show/hide warning based on difference
+            const diffPercent = Math.abs(diff / total2024 * 100);
+            if (diffPercent > 1) {
+                detailWarning.style.display = 'flex';
+            } else {
+                detailWarning.style.display = 'none';
+            }
+            
+            // Fill table with top rekeningen
+            detailTableBody.innerHTML = '';
+            if (detail2024.top_rekeningen && detail2024.top_rekeningen.length > 0) {
+                detail2024.top_rekeningen.forEach(rek => {
+                    const row = document.createElement('tr');
+                    // Remove code prefix from naam if it starts with the code
+                    let displayName = rek.naam;
+                    if (displayName.startsWith(rek.code)) {
+                        displayName = displayName.substring(rek.code.length).trim();
+                        // Remove leading hyphen or dash if present
+                        if (displayName.startsWith('-')) {
+                            displayName = displayName.substring(1).trim();
+                        }
                     }
-                }
-                row.innerHTML = `
-                    <td class="code-col">${rek.code}</td>
-                    <td>${displayName}</td>
-                    <td class="bedrag-col">€ ${rek.bedrag.toFixed(2)}</td>
-                `;
+                    row.innerHTML = `
+                        <td class="code-col">${rek.code}</td>
+                        <td>${displayName}</td>
+                        <td class="bedrag-col">€ ${rek.bedrag.toFixed(2)}</td>
+                    `;
+                    detailTableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3" class="text-center text-muted">Geen gedetailleerde rekeningen beschikbaar</td>';
                 detailTableBody.appendChild(row);
-            });
+            }
         } else {
-            const row = document.createElement('tr');
-            row.innerHTML = '<td colspan="3" class="text-center text-muted">Geen gedetailleerde rekeningen beschikbaar</td>';
-            detailTableBody.appendChild(row);
+            // No detail data available
+            detailSumDetails.textContent = '€ -';
+            detailNumRekeningen.textContent = '-';
+            detailDifference.textContent = 'geen details beschikbaar';
+            detailWarning.style.display = 'none';
+            
+            detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen gedetailleerde data beschikbaar voor deze gemeente</td></tr>';
         }
-    } else {
-        // No detail data available
-        detailSumDetails.textContent = '€ -';
-        detailNumRekeningen.textContent = '-';
-        detailDifference.textContent = 'geen details beschikbaar';
-        detailWarning.style.display = 'none';
-        
-        detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen gedetailleerde data beschikbaar voor deze gemeente</td></tr>';
-    }
     
     } else if (viewType === 'beleidsveld') {
         // Render beleidsveld (beleidsdomein_2024) view
