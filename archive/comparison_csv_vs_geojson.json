@@ -1,0 +1,2567 @@
+[
+  {
+    "municipality": "aalst",
+    "csv_total": 386.05,
+    "geojson_2024": 386.04,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "aalter",
+    "csv_total": 811.8,
+    "geojson_2024": 811.78,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "aarschot",
+    "csv_total": 318.09,
+    "geojson_2024": 318.09,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 26
+  },
+  {
+    "municipality": "aartselaar",
+    "csv_total": 517.98,
+    "geojson_2024": 517.99,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "affligem",
+    "csv_total": 175.54,
+    "geojson_2024": 175.55,
+    "difference": -0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "alken",
+    "csv_total": 490.45,
+    "geojson_2024": 490.45,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "alveringem",
+    "csv_total": 272.64,
+    "geojson_2024": 272.65,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "antwerpen",
+    "csv_total": 640.46,
+    "geojson_2024": 707.19,
+    "difference": -66.73,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "anzegem",
+    "csv_total": 526.94,
+    "geojson_2024": 526.92,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "ardooie",
+    "csv_total": 652.77,
+    "geojson_2024": 652.76,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "arendonk",
+    "csv_total": 688.57,
+    "geojson_2024": 688.58,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "as",
+    "csv_total": 680.28,
+    "geojson_2024": 680.3,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "asse",
+    "csv_total": 909.04,
+    "geojson_2024": 909.03,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "assenede",
+    "csv_total": 360.27,
+    "geojson_2024": 360.27,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "avelgem",
+    "csv_total": 489.32,
+    "geojson_2024": 489.32,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "baarle-hertog",
+    "csv_total": 890.31,
+    "geojson_2024": 890.32,
+    "difference": -0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 8
+  },
+  {
+    "municipality": "balen",
+    "csv_total": 641.19,
+    "geojson_2024": 641.21,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "beernem",
+    "csv_total": 573.52,
+    "geojson_2024": 573.52,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "beerse",
+    "csv_total": 138.26,
+    "geojson_2024": 138.25,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "beersel",
+    "csv_total": 399.3,
+    "geojson_2024": 399.3,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "begijnendijk",
+    "csv_total": 539.11,
+    "geojson_2024": 539.13,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "bekkevoort",
+    "csv_total": 577.14,
+    "geojson_2024": 577.15,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "beringen",
+    "csv_total": 373.08,
+    "geojson_2024": 373.08,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "berlaar",
+    "csv_total": 516.89,
+    "geojson_2024": 516.89,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "berlare",
+    "csv_total": 671.0,
+    "geojson_2024": 670.99,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "bertem",
+    "csv_total": 849.43,
+    "geojson_2024": 849.42,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "bever",
+    "csv_total": 1054.38,
+    "geojson_2024": 1054.38,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "beveren-kruibeke-zwijndrecht",
+    "csv_total": 523.29,
+    "geojson_2024": 523.28,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 34
+  },
+  {
+    "municipality": "bierbeek",
+    "csv_total": 503.76,
+    "geojson_2024": 503.77,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "bilzen-hoeselt",
+    "csv_total": 538.21,
+    "geojson_2024": 538.21,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "blankenberge",
+    "csv_total": 402.96,
+    "geojson_2024": 402.96,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 27
+  },
+  {
+    "municipality": "bocholt",
+    "csv_total": 637.65,
+    "geojson_2024": 637.67,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "boechout",
+    "csv_total": 156.35,
+    "geojson_2024": 156.35,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "bonheiden",
+    "csv_total": 342.24,
+    "geojson_2024": 342.23,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "boom",
+    "csv_total": 224.49,
+    "geojson_2024": 224.5,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "boortmeerbeek",
+    "csv_total": 199.93,
+    "geojson_2024": 199.91,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "bornem",
+    "csv_total": 419.46,
+    "geojson_2024": 419.45,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "boutersem",
+    "csv_total": 207.68,
+    "geojson_2024": 207.69,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "brakel",
+    "csv_total": 226.56,
+    "geojson_2024": 226.55,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "brasschaat",
+    "csv_total": 415.78,
+    "geojson_2024": 415.78,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "brecht",
+    "csv_total": 448.85,
+    "geojson_2024": 448.83,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "bredene",
+    "csv_total": 252.36,
+    "geojson_2024": 252.34,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "bree",
+    "csv_total": 497.56,
+    "geojson_2024": 497.56,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "brugge",
+    "csv_total": 555.53,
+    "geojson_2024": 555.51,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "buggenhout",
+    "csv_total": 261.51,
+    "geojson_2024": 261.49,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "damme",
+    "csv_total": 544.21,
+    "geojson_2024": 544.21,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "de haan",
+    "csv_total": 623.02,
+    "geojson_2024": 623.03,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "de panne",
+    "csv_total": 720.1,
+    "geojson_2024": 720.11,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "deerlijk",
+    "csv_total": 461.15,
+    "geojson_2024": 461.15,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "deinze",
+    "csv_total": 435.64,
+    "geojson_2024": 435.62,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "denderleeuw",
+    "csv_total": 327.91,
+    "geojson_2024": 327.92,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "dendermonde",
+    "csv_total": 275.57,
+    "geojson_2024": 275.57,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "dentergem",
+    "csv_total": 473.11,
+    "geojson_2024": 473.09,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "dessel",
+    "csv_total": 271.35,
+    "geojson_2024": 271.34,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "destelbergen",
+    "csv_total": 221.09,
+    "geojson_2024": 221.07,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "diepenbeek",
+    "csv_total": 342.75,
+    "geojson_2024": 342.76,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "diest",
+    "csv_total": 491.4,
+    "geojson_2024": 491.39,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 26
+  },
+  {
+    "municipality": "diksmuide",
+    "csv_total": 775.29,
+    "geojson_2024": 775.28,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "dilbeek",
+    "csv_total": 267.15,
+    "geojson_2024": 267.15,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "dilsen-stokkem",
+    "csv_total": 820.66,
+    "geojson_2024": 820.67,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "drogenbos",
+    "csv_total": 387.24,
+    "geojson_2024": 387.23,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "duffel",
+    "csv_total": 561.05,
+    "geojson_2024": 561.06,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "edegem",
+    "csv_total": 267.35,
+    "geojson_2024": 267.35,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "eeklo",
+    "csv_total": 729.76,
+    "geojson_2024": 729.76,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "erpe-mere",
+    "csv_total": 135.74,
+    "geojson_2024": 135.72,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "essen",
+    "csv_total": 304.52,
+    "geojson_2024": 304.51,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "evergem",
+    "csv_total": 326.03,
+    "geojson_2024": 326.02,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "gavere",
+    "csv_total": 428.77,
+    "geojson_2024": 428.78,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "geel",
+    "csv_total": 250.7,
+    "geojson_2024": 250.69,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 28
+  },
+  {
+    "municipality": "geetbets",
+    "csv_total": 629.75,
+    "geojson_2024": 629.75,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "genk",
+    "csv_total": 708.99,
+    "geojson_2024": 708.97,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "gent",
+    "csv_total": 613.61,
+    "geojson_2024": 613.61,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "geraardsbergen",
+    "csv_total": 166.96,
+    "geojson_2024": 166.96,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "gingelom",
+    "csv_total": 318.83,
+    "geojson_2024": 318.83,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "gistel",
+    "csv_total": 1057.61,
+    "geojson_2024": 1057.6,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "glabbeek",
+    "csv_total": 960.86,
+    "geojson_2024": 960.87,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "grimbergen",
+    "csv_total": 486.5,
+    "geojson_2024": 486.51,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "grobbendonk",
+    "csv_total": 601.96,
+    "geojson_2024": 601.95,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "haacht",
+    "csv_total": 231.9,
+    "geojson_2024": 231.9,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "haaltert",
+    "csv_total": 409.07,
+    "geojson_2024": 409.07,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "halen",
+    "csv_total": 296.96,
+    "geojson_2024": 296.94,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "halle",
+    "csv_total": 425.3,
+    "geojson_2024": 425.31,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "hamme",
+    "csv_total": 351.03,
+    "geojson_2024": 351.01,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "hamont-achel",
+    "csv_total": 439.14,
+    "geojson_2024": 439.14,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "harelbeke",
+    "csv_total": 495.92,
+    "geojson_2024": 495.92,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "hasselt",
+    "csv_total": 546.01,
+    "geojson_2024": 546.02,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "hechtel-eksel",
+    "csv_total": 301.71,
+    "geojson_2024": 301.71,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "heers",
+    "csv_total": 396.23,
+    "geojson_2024": 396.22,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "heist-op-den-berg",
+    "csv_total": 231.23,
+    "geojson_2024": 231.22,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "hemiksem",
+    "csv_total": 619.56,
+    "geojson_2024": 619.56,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "herent",
+    "csv_total": 215.07,
+    "geojson_2024": 215.06,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "herentals",
+    "csv_total": 292.93,
+    "geojson_2024": 292.92,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 28
+  },
+  {
+    "municipality": "herenthout",
+    "csv_total": 668.69,
+    "geojson_2024": 668.71,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "herk-de-stad",
+    "csv_total": 390.5,
+    "geojson_2024": 390.5,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "herselt",
+    "csv_total": 523.92,
+    "geojson_2024": 523.91,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "herstappe",
+    "csv_total": 1248.63,
+    "geojson_2024": 1248.63,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 5
+  },
+  {
+    "municipality": "herzele",
+    "csv_total": 197.1,
+    "geojson_2024": 197.1,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "heusden-zolder",
+    "csv_total": 682.1,
+    "geojson_2024": 682.11,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "heuvelland",
+    "csv_total": 787.73,
+    "geojson_2024": 787.7,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "hoegaarden",
+    "csv_total": 819.93,
+    "geojson_2024": 819.91,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "hoeilaart",
+    "csv_total": 304.42,
+    "geojson_2024": 304.4,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "holsbeek",
+    "csv_total": 698.29,
+    "geojson_2024": 698.29,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "hooglede",
+    "csv_total": 1295.28,
+    "geojson_2024": 1295.25,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 26
+  },
+  {
+    "municipality": "hoogstraten",
+    "csv_total": 483.45,
+    "geojson_2024": 483.46,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "horebeke",
+    "csv_total": 1579.4,
+    "geojson_2024": 1579.4,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 8
+  },
+  {
+    "municipality": "houthalen-helchteren",
+    "csv_total": 663.01,
+    "geojson_2024": 662.99,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "houthulst",
+    "csv_total": 508.74,
+    "geojson_2024": 508.73,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "hove",
+    "csv_total": 197.92,
+    "geojson_2024": 197.92,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "huldenberg",
+    "csv_total": 187.33,
+    "geojson_2024": 187.3,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "hulshout",
+    "csv_total": 190.85,
+    "geojson_2024": 190.84,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "ichtegem",
+    "csv_total": 627.13,
+    "geojson_2024": 627.14,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "ieper",
+    "csv_total": 447.11,
+    "geojson_2024": 447.13,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "ingelmunster",
+    "csv_total": 537.46,
+    "geojson_2024": 537.46,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "izegem",
+    "csv_total": 501.66,
+    "geojson_2024": 501.65,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "jabbeke",
+    "csv_total": 447.89,
+    "geojson_2024": 447.88,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "kalmthout",
+    "csv_total": 422.38,
+    "geojson_2024": 422.38,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "kampenhout",
+    "csv_total": 789.64,
+    "geojson_2024": 789.64,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "kapelle-op-den-bos",
+    "csv_total": 738.52,
+    "geojson_2024": 738.53,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "kapellen",
+    "csv_total": 156.56,
+    "geojson_2024": 156.55,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "kaprijke",
+    "csv_total": 321.54,
+    "geojson_2024": 1603.79,
+    "difference": -1282.25,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "kasterlee",
+    "csv_total": 325.91,
+    "geojson_2024": 325.92,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "keerbergen",
+    "csv_total": 443.76,
+    "geojson_2024": 443.77,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "kinrooi",
+    "csv_total": 439.63,
+    "geojson_2024": 439.63,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "kluisbergen",
+    "csv_total": 444.29,
+    "geojson_2024": 444.28,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "knokke-heist",
+    "csv_total": 662.18,
+    "geojson_2024": 662.18,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "koekelare",
+    "csv_total": 823.1,
+    "geojson_2024": 823.13,
+    "difference": -0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "koksijde",
+    "csv_total": 1393.88,
+    "geojson_2024": 1393.88,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 27
+  },
+  {
+    "municipality": "kontich",
+    "csv_total": 325.75,
+    "geojson_2024": 325.75,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "kortemark",
+    "csv_total": 507.48,
+    "geojson_2024": 507.49,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "kortenaken",
+    "csv_total": 322.55,
+    "geojson_2024": 322.54,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "kortenberg",
+    "csv_total": 830.75,
+    "geojson_2024": 830.74,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "kortrijk",
+    "csv_total": 877.73,
+    "geojson_2024": 877.74,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 30
+  },
+  {
+    "municipality": "kraainem",
+    "csv_total": 401.54,
+    "geojson_2024": 401.53,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "kruisem",
+    "csv_total": 564.81,
+    "geojson_2024": 564.8,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "kuurne",
+    "csv_total": 861.81,
+    "geojson_2024": 861.79,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "laakdal",
+    "csv_total": 390.88,
+    "geojson_2024": 390.9,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 27
+  },
+  {
+    "municipality": "laarne",
+    "csv_total": 446.39,
+    "geojson_2024": 446.38,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "lanaken",
+    "csv_total": 372.88,
+    "geojson_2024": 372.87,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "landen",
+    "csv_total": 305.79,
+    "geojson_2024": 305.78,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "langemark-poelkapelle",
+    "csv_total": 268.83,
+    "geojson_2024": 268.83,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "lebbeke",
+    "csv_total": 255.97,
+    "geojson_2024": 255.97,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "lede",
+    "csv_total": 314.02,
+    "geojson_2024": 314.03,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "ledegem",
+    "csv_total": 465.98,
+    "geojson_2024": 465.98,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "lendelede",
+    "csv_total": 656.59,
+    "geojson_2024": 656.6,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "lennik",
+    "csv_total": 395.64,
+    "geojson_2024": 395.64,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "leopoldsburg",
+    "csv_total": 365.12,
+    "geojson_2024": 365.11,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "leuven",
+    "csv_total": 852.06,
+    "geojson_2024": 852.03,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 32
+  },
+  {
+    "municipality": "lichtervelde",
+    "csv_total": 341.66,
+    "geojson_2024": 341.65,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "liedekerke",
+    "csv_total": 102.63,
+    "geojson_2024": 102.62,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "lier",
+    "csv_total": 591.3,
+    "geojson_2024": 591.31,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 26
+  },
+  {
+    "municipality": "lierde",
+    "csv_total": 445.63,
+    "geojson_2024": 445.63,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "lievegem",
+    "csv_total": 485.59,
+    "geojson_2024": 485.58,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "lille",
+    "csv_total": 208.03,
+    "geojson_2024": 208.05,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "linkebeek",
+    "csv_total": 307.15,
+    "geojson_2024": 307.13,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "lint",
+    "csv_total": 346.38,
+    "geojson_2024": 346.38,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "linter",
+    "csv_total": 431.24,
+    "geojson_2024": 431.26,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "lo-reninge",
+    "csv_total": 866.18,
+    "geojson_2024": 866.18,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "lochristi",
+    "csv_total": 475.04,
+    "geojson_2024": 475.05,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "lokeren",
+    "csv_total": 532.42,
+    "geojson_2024": 532.41,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "lommel",
+    "csv_total": 703.43,
+    "geojson_2024": 703.42,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "londerzeel",
+    "csv_total": 637.37,
+    "geojson_2024": 637.37,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "lubbeek",
+    "csv_total": 641.63,
+    "geojson_2024": 641.63,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "lummen",
+    "csv_total": 845.79,
+    "geojson_2024": 845.78,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "maarkedal",
+    "csv_total": 746.25,
+    "geojson_2024": 746.26,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "maaseik",
+    "csv_total": 553.89,
+    "geojson_2024": 553.89,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "maasmechelen",
+    "csv_total": 755.7,
+    "geojson_2024": 755.71,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 29
+  },
+  {
+    "municipality": "machelen",
+    "csv_total": 240.62,
+    "geojson_2024": 240.61,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "maldegem",
+    "csv_total": 610.35,
+    "geojson_2024": 610.36,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "malle",
+    "csv_total": 185.21,
+    "geojson_2024": 185.2,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "mechelen",
+    "csv_total": 445.59,
+    "geojson_2024": 445.6,
+    "difference": -0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 29
+  },
+  {
+    "municipality": "meerhout",
+    "csv_total": 185.17,
+    "geojson_2024": 185.17,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "meise",
+    "csv_total": 379.63,
+    "geojson_2024": 379.63,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "menen",
+    "csv_total": 274.55,
+    "geojson_2024": 274.53,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "merchtem",
+    "csv_total": 324.54,
+    "geojson_2024": 324.54,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "merelbeke-melle",
+    "csv_total": 232.27,
+    "geojson_2024": 232.26,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "merksplas",
+    "csv_total": 356.4,
+    "geojson_2024": 356.39,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "mesen",
+    "csv_total": 166.01,
+    "geojson_2024": 166.01,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "middelkerke",
+    "csv_total": 1219.95,
+    "geojson_2024": 1219.95,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "mol",
+    "csv_total": 389.67,
+    "geojson_2024": 389.64,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "moorslede",
+    "csv_total": 202.34,
+    "geojson_2024": 202.34,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "mortsel",
+    "csv_total": 505.48,
+    "geojson_2024": 505.49,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "nazareth-de pinte",
+    "csv_total": 216.11,
+    "geojson_2024": 216.12,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 28
+  },
+  {
+    "municipality": "niel",
+    "csv_total": 212.1,
+    "geojson_2024": 212.12,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "nieuwerkerken",
+    "csv_total": 403.67,
+    "geojson_2024": 403.68,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "nieuwpoort",
+    "csv_total": 1035.12,
+    "geojson_2024": 1035.13,
+    "difference": -0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "nijlen",
+    "csv_total": 325.18,
+    "geojson_2024": 325.18,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "ninove",
+    "csv_total": 291.21,
+    "geojson_2024": 291.21,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "olen",
+    "csv_total": 292.26,
+    "geojson_2024": 292.28,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "oostende",
+    "csv_total": 312.3,
+    "geojson_2024": 312.29,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "oosterzele",
+    "csv_total": 325.17,
+    "geojson_2024": 325.16,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "oostkamp",
+    "csv_total": 471.45,
+    "geojson_2024": 471.43,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "oostrozebeke",
+    "csv_total": 414.48,
+    "geojson_2024": 414.47,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "opwijk",
+    "csv_total": 212.78,
+    "geojson_2024": 212.78,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "oud-heverlee",
+    "csv_total": 868.78,
+    "geojson_2024": 868.78,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "oud-turnhout",
+    "csv_total": 279.63,
+    "geojson_2024": 279.63,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "oudenaarde",
+    "csv_total": 710.18,
+    "geojson_2024": 710.17,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "oudenburg",
+    "csv_total": 360.82,
+    "geojson_2024": 360.84,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "oudsbergen",
+    "csv_total": 665.61,
+    "geojson_2024": 665.63,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "overijse",
+    "csv_total": 344.72,
+    "geojson_2024": 344.71,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "pajottegem",
+    "csv_total": 892.99,
+    "geojson_2024": 892.98,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "peer",
+    "csv_total": 734.02,
+    "geojson_2024": 734.03,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "pelt",
+    "csv_total": 712.16,
+    "geojson_2024": 712.13,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "pepingen",
+    "csv_total": 550.76,
+    "geojson_2024": 550.77,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "pittem",
+    "csv_total": 362.05,
+    "geojson_2024": 362.03,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "poperinge",
+    "csv_total": 665.8,
+    "geojson_2024": 665.8,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "putte",
+    "csv_total": 406.02,
+    "geojson_2024": 406.0,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "puurs-sint-amands",
+    "csv_total": 623.33,
+    "geojson_2024": 623.32,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "ranst",
+    "csv_total": 389.33,
+    "geojson_2024": 389.34,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "ravels",
+    "csv_total": 367.74,
+    "geojson_2024": 367.75,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "retie",
+    "csv_total": 256.74,
+    "geojson_2024": 256.74,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "riemst",
+    "csv_total": 573.72,
+    "geojson_2024": 573.72,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "rijkevorsel",
+    "csv_total": 488.16,
+    "geojson_2024": 488.17,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "roeselare",
+    "csv_total": 811.64,
+    "geojson_2024": 811.64,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "ronse",
+    "csv_total": 139.9,
+    "geojson_2024": 139.89,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 9
+  },
+  {
+    "municipality": "roosdaal",
+    "csv_total": 358.91,
+    "geojson_2024": 358.9,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "rotselaar",
+    "csv_total": 562.4,
+    "geojson_2024": 562.39,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "rumst",
+    "csv_total": 303.19,
+    "geojson_2024": 303.18,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 12
+  },
+  {
+    "municipality": "schelle",
+    "csv_total": 503.58,
+    "geojson_2024": 503.58,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "scherpenheuvel-zichem",
+    "csv_total": 178.45,
+    "geojson_2024": 178.45,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "schilde",
+    "csv_total": 346.61,
+    "geojson_2024": 346.59,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "schoten",
+    "csv_total": 238.54,
+    "geojson_2024": 238.54,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "sint-genesius-rode",
+    "csv_total": 371.91,
+    "geojson_2024": 371.9,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "sint-gillis-waas",
+    "csv_total": 328.11,
+    "geojson_2024": 328.11,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "sint-katelijne-waver",
+    "csv_total": 299.79,
+    "geojson_2024": 299.8,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "sint-laureins",
+    "csv_total": 326.5,
+    "geojson_2024": 326.49,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "sint-lievens-houtem",
+    "csv_total": 520.33,
+    "geojson_2024": 520.33,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "sint-martens-latem",
+    "csv_total": 738.97,
+    "geojson_2024": 738.96,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "sint-niklaas",
+    "csv_total": 698.64,
+    "geojson_2024": 698.65,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "sint-pieters-leeuw",
+    "csv_total": 558.84,
+    "geojson_2024": 558.84,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "sint-truiden",
+    "csv_total": 467.15,
+    "geojson_2024": 467.15,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "spiere-helkijn",
+    "csv_total": 615.49,
+    "geojson_2024": 615.49,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "stabroek",
+    "csv_total": 360.95,
+    "geojson_2024": 360.95,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "staden",
+    "csv_total": 532.47,
+    "geojson_2024": 532.47,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "steenokkerzeel",
+    "csv_total": 688.73,
+    "geojson_2024": 688.72,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "stekene",
+    "csv_total": 1109.36,
+    "geojson_2024": 1109.35,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "temse",
+    "csv_total": 302.03,
+    "geojson_2024": 302.03,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 16
+  },
+  {
+    "municipality": "ternat",
+    "csv_total": 258.66,
+    "geojson_2024": 258.66,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "tervuren",
+    "csv_total": 134.52,
+    "geojson_2024": 134.51,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "tessenderlo-ham",
+    "csv_total": 662.26,
+    "geojson_2024": 662.26,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 32
+  },
+  {
+    "municipality": "tielt",
+    "csv_total": 434.14,
+    "geojson_2024": 434.13,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "tielt-winge",
+    "csv_total": 139.33,
+    "geojson_2024": 139.34,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "tienen",
+    "csv_total": 429.45,
+    "geojson_2024": 429.46,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "tongeren-borgloon",
+    "csv_total": 838.24,
+    "geojson_2024": 838.23,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 33
+  },
+  {
+    "municipality": "torhout",
+    "csv_total": 470.45,
+    "geojson_2024": 470.45,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 23
+  },
+  {
+    "municipality": "tremelo",
+    "csv_total": 740.77,
+    "geojson_2024": 740.77,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "turnhout",
+    "csv_total": 770.51,
+    "geojson_2024": 770.53,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 24
+  },
+  {
+    "municipality": "veurne",
+    "csv_total": 1162.13,
+    "geojson_2024": 1162.13,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 25
+  },
+  {
+    "municipality": "vilvoorde",
+    "csv_total": 302.49,
+    "geojson_2024": 302.47,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "vleteren",
+    "csv_total": 343.67,
+    "geojson_2024": 343.67,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 9
+  },
+  {
+    "municipality": "voeren",
+    "csv_total": 339.23,
+    "geojson_2024": 339.24,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "vorselaar",
+    "csv_total": 353.47,
+    "geojson_2024": 353.47,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "vosselaar",
+    "csv_total": 261.22,
+    "geojson_2024": 261.21,
+    "difference": 0.01,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "waasmunster",
+    "csv_total": 357.61,
+    "geojson_2024": 357.6,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "waregem",
+    "csv_total": 602.47,
+    "geojson_2024": 602.46,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "wellen",
+    "csv_total": 414.84,
+    "geojson_2024": 414.84,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "wemmel",
+    "csv_total": 247.25,
+    "geojson_2024": 247.25,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "wervik",
+    "csv_total": 414.73,
+    "geojson_2024": 414.71,
+    "difference": 0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "westerlo",
+    "csv_total": 470.92,
+    "geojson_2024": 470.92,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "wetteren",
+    "csv_total": 431.76,
+    "geojson_2024": 431.78,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "wevelgem",
+    "csv_total": 854.01,
+    "geojson_2024": 854.01,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "wezembeek-oppem",
+    "csv_total": 124.43,
+    "geojson_2024": 124.43,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "wichelen",
+    "csv_total": 251.11,
+    "geojson_2024": 251.11,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "wielsbeke",
+    "csv_total": 184.1,
+    "geojson_2024": 184.1,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "wijnegem",
+    "csv_total": 526.96,
+    "geojson_2024": 526.97,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 13
+  },
+  {
+    "municipality": "willebroek",
+    "csv_total": 490.63,
+    "geojson_2024": 490.6,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 18
+  },
+  {
+    "municipality": "wingene",
+    "csv_total": 464.5,
+    "geojson_2024": 464.5,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "wommelgem",
+    "csv_total": 214.51,
+    "geojson_2024": 214.5,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "wortegem-petegem",
+    "csv_total": 570.28,
+    "geojson_2024": 570.27,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "wuustwezel",
+    "csv_total": 288.07,
+    "geojson_2024": 288.04,
+    "difference": 0.03,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "zandhoven",
+    "csv_total": 373.04,
+    "geojson_2024": 373.04,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "zaventem",
+    "csv_total": 360.22,
+    "geojson_2024": 360.23,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "zedelgem",
+    "csv_total": 375.64,
+    "geojson_2024": 375.66,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 22
+  },
+  {
+    "municipality": "zele",
+    "csv_total": 783.46,
+    "geojson_2024": 783.47,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 30
+  },
+  {
+    "municipality": "zelzate",
+    "csv_total": 635.21,
+    "geojson_2024": 635.22,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 15
+  },
+  {
+    "municipality": "zemst",
+    "csv_total": 329.89,
+    "geojson_2024": 329.91,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 20
+  },
+  {
+    "municipality": "zoersel",
+    "csv_total": 218.25,
+    "geojson_2024": 218.24,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "zonhoven",
+    "csv_total": 609.52,
+    "geojson_2024": 609.52,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "zonnebeke",
+    "csv_total": 382.41,
+    "geojson_2024": 382.41,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 19
+  },
+  {
+    "municipality": "zottegem",
+    "csv_total": 378.02,
+    "geojson_2024": 378.03,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 21
+  },
+  {
+    "municipality": "zoutleeuw",
+    "csv_total": 286.13,
+    "geojson_2024": 286.12,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "zuienkerke",
+    "csv_total": 625.51,
+    "geojson_2024": 625.53,
+    "difference": -0.02,
+    "status": "MISMATCH",
+    "match": false,
+    "num_rekeningen": 11
+  },
+  {
+    "municipality": "zulte",
+    "csv_total": 555.22,
+    "geojson_2024": 555.23,
+    "difference": -0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  },
+  {
+    "municipality": "zutendaal",
+    "csv_total": 783.01,
+    "geojson_2024": 783.0,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 10
+  },
+  {
+    "municipality": "zwalm",
+    "csv_total": 590.29,
+    "geojson_2024": 590.29,
+    "difference": 0.0,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 14
+  },
+  {
+    "municipality": "zwevegem",
+    "csv_total": 580.08,
+    "geojson_2024": 580.07,
+    "difference": 0.01,
+    "status": "MATCH",
+    "match": true,
+    "num_rekeningen": 17
+  }
+]

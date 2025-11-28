@@ -1,170 +1,122 @@
-import pandas as pd
-import geopandas as gpd
-import os
+#!/usr/bin/env python3
+"""
+Converteer PowerBI CSV export naar gegroepeerde JSON structuur.
+
+Input:  data/opgesplitst.csv
+Output: data/opgesplitst_grouped.json
+
+De output bevat:
+- Metadata per rekening code (1x hiërarchie info)
+- Gemeenten als key-value pairs per rekening
+- Geen repetitie van namen of metadata
+"""
+
+import csv
 import json
-import re
+from pathlib import Path
 
-# Paths
-DATA_CSV = 'data/data.csv'
-GIS_GPKG = 'data/gisco/LAU_RG_01M_2024_4326.gpkg'
-OUTPUT_GEOJSON = 'longread_output/municipalities.geojson'
-OUTPUT_AVERAGES = 'longread_output/averages.json'
 
-# Fusion Mapping (Old Name -> New Name in CSV)
-FUSION_MAPPING = {
-    'borsbeek': 'antwerpen',
-    'antwerpen': 'antwerpen', # Should map to itself but key is needed if we rely on keys for check? No, map() uses keys.
-    'beveren': 'beveren-kruibeke-zwijndrecht', # Beveren (Sint-Niklaas) in GIS?
-    'beveren (sint-niklaas)': 'beveren-kruibeke-zwijndrecht', # Specific check
-
-    'kruibeke': 'beveren-kruibeke-zwijndrecht',
-    'zwijndrecht': 'beveren-kruibeke-zwijndrecht',
-    'bilzen': 'bilzen-hoeselt',
-    'hoeselt': 'bilzen-hoeselt',
-    'tongeren': 'tongeren-borgloon',
-    'borgloon': 'tongeren-borgloon',
-    'merelbeke': 'merelbeke-melle',
-    'melle': 'merelbeke-melle',
-    'nazareth': 'nazareth-de pinte',
-    'de pinte': 'nazareth-de pinte',
-    'galmaarden': 'pajottegem',
-    'gooik': 'pajottegem',
-    'herne': 'pajottegem',
-    'tessenderlo': 'tessenderlo-ham',
-    'ham': 'tessenderlo-ham',
-    'tielt': 'tielt',
-    'meulebeke': 'tielt',
-    'lochristi': 'lochristi',
-    'wachtebeke': 'lochristi',
-    'lokeren': 'lokeren',
-    'moerbeke': 'lokeren',
-    'wingene': 'wingene',
-    'ruiselede': 'wingene',
-    'hasselt': 'hasselt',
-    'kortessem': 'hasselt'
-}
-
-def clean_gis_name(name):
-    if not isinstance(name, str):
-        return ""
-    # Antwerpen in GIS is "Antwerpen / Anvers"
-    # But also check if specific name handling is needed
-    # Just lowercasing and splitting should be enough for "Antwerpen / Anvers" -> "antwerpen"
-    
-    # Special case: "Aalst (Aalst) / Alost (Alost)" -> "aalst"
-    # Special case: "Beveren (Sint-Niklaas) / Beveren (Saint-Nicolas)" -> "beveren (sint-niklaas)" ? 
-    # No, we want to match keys in FUSION_MAPPING.
-    # Let's keep parenthesis for specific matches if needed, OR strip them.
-    # The mismatch check showed 'aalst (aalst) / alost (alost)' missing in CSV (which has 'aalst')
-    # 'antwerpen / anvers' missing in CSV (which has 'antwerpen')
-    
-    # Split by slash
-    name = name.split('/')[0]
-    
-    # Remove parenthesis ONLY if it duplicates name or is region info we don't want?
-    # Actually, for 'Beveren (Sint-Niklaas)', the parens distinguish it.
-    # But usually we just want the name.
-    # Let's clean parens content out.
-    name = re.sub(r'\(.*?\)', '', name)
-    return name.strip().lower()
-
-def get_province(gisco_id):
-    # Format: BE_XXXXX
-    if not isinstance(gisco_id, str):
+def parse_value(value: str) -> float | None:
+    """Converteer CSV waarde naar float (komma -> punt voor decimalen)."""
+    if not value or value.strip() == '':
         return None
-    
-    # Extract NIS code (digits)
-    parts = gisco_id.split('_')
-    if len(parts) < 2:
+    try:
+        return float(value.strip().replace(',', '.'))
+    except ValueError:
         return None
-    nis = parts[1]
-    
-    if nis.startswith('1'):
-        return 'Provincie Antwerpen'
-    elif nis.startswith('3'):
-        return 'Provincie West-Vlaanderen'
-    elif nis.startswith('4'):
-        return 'Provincie Oost-Vlaanderen'
-    elif nis.startswith('7'):
-        return 'Provincie Limburg'
-    elif nis.startswith('23') or nis.startswith('24'):
-        return 'Provincie Vlaams-Brabant'
-    # 21 is Brussels, 25 is Waals-Brabant, 5/6/8/9 are Wallonia
-    return None
 
-def main():
-    print("Reading CSV data...")
-    df = pd.read_csv(DATA_CSV, sep=';', decimal=',')
-    df.rename(columns={'Grondgebied': 'municipality'}, inplace=True)
+
+def convert_csv_to_grouped_json():
+    """
+    Converteer CSV naar gegroepeerde JSON:
+    - Groepeer per rekening code
+    - Metadata 1x per rekening
+    - Gemeenten als object met waarden
+    """
+    # Paden
+    data_dir = Path(__file__).parent.parent / 'data'
+    input_file = data_dir / 'opgesplitst.csv'
+    output_file = data_dir / 'opgesplitst_grouped.json'
     
-    numeric_cols = [str(year) for year in range(2014, 2025)]
-    for col in numeric_cols:
-        if col in df.columns:
-            if df[col].dtype == object:
-                df[col] = df[col].astype(str).str.replace('.', '').str.replace(',', '.')
-                df[col] = pd.to_numeric(df[col], errors='coerce')
+    print("Conversie starten...")
     
-    df['match_name'] = df['municipality'].str.lower().str.strip()
+    with open(input_file, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f, delimiter=';')
+        headers = next(reader)
+        
+        # Vind indices
+        alg_rek_idx = headers.index('Alg. rekening')
+        total_idx = headers.index('Total')
+        gemeente_headers = headers[alg_rek_idx + 1:total_idx]
+        
+        # Grouped structure
+        grouped = {}
+        
+        for row in reader:
+            # Skip records zonder rekening of met "Total" (dat zijn aggregaties)
+            alg_rekening = row[alg_rek_idx] if alg_rek_idx < len(row) else None
+            if not alg_rekening or alg_rekening == 'Total':
+                continue
+            
+            # Extract rekening code (eerste deel voor spatie)
+            rek_code = alg_rekening.split(' ')[0] if ' ' in alg_rekening else alg_rekening
+            
+            # Verzamel niveau info
+            niveaus = {}
+            for i in range(1, 9):
+                niveau_value = row[i + 1]  # +1 want Type en Boekjaar zijn 0,1
+                if niveau_value:
+                    niveaus[f'niveau_{i}'] = niveau_value
+            
+            # Build path
+            niveau_values = [v for k, v in sorted(niveaus.items())]
+            path = ' > '.join(niveau_values + [alg_rekening]) if niveau_values else alg_rekening
+            
+            # Eerste keer deze rekening tegenkomen: sla metadata op
+            if rek_code not in grouped:
+                grouped[rek_code] = {
+                    'alg_rekening': alg_rekening,
+                    'categorie': niveau_values[-1] if niveau_values else None,
+                    'niveaus': niveaus,
+                    'niveau_diepte': len(niveaus),
+                    'path': path,
+                    'gemeenten': {}
+                }
+            
+            # Voeg gemeente waarden toe
+            for i, gemeente_naam in enumerate(gemeente_headers):
+                value = parse_value(row[alg_rek_idx + 1 + i])
+                if value is not None and value != 0:  # Skip nulls en nullen
+                    grouped[rek_code]['gemeenten'][gemeente_naam] = value
     
-    print("Reading GIS data...")
-    gdf = gpd.read_file(GIS_GPKG)
-    if 'CNTR_CODE' in gdf.columns:
-        gdf = gdf[gdf['CNTR_CODE'] == 'BE']
-    
-    gdf['clean_name'] = gdf['LAU_NAME'].apply(clean_gis_name)
-    gdf['mapped_name'] = gdf['clean_name'].map(FUSION_MAPPING).fillna(gdf['clean_name'])
-    
-    # Assign Province to GIS rows BEFORE dissolve
-    # (Fusions are within provinces, so this is safe)
-    gdf['province'] = gdf['GISCO_ID'].apply(get_province)
-    
-    # Dissolve
-    print("Dissolving geometries for fusions...")
-    csv_names = set(df['match_name'])
-    gdf_filtered = gdf[gdf['mapped_name'].isin(csv_names)].copy()
-    
-    # We want to keep 'province' after dissolve.
-    # Dissolve usually keeps the first value of the group for non-geometry columns if specified,
-    # or we can aggregate. Since they are in same province, 'first' is fine.
-    gdf_dissolved = gdf_filtered.dissolve(by='mapped_name', aggfunc='first')
-    gdf_dissolved['match_name'] = gdf_dissolved.index
-    
-    # Merge with Data
-    merged = gdf_dissolved.merge(df, on='match_name', how='inner')
-    print(f"Merged data: {len(merged)} municipalities matched.")
-    
-    # Calculate Averages
-    print("Calculating averages...")
-    
-    # 1. Flanders (simple mean)
-    flanders_avg = df[numeric_cols].mean().to_dict()
-    
-    # 2. Provinces
-    # Now we have province in 'merged' dataframe (which came from GIS -> Dissolve -> Merge)
-    # So we can group by 'province' column in merged
-    prov_stats = merged.groupby('province')[numeric_cols].mean().to_dict(orient='index')
-    
-    averages = {
-        'Vlaanderen': flanders_avg,
-        'Provincies': prov_stats
+    # Build output structure
+    output = {
+        'boekjaar': 2024,
+        'type_rapport': 'Jaarrekening',
+        'rekeningen': grouped,
+        'metadata': {
+            'rekening_count': len(grouped),
+            'gemeente_count': len(gemeente_headers),
+            'beschrijving': 'Investeringsuitgaven per rekening, gegroepeerd met metadata'
+        }
     }
     
-    # Export GeoJSON
-    keep_cols = ['municipality', 'match_name', 'province'] + numeric_cols + ['geometry']
-    final_cols = [c for c in keep_cols if c in merged.columns]
-    final_gdf = merged[final_cols]
+    # Schrijf JSON
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
     
-    if not os.path.exists(os.path.dirname(OUTPUT_GEOJSON)):
-        os.makedirs(os.path.dirname(OUTPUT_GEOJSON))
-        
-    print(f"Saving to {OUTPUT_GEOJSON}...")
-    final_gdf.to_file(OUTPUT_GEOJSON, driver='GeoJSON')
+    # Stats
+    total_gemeenten_entries = sum(len(r['gemeenten']) for r in grouped.values())
     
-    print(f"Saving to {OUTPUT_AVERAGES}...")
-    with open(OUTPUT_AVERAGES, 'w') as f:
-        json.dump(averages, f, indent=2)
-        
-    print("Done.")
+    print(f"✓ Conversie compleet!")
+    print(f"  Input:  {input_file.name}")
+    print(f"  Output: {output_file.name}")
+    print(f"  ")
+    print(f"  Rekeningen: {len(grouped)}")
+    print(f"  Gemeenten:  {len(gemeente_headers)}")
+    print(f"  Data punten: {total_gemeenten_entries}")
+    print(f"  File size: {output_file.stat().st_size / 1024:.1f} KB")
 
-if __name__ == "__main__":
-    main()
+
+if __name__ == '__main__':
+    convert_csv_to_grouped_json()
