@@ -34,6 +34,12 @@ from modules.processors import (
     enrich_with_beleidsdomein_data
 )
 from modules.beleidsdomein_totals import generate_beleidsdomein_totals
+from modules.provincie_processors import (
+    load_provincie_data,
+    aggregate_provincie_totals,
+    create_detailed_provincie_data,
+    calculate_provincie_statistics
+)
 
 
 def main():
@@ -109,15 +115,69 @@ def main():
     print(f"   ✓ Opgeslagen: {beleidsdomein_totals_output}")
     print()
     
+    # Step 9: Load and process provinciale data
+    print("📂 Stap 9: Laden provinciale investeringsdata...")
+    provincie_csv = data_dir / 'provinciebesturen' / 'provincie_investeringen_per_beleidsveld_cleaned.csv'
+    
+    if provincie_csv.exists():
+        provincie_df = load_provincie_data(provincie_csv)
+        print(f"   ✓ {len(provincie_df)} rijen provinciale data geladen")
+        print()
+        
+        # Step 10: Aggregate provincie totals
+        print("📊 Stap 10: Aggregeren provinciale totalen...")
+        provincie_totals = aggregate_provincie_totals(provincie_df)
+        print(f"   ✓ {len(provincie_totals)} provincies verwerkt")
+        print()
+        
+        # Step 11: Create detailed provincie data
+        print("📊 Stap 11: Genereren gedetailleerde provinciale data...")
+        provincie_detailed = create_detailed_provincie_data(provincie_df)
+        print(f"   ✓ Gedetailleerde data gegenereerd")
+        print()
+        
+        # Step 12: Calculate statistics
+        print("📊 Stap 12: Berekenen provinciale statistieken...")
+        provincie_stats = calculate_provincie_statistics(provincie_totals)
+        print(f"   ✓ Statistieken berekend voor {len(provincie_stats)} meerjarenplannen")
+        print()
+        
+        # Step 13: Save provincie outputs
+        print("💾 Stap 13: Opslaan provinciale data...")
+        provincie_totals_output = output_dir / 'provincie_totals.json'
+        provincie_detailed_output = output_dir / 'provincie_detailed.json'
+        provincie_stats_output = output_dir / 'provincie_stats.json'
+        
+        save_json(provincie_totals, provincie_totals_output)
+        save_json(provincie_detailed, provincie_detailed_output)
+        save_json(provincie_stats, provincie_stats_output)
+        
+        print(f"   ✓ Opgeslagen: {provincie_totals_output.name}")
+        print(f"   ✓ Opgeslagen: {provincie_detailed_output.name}")
+        print(f"   ✓ Opgeslagen: {provincie_stats_output.name}")
+        print()
+    else:
+        print(f"   ⚠ Provinciale data niet gevonden: {provincie_csv}")
+        print(f"   → Run eerst: python scripts/clean_provincie_data.py")
+        print()
+    
     # Summary
     print("=" * 80)
     print("✅ BUILD VOLTOOID")
     print("=" * 80)
     print()
-    print("Output bestanden:")
+    print("Output bestanden (gemeenten):")
     print(f"  • {geojson_output.relative_to(base_dir)}")
     print(f"  • {beleidsdomein_totals_output.relative_to(base_dir)}")
     print()
+    
+    if provincie_csv.exists():
+        print("Output bestanden (provincies):")
+        print(f"  • {(output_dir / 'provincie_totals.json').relative_to(base_dir)}")
+        print(f"  • {(output_dir / 'provincie_detailed.json').relative_to(base_dir)}")
+        print(f"  • {(output_dir / 'provincie_stats.json').relative_to(base_dir)}")
+        print()
+    
     print("Bestaande bestanden (niet gewijzigd):")
     print(f"  • {(output_dir / 'municipalities.geojson').relative_to(base_dir)}")
     print(f"  • {(output_dir / 'averages.json').relative_to(base_dir)}")

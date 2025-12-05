@@ -1,0 +1,147 @@
+{
+  "Antwerpen": {
+    "2014-2019": {
+      "correct": 255.69,
+      "beleidsdomein": 235.07,
+      "rekeningen": 235.07,
+      "afwijking_beleidsdomein": -20.62,
+      "afwijking_rekeningen": -20.62,
+      "pct_afwijking_beleidsdomein": -8.06,
+      "pct_afwijking_rekeningen": -8.06
+    },
+    "2020-2025": {
+      "correct": 169.92,
+      "beleidsdomein": 156.25,
+      "rekeningen": 156.25,
+      "afwijking_beleidsdomein": -13.67,
+      "afwijking_rekeningen": -13.67,
+      "pct_afwijking_beleidsdomein": -8.04,
+      "pct_afwijking_rekeningen": -8.04
+    },
+    "2026-2031": {
+      "correct": 0,
+      "beleidsdomein": 0.0,
+      "rekeningen": 0.0,
+      "afwijking_beleidsdomein": 0.0,
+      "afwijking_rekeningen": 0.0,
+      "pct_afwijking_beleidsdomein": 0,
+      "pct_afwijking_rekeningen": 0
+    }
+  },
+  "Limburg": {
+    "2014-2019": {
+      "correct": 246.32,
+      "beleidsdomein": 246.32,
+      "rekeningen": 246.32,
+      "afwijking_beleidsdomein": 0.0,
+      "afwijking_rekeningen": 0.0,
+      "pct_afwijking_beleidsdomein": 0.0,
+      "pct_afwijking_rekeningen": 0.0
+    },
+    "2020-2025": {
+      "correct": 339.79,
+      "beleidsdomein": 339.78,
+      "rekeningen": 339.78,
+      "afwijking_beleidsdomein": -0.01,
+      "afwijking_rekeningen": -0.01,
+      "pct_afwijking_beleidsdomein": -0.0,
+      "pct_afwijking_rekeningen": -0.0
+    },
+    "2026-2031": {
+      "correct": 0,
+      "beleidsdomein": 0.0,
+      "rekeningen": 0.0,
+      "afwijking_beleidsdomein": 0.0,
+      "afwijking_rekeningen": 0.0,
+      "pct_afwijking_beleidsdomein": 0,
+      "pct_afwijking_rekeningen": 0
+    }
+  },
+  "Oost-Vlaanderen": {
+    "2014-2019": {
+      "correct": 220.65,
+      "beleidsdomein": 217.02,
+      "rekeningen": 217.02,
+      "afwijking_beleidsdomein": -3.63,
+      "afwijking_rekeningen": -3.63,
+      "pct_afwijking_beleidsdomein": -1.65,
+      "pct_afwijking_rekeningen": -1.65
+    },
+    "2020-2025": {
+      "correct": 248.11,
+      "beleidsdomein": 248.11,
+      "rekeningen": 248.11,
+      "afwijking_beleidsdomein": 0.0,
+      "afwijking_rekeningen": 0.0,
+      "pct_afwijking_beleidsdomein": 0.0,
+      "pct_afwijking_rekeningen": 0.0
+    },
+    "2026-2031": {
+      "correct": 0,
+      "beleidsdomein": 0.0,
+      "rekeningen": 0.0,
+      "afwijking_beleidsdomein": 0.0,
+      "afwijking_rekeningen": 0.0,
+      "pct_afwijking_beleidsdomein": 0,
+      "pct_afwijking_rekeningen": 0
+    }
+  },
+  "Vlaams-Brabant": {
+    "2014-2019": {
+      "correct": 157.27,
+      "beleidsdomein": 155.87,
+      "rekeningen": 155.87,
+      "afwijking_beleidsdomein": -1.4,
+      "afwijking_rekeningen": -1.4,
+      "pct_afwijking_beleidsdomein": -0.89,
+      "pct_afwijking_rekeningen": -0.89
+    },
+    "2020-2025": {
+      "correct": 184.41,
+      "beleidsdomein": 158.96,
+      "rekeningen": 158.96,
+      "afwijking_beleidsdomein": -25.45,
+      "afwijking_rekeningen": -25.45,
+      "pct_afwijking_beleidsdomein": -13.8,
+      "pct_afwijking_rekeningen": -13.8
+    },
+    "2026-2031": {
+      "correct": 232.42,
+      "beleidsdomein": 207.68,
+      "rekeningen": 207.68,
+      "afwijking_beleidsdomein": -24.74,
+      "afwijking_rekeningen": -24.74,
+      "pct_afwijking_beleidsdomein": -10.64,
+      "pct_afwijking_rekeningen": -10.64
+    }
+  },
+  "West-Vlaanderen": {
+    "2014-2019": {
+      "correct": 229.11,
+      "beleidsdomein": 229.11,
+      "rekeningen": 229.11,
+      "afwijking_beleidsdomein": 0.0,
+      "afwijking_rekeningen": 0.0,
+      "pct_afwijking_beleidsdomein": 0.0,
+      "pct_afwijking_rekeningen": 0.0
+    },
+    "2020-2025": {
+      "correct": 260.73,
+      "beleidsdomein": 256.29,
+      "rekeningen": 256.29,
+      "afwijking_beleidsdomein": -4.44,
+      "afwijking_rekeningen": -4.44,
+      "pct_afwijking_beleidsdomein": -1.7,
+      "pct_afwijking_rekeningen": -1.7
+    },
+    "2026-2031": {
+      "correct": 293.79,
+      "beleidsdomein": 292.15,
+      "rekeningen": 292.15,
+      "afwijking_beleidsdomein": -1.64,
+      "afwijking_rekeningen": -1.64,
+      "pct_afwijking_beleidsdomein": -0.56,
+      "pct_afwijking_rekeningen": -0.56
+    }
+  }
+}

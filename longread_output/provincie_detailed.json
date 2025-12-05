@@ -1,0 +1,189 @@
+{
+  "Antwerpen": {
+    "2014-2019": {
+      "totaal": 235.07,
+      "per_beleidsdomein": {
+        "1 Algemeen bestuur": 246.82,
+        "2 Zich verplaatsen en mobiliteit": 103.35,
+        "7 Cultuur en vrije tijd": 90.22,
+        "6 Wonen en ruimtelijke ordening": 78.01,
+        "8 Leren en onderwijs": 71.77,
+        "0 Algemene financiering": 62.45,
+        "3 Natuur en milieubeheer": 39.82,
+        "5 Ondernemen en werken": 7.64,
+        "4 Veiligheidszorg": 5.13
+      }
+    },
+    "2020-2025": {
+      "totaal": 156.25,
+      "per_beleidsdomein": {
+        "2 Zich verplaatsen en mobiliteit": 135.66,
+        "8 Leren en onderwijs": 90.05,
+        "1 Algemeen bestuur": 70.29,
+        "3 Natuur en milieubeheer": 54.5,
+        "6 Wonen en ruimtelijke ordening": 51.03,
+        "7 Cultuur en vrije tijd": 36.86,
+        "5 Ondernemen en werken": 29.9,
+        "4 Veiligheidszorg": 0.45
+      }
+    },
+    "2026-2031": {
+      "totaal": 0.0,
+      "per_beleidsdomein": {}
+    }
+  },
+  "Limburg": {
+    "2014-2019": {
+      "totaal": 246.32,
+      "per_beleidsdomein": {
+        "1 Algemeen bestuur": 295.22,
+        "7 Cultuur en vrije tijd": 153.93,
+        "2 Zich verplaatsen en mobiliteit": 87.11,
+        "6 Wonen en ruimtelijke ordening": 77.88,
+        "3 Natuur en milieubeheer": 56.32,
+        "5 Ondernemen en werken": 31.47,
+        "8 Leren en onderwijs": 27.6,
+        "4 Veiligheidszorg": 5.23,
+        "9 Zorg en opvang": 2.5,
+        "0 Algemene financiering": 1.68
+      }
+    },
+    "2020-2025": {
+      "totaal": 339.78,
+      "per_beleidsdomein": {
+        "1 Algemeen bestuur": 291.37,
+        "5 Ondernemen en werken": 235.96,
+        "2 Zich verplaatsen en mobiliteit": 185.67,
+        "8 Leren en onderwijs": 128.52,
+        "6 Wonen en ruimtelijke ordening": 57.38,
+        "3 Natuur en milieubeheer": 50.71,
+        "7 Cultuur en vrije tijd": 49.57,
+        "0 Algemene financiering": 17.58,
+        "4 Veiligheidszorg": 1.93,
+        "9 Zorg en opvang": 0.66
+      }
+    },
+    "2026-2031": {
+      "totaal": 0.0,
+      "per_beleidsdomein": {}
+    }
+  },
+  "Oost-Vlaanderen": {
+    "2014-2019": {
+      "totaal": 217.02,
+      "per_beleidsdomein": {
+        "1 Algemeen bestuur": 219.24,
+        "8 Leren en onderwijs": 123.75,
+        "7 Cultuur en vrije tijd": 110.25,
+        "2 Zich verplaatsen en mobiliteit": 84.21,
+        "3 Natuur en milieubeheer": 50.12,
+        "5 Ondernemen en werken": 42.75,
+        "6 Wonen en ruimtelijke ordening": 15.1,
+        "0 Algemene financiering": 5.64,
+        "9 Zorg en opvang": 0.01
+      }
+    },
+    "2020-2025": {
+      "totaal": 248.11,
+      "per_beleidsdomein": {
+        "2 Zich verplaatsen en mobiliteit": 196.85,
+        "1 Algemeen bestuur": 151.31,
+        "8 Leren en onderwijs": 145.83,
+        "7 Cultuur en vrije tijd": 125.07,
+        "3 Natuur en milieubeheer": 88.61,
+        "5 Ondernemen en werken": 18.6,
+        "6 Wonen en ruimtelijke ordening": 16.98,
+        "0 Algemene financiering": 1.06
+      }
+    },
+    "2026-2031": {
+      "totaal": 0.0,
+      "per_beleidsdomein": {}
+    }
+  },
+  "Vlaams-Brabant": {
+    "2014-2019": {
+      "totaal": 155.87,
+      "per_beleidsdomein": {
+        "9 Zorg en opvang": 114.91,
+        "2 Zich verplaatsen en mobiliteit": 90.58,
+        "8 Leren en onderwijs": 76.96,
+        "7 Cultuur en vrije tijd": 64.65,
+        "3 Natuur en milieubeheer": 43.56,
+        "1 Algemeen bestuur": 41.81,
+        "6 Wonen en ruimtelijke ordening": 21.64,
+        "5 Ondernemen en werken": 13.5
+      }
+    },
+    "2020-2025": {
+      "totaal": 158.96,
+      "per_beleidsdomein": {
+        "2 Zich verplaatsen en mobiliteit": 188.08,
+        "8 Leren en onderwijs": 112.75,
+        "7 Cultuur en vrije tijd": 38.79,
+        "3 Natuur en milieubeheer": 38.42,
+        "6 Wonen en ruimtelijke ordening": 38.14,
+        "9 Zorg en opvang": 26.44,
+        "1 Algemeen bestuur": 22.73,
+        "5 Ondernemen en werken": 11.52
+      }
+    },
+    "2026-2031": {
+      "totaal": 207.68,
+      "per_beleidsdomein": {
+        "2 Zich verplaatsen en mobiliteit": 220.39,
+        "7 Cultuur en vrije tijd": 130.21,
+        "1 Algemeen bestuur": 124.27,
+        "3 Natuur en milieubeheer": 68.27,
+        "6 Wonen en ruimtelijke ordening": 47.75,
+        "8 Leren en onderwijs": 23.93,
+        "5 Ondernemen en werken": 7.48,
+        "4 Veiligheidszorg": 0.74
+      }
+    }
+  },
+  "West-Vlaanderen": {
+    "2014-2019": {
+      "totaal": 229.11,
+      "per_beleidsdomein": {
+        "3 Natuur en milieubeheer": 135.91,
+        "6 Wonen en ruimtelijke ordening": 126.56,
+        "7 Cultuur en vrije tijd": 111.41,
+        "5 Ondernemen en werken": 85.23,
+        "1 Algemeen bestuur": 84.36,
+        "2 Zich verplaatsen en mobiliteit": 63.23,
+        "9 Zorg en opvang": 49.19,
+        "8 Leren en onderwijs": 27.72,
+        "4 Veiligheidszorg": 3.45,
+        "0 Algemene financiering": 0.26
+      }
+    },
+    "2020-2025": {
+      "totaal": 256.29,
+      "per_beleidsdomein": {
+        "6 Wonen en ruimtelijke ordening": 190.45,
+        "2 Zich verplaatsen en mobiliteit": 133.35,
+        "1 Algemeen bestuur": 124.04,
+        "5 Ondernemen en werken": 105.35,
+        "3 Natuur en milieubeheer": 83.23,
+        "8 Leren en onderwijs": 60.61,
+        "7 Cultuur en vrije tijd": 52.82,
+        "4 Veiligheidszorg": 10.88,
+        "9 Zorg en opvang": 8.14
+      }
+    },
+    "2026-2031": {
+      "totaal": 292.15,
+      "per_beleidsdomein": {
+        "6 Wonen en ruimtelijke ordening": 255.29,
+        "2 Zich verplaatsen en mobiliteit": 155.79,
+        "3 Natuur en milieubeheer": 134.02,
+        "5 Ondernemen en werken": 121.51,
+        "1 Algemeen bestuur": 92.1,
+        "7 Cultuur en vrije tijd": 70.21,
+        "8 Leren en onderwijs": 32.92,
+        "4 Veiligheidszorg": 14.64
+      }
+    }
+  }
+}

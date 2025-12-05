@@ -1,0 +1,1911 @@
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+});
+
+let map;
+let chart;
+let geojsonLayer;
+let municipalitiesData = null; 
+let averagesData = null;
+let selectedRegions = new Set(['vlaanderen']); // Store selected values
+let smallMultipleCharts = []; // Store small multiple chart instances
+let cpiData = null; // CPI data for inflation adjustment
+let showNominal = true; // Show nominal prices
+let showAdjusted = false; // Show inflation-adjusted prices
+let showStacked = false; // Show stacked view by policy domains
+let beleidsdomeinData = null; // Policy domain data for stacked view
+
+async function initApp() {
+    map = L.map('map').setView([51.05, 4.4], 9);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Add Legend
+    const legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'info legend');
+        div.id = 'map-legend';
+        div.style.backgroundColor = 'white';
+        div.style.padding = '10px 12px';
+        div.style.font = '14px/16px Arial, Helvetica, sans-serif';
+        div.style.background = 'white';
+        div.style.boxShadow = '0 0 15px rgba(0,0,0,0.2)';
+        div.style.borderRadius = '5px';
+        div.style.minWidth = '200px';
+        
+        // Initial legend content (will be updated after data loads)
+        div.innerHTML = '<strong>Investeringen 2024</strong><br>' +
+                        '<small>(€ per inwoner)</small><br>' +
+                        '<div style="margin-top: 8px; font-size: 12px; color: #666;">Kleuren gebaseerd op percentielen van het maximum</div>' +
+                        '<i style="background:#d73027; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-top90">> 90% (hoog)</span><br>' +
+                        '<i style="background:#f46d43; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-70-90">70-90%</span><br>' +
+                        '<i style="background:#fdae61; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-50-70">50-70%</span><br>' +
+                        '<i style="background:#abd9e9; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-30-50">30-50%</span><br>' +
+                        '<i style="background:#74add1; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-10-30">10-30%</span><br>' +
+                        '<i style="background:#4575b4; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; margin-top: 4px;"></i> <span id="legend-low10">&lt; 10% (laag)</span><br>' +
+                        '<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;"></div>' +
+                        '<i style="background:#999999; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.5; margin-top: 4px; border: 2px dashed #666;"></i> <span style="font-size: 12px;">Onbetrouwbare data</span>';
+        return div;
+    };
+    legend.addTo(map);
+
+    const ctx = document.getElementById('investmentChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Array.from({length: 11}, (_, i) => 2014 + i),
+            datasets: []
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true, // Enable legend for multiple datasets
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': € ' + context.raw.toFixed(2);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Bedrag (€)' },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    try {
+        const [geoResponse, avgResponse, cpiResponse, beleidsdomeinResponse] = await Promise.all([
+            fetch('municipalities_enriched.geojson'),
+            fetch('averages.json'),
+            fetch('cpi.json'),
+            fetch('beleidsdomein_totals.json')
+        ]);
+        
+        // Check if responses are OK
+        if (!geoResponse.ok) throw new Error(`Failed to fetch municipalities_enriched.geojson: ${geoResponse.status}`);
+        if (!avgResponse.ok) throw new Error(`Failed to fetch averages.json: ${avgResponse.status}`);
+        if (!cpiResponse.ok) throw new Error(`Failed to fetch cpi.json: ${cpiResponse.status}`);
+        if (!beleidsdomeinResponse.ok) throw new Error(`Failed to fetch beleidsdomein_totals.json: ${beleidsdomeinResponse.status}`);
+        
+        console.log('All files fetched successfully, parsing JSON...');
+        municipalitiesData = await geoResponse.json();
+        console.log('✓ Parsed municipalities_enriched.geojson');
+        averagesData = await avgResponse.json();
+        console.log('✓ Parsed averages.json');
+        cpiData = await cpiResponse.json();
+        console.log('✓ Parsed cpi.json');
+        beleidsdomeinData = await beleidsdomeinResponse.json();
+        console.log('✓ Parsed beleidsdomein_totals.json');
+        
+        // Process CPI data into a simple year -> CPI mapping
+        processCPIData();
+        
+        setupMap(municipalitiesData);
+        setupControls(municipalitiesData, averagesData);
+        setupInflationToggle();
+        setupStackedToggle();
+        updateDashboard(); // Initial update
+
+    } catch (error) {
+        console.error('Error loading data:', error);
+    }
+}
+
+// Store min/max values globally for legend
+let mapMinValue = null;
+let mapMaxValue = null;
+
+function setupMap(data) {
+    const values2024 = data.features
+        .map(f => f.properties['2024'])
+        .filter(v => v !== null && !isNaN(v));
+    
+    mapMaxValue = Math.max(...values2024);
+    mapMinValue = Math.min(...values2024);
+
+    geojsonLayer = L.geoJSON(data, {
+        style: (feature) => style(feature, mapMinValue, mapMaxValue),
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    map.fitBounds(geojsonLayer.getBounds());
+    
+    // Update legend with actual values
+    updateLegend();
+}
+
+function updateLegend() {
+    if (mapMinValue === null || mapMaxValue === null) return;
+    
+    const legend = document.getElementById('map-legend');
+    if (!legend) return;
+    
+    // Calculate threshold values
+    const top90 = mapMaxValue * 0.9;
+    const top70 = mapMaxValue * 0.7;
+    const top50 = mapMaxValue * 0.5;
+    const top30 = mapMaxValue * 0.3;
+    const top10 = mapMaxValue * 0.1;
+    
+    // Update legend text with actual values
+    const legendTop90 = document.getElementById('legend-top90');
+    const legend70_90 = document.getElementById('legend-70-90');
+    const legend50_70 = document.getElementById('legend-50-70');
+    const legend30_50 = document.getElementById('legend-30-50');
+    const legend10_30 = document.getElementById('legend-10-30');
+    const legendLow10 = document.getElementById('legend-low10');
+    
+    if (legendTop90) legendTop90.innerHTML = `> 90% (≥ €${top90.toFixed(0)})`;
+    if (legend70_90) legend70_90.innerHTML = `70-90% (€${top70.toFixed(0)}-${top90.toFixed(0)})`;
+    if (legend50_70) legend50_70.innerHTML = `50-70% (€${top50.toFixed(0)}-${top70.toFixed(0)})`;
+    if (legend30_50) legend30_50.innerHTML = `30-50% (€${top30.toFixed(0)}-${top50.toFixed(0)})`;
+    if (legend10_30) legend10_30.innerHTML = `10-30% (€${top10.toFixed(0)}-${top30.toFixed(0)})`;
+    if (legendLow10) legendLow10.innerHTML = `< 10% (< €${top10.toFixed(0)})`;
+}
+
+function setupControls(geoData, avgData) {
+    // Setup tab navigation
+    setupTabNavigation();
+    
+    // Populate Vlaanderen tab
+    populateVlaanderenTab();
+    
+    // Populate Provincies tab
+    if (avgData.Provincies) {
+        populateProvinciesTab(avgData.Provincies);
+    }
+    
+    // Populate Gemeenten tab
+    populateGemeentenTab(geoData);
+    
+    // Setup search functionality
+    setupSearchFunctionality();
+    
+    // Setup select all/deselect all buttons
+    setupSelectAllButtons();
+}
+
+function setupTabNavigation() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            button.classList.add('active');
+            document.getElementById(`tab-${targetTab}`).classList.add('active');
+        });
+    });
+}
+
+function populateVlaanderenTab() {
+    const container = document.getElementById('checkbox-list-vlaanderen');
+    container.innerHTML = '';
+    
+    const checkboxItem = document.createElement('div');
+    checkboxItem.className = 'checkbox-item';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'checkbox-vlaanderen';
+    checkbox.value = 'vlaanderen';
+    checkbox.checked = selectedRegions.has('vlaanderen');
+    
+    const label = document.createElement('label');
+    label.setAttribute('for', 'checkbox-vlaanderen');
+    label.textContent = 'Vlaanderen (gemiddelde)';
+    
+    checkboxItem.appendChild(checkbox);
+    checkboxItem.appendChild(label);
+    container.appendChild(checkboxItem);
+    
+    // Add event listener
+    checkbox.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            selectedRegions.add('vlaanderen');
+        } else {
+            selectedRegions.delete('vlaanderen');
+        }
+        updateDashboard();
+    });
+}
+
+function populateProvinciesTab(provincesData) {
+    const container = document.getElementById('checkbox-list-provincies');
+    container.innerHTML = '';
+    
+    const provinces = Object.keys(provincesData).sort();
+    
+    provinces.forEach(provName => {
+        const checkboxItem = document.createElement('div');
+        checkboxItem.className = 'checkbox-item';
+        checkboxItem.setAttribute('data-name', provName.toLowerCase());
+        
+        // Sanitize ID - replace spaces and special chars with hyphens
+        const safeId = `checkbox-prov-${provName.replace(/[^a-zA-Z0-9]/g, '-')}`;
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = safeId;
+        checkbox.value = `prov:${provName}`;
+        checkbox.checked = selectedRegions.has(`prov:${provName}`);
+        
+        const label = document.createElement('label');
+        label.setAttribute('for', safeId);
+        label.textContent = provName;
+        
+        checkboxItem.appendChild(checkbox);
+        checkboxItem.appendChild(label);
+        container.appendChild(checkboxItem);
+        
+        // Add event listener
+        checkbox.addEventListener('change', (e) => {
+            const value = e.target.value;
+            if (e.target.checked) {
+                selectedRegions.add(value);
+            } else {
+                selectedRegions.delete(value);
+            }
+            updateDashboard();
+        });
+    });
+}
+
+function populateGemeentenTab(geoData) {
+    const container = document.getElementById('checkbox-list-gemeenten');
+    container.innerHTML = '';
+    
+    const municipalities = geoData.features
+        .map(f => f.properties.municipality)
+        .sort((a, b) => a.localeCompare(b));
+    
+    municipalities.forEach(munName => {
+        const checkboxItem = document.createElement('div');
+        checkboxItem.className = 'checkbox-item';
+        checkboxItem.setAttribute('data-name', munName.toLowerCase());
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox-mun-${munName}`;
+        checkbox.value = `mun:${munName}`;
+        checkbox.checked = selectedRegions.has(`mun:${munName}`);
+        
+        const label = document.createElement('label');
+        label.setAttribute('for', `checkbox-mun-${munName}`);
+        label.textContent = munName;
+        
+        checkboxItem.appendChild(checkbox);
+        checkboxItem.appendChild(label);
+        container.appendChild(checkboxItem);
+        
+        // Add event listener
+        checkbox.addEventListener('change', (e) => {
+            const value = e.target.value;
+            if (e.target.checked) {
+                selectedRegions.add(value);
+            } else {
+                selectedRegions.delete(value);
+            }
+            updateDashboard();
+        });
+    });
+}
+
+function setupSearchFunctionality() {
+    // Vlaanderen tab - disabled but keep for consistency
+    const searchVlaanderen = document.getElementById('search-vlaanderen');
+    
+    // Provincies tab
+    const searchProvincies = document.getElementById('search-provincies');
+    searchProvincies.addEventListener('input', (e) => {
+        filterCheckboxList('provincies', e.target.value);
+    });
+    
+    // Gemeenten tab
+    const searchGemeenten = document.getElementById('search-gemeenten');
+    searchGemeenten.addEventListener('input', (e) => {
+        filterCheckboxList('gemeenten', e.target.value);
+    });
+}
+
+function filterCheckboxList(tabName, searchTerm) {
+    const container = document.getElementById(`checkbox-list-${tabName}`);
+    const items = container.querySelectorAll('.checkbox-item');
+    const term = searchTerm.toLowerCase().trim();
+    
+    items.forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const label = item.querySelector('label').textContent.toLowerCase();
+        
+        if (term === '' || name.includes(term) || label.includes(term)) {
+            item.classList.remove('hidden');
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+}
+
+function setupSelectAllButtons() {
+    const selectAllButtons = document.querySelectorAll('.btn-select-all');
+    const deselectAllButtons = document.querySelectorAll('.btn-deselect-all');
+    
+    selectAllButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabName = button.getAttribute('data-tab');
+            selectAllInTab(tabName);
+        });
+    });
+    
+    deselectAllButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabName = button.getAttribute('data-tab');
+            deselectAllInTab(tabName);
+        });
+    });
+}
+
+function selectAllInTab(tabName) {
+    const container = document.getElementById(`checkbox-list-${tabName}`);
+    // Only select visible (not hidden) checkboxes
+    const checkboxes = Array.from(container.querySelectorAll('input[type="checkbox"]:not(:checked)'))
+        .filter(checkbox => !checkbox.closest('.checkbox-item').classList.contains('hidden'));
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+        selectedRegions.add(checkbox.value);
+    });
+    
+    updateDashboard();
+}
+
+function deselectAllInTab(tabName) {
+    const container = document.getElementById(`checkbox-list-${tabName}`);
+    // Only deselect visible (not hidden) checkboxes
+    const checkboxes = Array.from(container.querySelectorAll('input[type="checkbox"]:checked'))
+        .filter(checkbox => !checkbox.closest('.checkbox-item').classList.contains('hidden'));
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        selectedRegions.delete(checkbox.value);
+    });
+    
+    updateDashboard();
+}
+
+function syncCheckboxStates() {
+    // Sync Vlaanderen checkbox
+    const vlaanderenCheckbox = document.getElementById('checkbox-vlaanderen');
+    if (vlaanderenCheckbox) {
+        vlaanderenCheckbox.checked = selectedRegions.has('vlaanderen');
+    }
+    
+    // Sync Provincies checkboxes
+    selectedRegions.forEach(value => {
+        if (value.startsWith('prov:')) {
+            const provName = value.split(':')[1];
+            const checkbox = document.getElementById(`checkbox-prov-${provName}`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        }
+    });
+    
+    // Sync Gemeenten checkboxes
+    selectedRegions.forEach(value => {
+        if (value.startsWith('mun:')) {
+            const munName = value.split(':')[1];
+            const safeId = `checkbox-mun-${munName.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const checkbox = document.getElementById(safeId);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        }
+    });
+    
+    // Also uncheck items that are not in selectedRegions
+    document.querySelectorAll('input[type="checkbox"][id^="checkbox-prov-"]').forEach(checkbox => {
+        if (!selectedRegions.has(checkbox.value)) {
+            checkbox.checked = false;
+        }
+    });
+    
+    document.querySelectorAll('input[type="checkbox"][id^="checkbox-mun-"]').forEach(checkbox => {
+        if (!selectedRegions.has(checkbox.value)) {
+            checkbox.checked = false;
+        }
+    });
+}
+
+// Color palette with high contrast between consecutive colors
+// Colors are ordered to maximize contrast between adjacent selections
+const colorPalette = {
+    vlaanderen: '#e63946', // Red
+    provinces: [
+        '#2a9d8f', // Teal
+        '#d62828', // Red
+        '#003049', // Dark blue
+        '#f77f00', // Orange
+        '#06a77d', // Green
+        '#6c5ce7'  // Purple
+    ],
+    municipalities: [
+        '#0055cc', // Blue
+        '#ff6b6b', // Coral red
+        '#00b894', // Mint green
+        '#6c5ce7', // Purple
+        '#f9ca24', // Yellow
+        '#d63031', // Dark red
+        '#4ecdc4', // Turquoise
+        '#e17055', // Orange
+        '#0984e3', // Bright blue
+        '#fd79a8', // Pink
+        '#00cec9', // Cyan
+        '#fdcb6e', // Peach
+        '#2d3436', // Charcoal
+        '#55efc4', // Aqua
+        '#e84393', // Magenta
+        '#74b9ff', // Light blue
+        '#a29bfe', // Light purple
+        '#ffeaa7', // Light yellow
+        '#636e72', // Dark gray
+        '#00b894'  // Green
+    ]
+};
+
+// Line and border styles for differentiation
+const lineStyles = [
+    { borderDash: [] },           // Solid
+    { borderDash: [5, 5] },        // Dashed
+    { borderDash: [2, 2] },        // Dotted
+    { borderDash: [10, 5, 2, 5] }, // Dash-dot
+    { borderDash: [5, 10] },       // Long dash
+    { borderDash: [2, 8, 2, 8] }  // Dot-dash
+];
+
+function getColorForRegion(type, index, name) {
+    if (type === 'vlaanderen') {
+        return colorPalette.vlaanderen;
+    } else if (type === 'province') {
+        // Use index directly for sequential selection to maximize contrast
+        return colorPalette.provinces[index % colorPalette.provinces.length];
+    } else if (type === 'municipality') {
+        // For municipalities, use index for sequential selection to maximize contrast
+        // This ensures consecutive selections have very different colors
+        return colorPalette.municipalities[index % colorPalette.municipalities.length];
+    }
+    return '#0055cc'; // Default
+}
+
+function getLineStyle(index) {
+    return lineStyles[index % lineStyles.length];
+}
+
+function processCPIData() {
+    if (!cpiData || !cpiData.facts) return;
+    
+    // Create a simple year -> CPI mapping (using unique years only)
+    const cpiMap = {};
+    cpiData.facts.forEach(fact => {
+        const year = parseInt(fact.Jaar);
+        if (!cpiMap[year]) {
+            cpiMap[year] = fact.Consumptieprijsindex;
+        }
+    });
+    cpiData.map = cpiMap;
+    
+    // Set 2014 as reference year for inflation adjustment
+    cpiData.referenceYear = 2014;
+    cpiData.referenceCPI = cpiMap[2014] || 100.34;
+}
+
+function setupInflationToggle() {
+    const nominalCheckbox = document.getElementById('toggle-nominal');
+    const adjustedCheckbox = document.getElementById('toggle-adjusted');
+    
+    nominalCheckbox.addEventListener('change', () => {
+        showNominal = nominalCheckbox.checked;
+        
+        // Ensure at least one is always checked
+        if (!showNominal && !showAdjusted) {
+            showAdjusted = true;
+            adjustedCheckbox.checked = true;
+        }
+        
+        updateDashboard();
+    });
+    
+    adjustedCheckbox.addEventListener('change', () => {
+        showAdjusted = adjustedCheckbox.checked;
+        
+        // Ensure at least one is always checked
+        if (!showNominal && !showAdjusted) {
+            showNominal = true;
+            nominalCheckbox.checked = true;
+        }
+        
+        updateDashboard();
+    });
+}
+
+function setupStackedToggle() {
+    const stackedCheckbox = document.getElementById('toggle-stacked');
+    
+    stackedCheckbox.addEventListener('change', () => {
+        showStacked = stackedCheckbox.checked;
+        updateDashboard();
+    });
+}
+
+function adjustForInflation(value, year) {
+    if (!cpiData || !cpiData.map) return value;
+    
+    const yearCPI = cpiData.map[year];
+    if (!yearCPI) return value;
+    
+    // Adjust to 2014 prices: value * (2014 CPI / year CPI)
+    return value * (cpiData.referenceCPI / yearCPI);
+}
+
+function updateDashboard() {
+    const count = selectedRegions.size;
+    
+    // Show/hide containers based on stacked mode and selection count
+    const chartWrapper = document.getElementById('chart-wrapper');
+    const smallMultiplesContainer = document.getElementById('small-multiples-container');
+    
+    if (showStacked && count === 1) {
+        // Single region with stacked mode: show one stacked bar chart
+        chartWrapper.style.display = 'block';
+        smallMultiplesContainer.style.display = 'none';
+        renderStackedChart();
+    } else if (showStacked && count > 1) {
+        // Multiple regions with stacked mode: show stacked small multiples
+        chartWrapper.style.display = 'none';
+        smallMultiplesContainer.style.display = 'grid';
+        renderStackedSmallMultiples();
+    } else {
+        // Normal mode: show regular small multiples (one chart per region)
+        chartWrapper.style.display = 'none';
+        smallMultiplesContainer.style.display = 'grid';
+        renderSmallMultiples();
+    }
+    
+    // Update Title
+    document.getElementById('selected-label').textContent = count > 0 
+        ? `${count} regio('s) geselecteerd` 
+        : 'Selecteer een regio';
+    
+    // Update subtitle based on inflation adjustment and stacked mode
+    const subtitleText = document.getElementById('subtitle-text');
+    if (subtitleText) {
+        if (showStacked && count === 1) {
+            if (showNominal && showAdjusted) {
+                subtitleText.textContent = 'Totale investeringen per beleidsdomein (nominaal & reëel 2014)';
+            } else if (showAdjusted) {
+                subtitleText.textContent = 'Totale investeringen per beleidsdomein (reëel, 2014 prijzen)';
+            } else {
+                subtitleText.textContent = 'Totale investeringen per beleidsdomein (nominaal)';
+            }
+        } else if (showStacked && count > 1) {
+            if (showNominal && showAdjusted) {
+                subtitleText.textContent = 'Investeringen per beleidsdomein per gemeente (nominaal & reëel 2014)';
+            } else if (showAdjusted) {
+                subtitleText.textContent = 'Investeringen per beleidsdomein per gemeente (reëel, 2014 prijzen)';
+            } else {
+                subtitleText.textContent = 'Investeringen per beleidsdomein per gemeente (nominaal)';
+            }
+        } else if (showNominal && showAdjusted) {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€) - beide weergaven getoond';
+        } else if (showAdjusted) {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, reëel 2014 prijzen)';
+        } else {
+            subtitleText.textContent = 'Investeringsuitgaven per inwoner (€, nominaal)';
+        }
+    }
+}
+
+function renderStackedChart() {
+    console.log('renderStackedChart called');
+    console.log('beleidsdomeinData:', beleidsdomeinData ? Object.keys(beleidsdomeinData).length + ' domains' : 'null');
+    
+    const datasets = [];
+    const years = Array.from({length: 11}, (_, i) => 2014 + i);
+
+    // Get all policy subdomains and calculate their average per-capita values
+    const domainAverages = {};
+    
+    for (const [subdomein, yearData] of Object.entries(beleidsdomeinData)) {
+        // Calculate average across available years
+        const values = Object.values(yearData);
+        const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
+        domainAverages[subdomein] = avg;
+    }
+    
+    console.log('Domain averages calculated:', Object.keys(domainAverages).length);
+    
+    // Sort by average and take top 10
+    const topDomains = Object.entries(domainAverages)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([domain]) => domain);
+    
+    // Color palette for stacked domains
+    const domainColors = [
+        '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00',
+        '#ffff33', '#a65628', '#f781bf', '#999999', '#66c2a5'
+    ];
+    
+    const showBoth = showNominal && showAdjusted;
+    
+    // Create datasets for each top domain
+    topDomains.forEach((subdomein, idx) => {
+        const nominalData = years.map(year => {
+            return beleidsdomeinData[subdomein][year] || 0;
+        });
+        
+        // Shorten label for display - only show once in legend
+        const shortLabel = subdomein.length > 30 ? subdomein.substring(0, 27) + '...' : subdomein;
+        const baseColor = domainColors[idx % domainColors.length];
+        
+        // Add nominal dataset if needed
+        if (showNominal) {
+            datasets.push({
+                label: shortLabel,  // Single label for legend
+                data: nominalData,
+                backgroundColor: baseColor,
+                borderColor: baseColor,
+                borderWidth: 1,
+                stack: showBoth ? 'nominal' : 'combined',
+                legendLabel: shortLabel,  // Used to identify in legend
+                isNominal: true
+            });
+        }
+        
+        // Add adjusted dataset if needed (with lighter shade)
+        if (showAdjusted) {
+            const adjustedData = nominalData.map((val, yearIdx) => 
+                adjustForInflation(val, years[yearIdx])
+            );
+            
+            datasets.push({
+                label: shortLabel,  // Same label as nominal - will be filtered in legend
+                data: adjustedData,
+                backgroundColor: baseColor + 'AA',  // Lighter opacity for adjusted
+                borderColor: baseColor,
+                borderWidth: 1,
+                borderDash: showBoth ? [3, 3] : [],
+                stack: showBoth ? 'adjusted' : 'combined',
+                legendLabel: shortLabel,
+                isAdjusted: true
+                // Don't use hidden property - causes issues with chart updates
+            });
+        }
+    });
+    
+    // Update chart
+    chart.config.type = 'bar';
+    chart.options.scales.x.stacked = true;
+    chart.options.scales.y.stacked = true;
+    chart.options.scales.y.title.text = 'Totaal bedrag (€ x 1000)';
+    chart.options.plugins.legend.display = true;
+    chart.options.plugins.legend.labels = {
+        // Use default label generation
+        generateLabels: function(chart) {
+            const datasets = chart.data.datasets;
+            const labels = [];
+            const seen = new Set();
+            
+            // Only add one label per unique domain name
+            for (let i = 0; i < datasets.length; i++) {
+                const dataset = datasets[i];
+                const labelText = dataset.legendLabel || dataset.label;
+                
+                // Skip if we've already added this label
+                if (seen.has(labelText)) {
+                    continue;
+                }
+                seen.add(labelText);
+                
+                labels.push({
+                    text: labelText,
+                    fillStyle: dataset.backgroundColor,
+                    strokeStyle: dataset.borderColor,
+                    lineWidth: dataset.borderWidth,
+                    hidden: false,
+                    index: i,
+                    datasetIndex: i
+                });
+            }
+            
+            // Add helper text if showing both nominal and adjusted
+            if (showBoth && labels.length > 0) {
+                labels.push({
+                    text: '(volle kleur = nominaal, lichtere tint = reëel)',
+                    fillStyle: 'rgba(0,0,0,0)',
+                    strokeStyle: 'rgba(0,0,0,0)',
+                    fontColor: '#666',
+                    lineWidth: 0,
+                    index: -1
+                });
+            }
+            
+            return labels;
+        }
+    };
+    chart.options.plugins.tooltip.mode = 'index';
+    chart.options.plugins.tooltip.callbacks = {
+        label: function(context) {
+            const suffix = context.dataset.isAdjusted ? ' (2014 €)' : context.dataset.isNominal ? ' (nominaal)' : '';
+            return context.dataset.label + suffix + ': €' + (context.raw / 1000).toFixed(1) + 'k';
+        },
+        footer: function(items) {
+            const total = items.reduce((sum, item) => sum + item.raw, 0);
+            return 'Totaal: €' + (total / 1000).toFixed(1) + 'k';
+        }
+    };
+    
+    chart.data.datasets = datasets;
+    chart.update();
+}
+
+function renderSmallMultiples() {
+    // Destroy existing small multiple charts
+    smallMultipleCharts.forEach(ch => ch.destroy());
+    smallMultipleCharts = [];
+    
+    const container = document.getElementById('small-multiples-container');
+    container.innerHTML = '';
+    
+    const years = Array.from({length: 11}, (_, i) => 2014 + i);
+    const regions = [];
+    
+    // Track indices for color assignment
+    let provinceIndex = 0;
+    let municipalityIndex = 0;
+    
+    // Helper to create region data (with nominal and/or adjusted)
+    const createRegionData = (name, nominalData, color, index) => {
+        const datasets = [];
+        const showBoth = showNominal && showAdjusted;
+        
+        if (showNominal) {
+            datasets.push({
+                label: showBoth ? 'Nominaal' : name,
+                data: nominalData,
+                backgroundColor: color,
+                borderColor: color,
+                borderWidth: 2,
+                fill: false
+            });
+        }
+        
+        if (showAdjusted) {
+            const adjustedData = nominalData.map((val, idx) => adjustForInflation(val, years[idx]));
+            datasets.push({
+                label: showBoth ? '2014 €' : name,
+                data: adjustedData,
+                backgroundColor: color + '99',
+                borderColor: color,
+                borderWidth: 2,
+                borderDash: showBoth ? [5, 5] : [],
+                fill: false
+            });
+        }
+        
+        return { name, datasets, color, index };
+    };
+    
+    // Collect all selected regions
+    if (selectedRegions.has('vlaanderen')) {
+        const nominalData = years.map(y => averagesData.Vlaanderen[y]);
+        regions.push(createRegionData(
+            'Vlaanderen (gemiddelde)',
+            nominalData,
+            getColorForRegion('vlaanderen', 0, ''),
+            0
+        ));
+    }
+    
+    selectedRegions.forEach(val => {
+        if (val.startsWith('prov:')) {
+            const provName = val.split(':')[1];
+            const nominalData = years.map(y => averagesData.Provincies[provName][y]);
+            regions.push(createRegionData(
+                provName,
+                nominalData,
+                getColorForRegion('province', provinceIndex++, provName),
+                regions.length
+            ));
+        }
+    });
+    
+    selectedRegions.forEach(val => {
+        if (val.startsWith('mun:')) {
+            const munName = val.split(':')[1];
+            const feature = municipalitiesData.features.find(f => f.properties.municipality === munName);
+            if (feature) {
+                const nominalData = years.map(y => feature.properties[String(y)]);
+                regions.push(createRegionData(
+                    munName,
+                    nominalData,
+                    getColorForRegion('municipality', municipalityIndex++, munName),
+                    regions.length
+                ));
+            }
+        }
+    });
+    
+    // Create a chart for each region
+    regions.forEach((region, idx) => {
+        const chartDiv = document.createElement('div');
+        chartDiv.className = 'small-multiple-chart';
+        
+        const title = document.createElement('h4');
+        title.textContent = region.name;
+        chartDiv.appendChild(title);
+        
+        const canvas = document.createElement('canvas');
+        chartDiv.appendChild(canvas);
+        container.appendChild(chartDiv);
+        
+        const lineStyle = getLineStyle(region.index);
+        const ctx = canvas.getContext('2d');
+        const smallChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: region.datasets.map(ds => ({
+                    ...ds,
+                    borderRadius: 4
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '€ ' + context.raw.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        smallMultipleCharts.push(smallChart);
+    });
+}
+
+function renderStackedSmallMultiples() {
+    // Destroy existing small multiple charts
+    smallMultipleCharts.forEach(ch => ch.destroy());
+    smallMultipleCharts = [];
+    
+    const container = document.getElementById('small-multiples-container');
+    container.innerHTML = '';
+    
+    const years = Array.from({length: 11}, (_, i) => 2014 + i);
+    
+    // Color palette for stacked domains (same as in renderStackedChart)
+    const domainColors = [
+        '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00',
+        '#ffff33', '#a65628', '#f781bf', '#999999', '#66c2a5'
+    ];
+    
+    // Get top 10 policy domains globally (same as single stacked chart)
+    const domainAverages = {};
+    for (const [subdomein, yearData] of Object.entries(beleidsdomeinData)) {
+        const values = Object.values(yearData);
+        const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
+        domainAverages[subdomein] = avg;
+    }
+    
+    const topDomains = Object.entries(domainAverages)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([domain]) => domain);
+    
+    const showBoth = showNominal && showAdjusted;
+    
+    // Process each selected municipality
+    selectedRegions.forEach(val => {
+        if (val.startsWith('mun:')) {
+            const munName = val.split(':')[1];
+            const feature = municipalitiesData.features.find(f => f.properties.municipality === munName);
+            if (!feature || !feature.properties.beleidsdomein_2024) return;
+            
+            // Get policy domain data for this municipality from beleidsdomein_2024
+            const beleidsdomein2024 = feature.properties.beleidsdomein_2024;
+            if (!beleidsdomein2024 || !beleidsdomein2024.top_beleidsvelden) return;
+            
+            // Create a map of policy domains for this municipality
+            const munPolicyMap = {};
+            beleidsdomein2024.top_beleidsvelden.forEach(bv => {
+                // Use the volledig name as key to match with beleidsdomeinData keys
+                munPolicyMap[bv.volledig] = bv.bedrag;
+            });
+            
+            // Create datasets for this municipality
+            const datasets = [];
+            
+            topDomains.forEach((subdomein, idx) => {
+                const baseColor = domainColors[idx % domainColors.length];
+                const shortLabel = subdomein.length > 30 ? subdomein.substring(0, 27) + '...' : subdomein;
+                
+                // Get data from global beleidsdomeinData (totals across all municipalities)
+                const yearData = beleidsdomeinData[subdomein];
+                if (!yearData) return;
+                
+                // Extract nominal values per year
+                const nominalData = years.map(year => yearData[String(year)] || 0);
+                
+                // Add nominal dataset
+                if (showNominal) {
+                    datasets.push({
+                        label: shortLabel,
+                        data: nominalData,
+                        backgroundColor: baseColor,
+                        borderColor: baseColor,
+                        borderWidth: 1,
+                        stack: showBoth ? 'nominal' : 'combined',
+                        legendLabel: shortLabel,
+                        isNominal: true
+                    });
+                }
+                
+                // Add adjusted dataset
+                if (showAdjusted) {
+                    const adjustedData = nominalData.map((val, yearIdx) => 
+                        adjustForInflation(val, years[yearIdx])
+                    );
+                    
+                    datasets.push({
+                        label: shortLabel,
+                        data: adjustedData,
+                        backgroundColor: baseColor + 'AA',
+                        borderColor: baseColor,
+                        borderWidth: 1,
+                        borderDash: showBoth ? [3, 3] : [],
+                        stack: showBoth ? 'adjusted' : 'combined',
+                        legendLabel: shortLabel,
+                        isAdjusted: true
+                    });
+                }
+            });
+            
+            // Create chart div for this municipality
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'small-multiple-chart';
+            
+            const title = document.createElement('h4');
+            title.textContent = munName;
+            chartDiv.appendChild(title);
+            
+            const canvas = document.createElement('canvas');
+            chartDiv.appendChild(canvas);
+            container.appendChild(chartDiv);
+            
+            const ctx = canvas.getContext('2d');
+            const smallChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    return label + ': €' + context.raw.toFixed(0);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: {
+                                font: { size: 10 },
+                                callback: function(value) {
+                                    if (value >= 1000000) {
+                                        return '€' + (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return '€' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                    return '€' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            smallMultipleCharts.push(smallChart);
+        }
+    });
+}
+
+// Map Interaction
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: (e) => {
+            const layer = e.target;
+            layer.setStyle({ weight: 3, color: '#666', dashArray: '', fillOpacity: 0.9 });
+            layer.bringToFront();
+        },
+        mouseout: (e) => {
+            geojsonLayer.resetStyle(e.target);
+        },
+        click: (e) => {
+            const name = feature.properties.municipality;
+            const value = `mun:${name}`;
+            
+            // Show detail panel
+            showMunicipalityDetail(feature.properties);
+            
+            // Toggle selection logic - update checkbox state
+            // Sanitize ID to match the one used in populateGemeentenTab
+            const safeId = `checkbox-mun-${name.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const checkbox = document.getElementById(safeId);
+            
+            if (checkbox) {
+                // Toggle selection
+                if (selectedRegions.has(value)) {
+                    selectedRegions.delete(value);
+                    checkbox.checked = false;
+                } else {
+                    selectedRegions.add(value);
+                    checkbox.checked = true;
+                }
+                
+                updateDashboard();
+                
+                // Switch to gemeenten tab if not already active
+                const gemeentenTab = document.querySelector('.tab-button[data-tab="gemeenten"]');
+                const gemeentenContent = document.getElementById('tab-gemeenten');
+                if (gemeentenTab && !gemeentenTab.classList.contains('active')) {
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    gemeentenTab.classList.add('active');
+                    gemeentenContent.classList.add('active');
+                }
+            }
+        }
+    });
+    
+    const name = feature.properties.municipality;
+    const val2024 = feature.properties['2024'];
+    layer.bindTooltip(`<strong>${name}</strong><br>2024: €${val2024 ? val2024.toFixed(2) : '-'}`);
+}
+
+// Styling - Intuitive color scale: warm colors (red/orange) = high, cool colors (green/blue) = low
+// This makes it immediately clear which municipalities have high vs low investment
+function getColor(d, min, max) {
+    const t = (d - min) / (max - min);
+    
+    // Intuitive gradient: Red/Orange (high) → Yellow → Light Green → Green → Blue (low)
+    // Warm colors = high investment, cool colors = low investment
+    if (t >= 0.9) return '#d73027';      // Top 10% - Bright red (high) - clearly highest
+    if (t >= 0.7) return '#f46d43';      // 70-90% - Orange-red - high
+    if (t >= 0.5) return '#fdae61';      // 50-70% - Orange-yellow - medium-high
+    if (t >= 0.3) return '#abd9e9';      // 30-50% - Light blue - medium-low
+    if (t >= 0.1) return '#74add1';      // 10-30% - Blue - low
+    return '#4575b4';                    // Bottom 10% - Dark blue (low) - clearly lowest
+}
+
+function style(feature, min, max) {
+    const val = feature.properties['2024'];
+    const municipalityName = feature.properties.municipality;
+    
+    // Special styling for Kaprijke due to unreliable data (large discrepancies)
+    if (municipalityName === 'Kaprijke') {
+        return {
+            fillColor: '#999999',  // Gray color
+            weight: 2,
+            opacity: 1,
+            color: '#666666',
+            dashArray: '5, 5',     // Dashed pattern for hatching effect
+            fillOpacity: 0.5
+        };
+    }
+    
+    return {
+        fillColor: getColor(val, min, max),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+// Global variable to track current detail view
+let currentDetailView = 'beleidsveld'; // 'uitgavenpost' or 'beleidsveld'
+let currentMunicipalityProperties = null; // Store current municipality data
+
+// Show municipality detail panel
+function showMunicipalityDetail(properties) {
+    currentMunicipalityProperties = properties; // Store for view switching
+    
+    const detailPanel = document.getElementById('municipality-detail');
+    const detailName = document.getElementById('detail-municipality-name');
+    const detailProvince = document.getElementById('detail-municipality-province');
+    const detailTotal2024 = document.getElementById('detail-total-2024');
+    const detailSumBeleidsdomein = document.getElementById('detail-sum-beleidsdomein');
+    const detailDifferenceBeleidsdomein = document.getElementById('detail-difference-beleidsdomein');
+    const detailSumRekeningen = document.getElementById('detail-sum-rekeningen');
+    const detailDifferenceRekeningen = document.getElementById('detail-difference-rekeningen');
+    const detailWarning = document.getElementById('detail-warning');
+    const detailTableBody = document.getElementById('detail-rekeningen-tbody');
+    
+    // Fill basic info
+    detailName.textContent = properties.municipality;
+    
+    // Add warning badge for Kaprijke
+    if (properties.municipality === 'Kaprijke') {
+        detailName.innerHTML = properties.municipality + ' <span style="background: #999; color: white; padding: 2px 8px; border-radius: 3px; font-size: 0.7em; margin-left: 8px;">⚠ Data onbetrouwbaar</span>';
+    }
+    
+    detailProvince.textContent = properties.province || 'Provincie onbekend';
+    
+    const total2024 = properties['2024'];
+    detailTotal2024.textContent = total2024 ? `€ ${total2024.toFixed(2)}` : '€ -';
+    
+    // Fill beleidsdomein sum
+    if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
+        const totaalBeleidsdomein = properties.beleidsdomein_2024.totaal_beleidsdomein;
+        detailSumBeleidsdomein.textContent = `€ ${totaalBeleidsdomein.toFixed(2)}`;
+        const diffBeleidsdomein = properties.beleidsdomein_2024.verschil_met_totaal;
+        detailDifferenceBeleidsdomein.textContent = `verschil: € ${diffBeleidsdomein.toFixed(2)}`;
+    } else {
+        detailSumBeleidsdomein.textContent = '€ -';
+        detailDifferenceBeleidsdomein.textContent = 'geen data';
+    }
+    
+    // Fill rekeningen sum
+    if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+        const totaalRekeningen = properties.detail_2024.totaal_details;
+        detailSumRekeningen.textContent = `€ ${totaalRekeningen.toFixed(2)}`;
+        const diffRekeningen = properties.detail_2024.verschil_met_totaal;
+        detailDifferenceRekeningen.textContent = `verschil: € ${diffRekeningen.toFixed(2)}`;
+    } else {
+        detailSumRekeningen.textContent = '€ -';
+        detailDifferenceRekeningen.textContent = 'geen data';
+    }
+    
+    // Render the table based on current view
+    renderDetailTable(properties, currentDetailView);
+    
+    // Show panel and scroll to it
+    detailPanel.classList.add('active');
+    detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Render detail table based on view (uitgavenpost or beleidsveld)
+function renderDetailTable(properties, viewType) {
+    const detailWarning = document.getElementById('detail-warning');
+    const detailTableBody = document.getElementById('detail-rekeningen-tbody');
+    const detailTableTitle = document.getElementById('detail-table-title');
+    const detailTableHeaderCol = document.getElementById('detail-table-header-col');
+    
+    const total2024 = properties['2024'];
+    
+    if (viewType === 'uitgavenpost') {
+        // Render uitgavenpost (detail_2024) view
+        detailTableTitle.textContent = 'Top 10 per uitgavenpost';
+        detailTableHeaderCol.textContent = 'Rekening';
+        
+        if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+            const detail2024 = properties.detail_2024;
+        
+            // Check for warnings (significant differences)
+            const diffRekeningen = detail2024.verschil_met_totaal;
+            const diffRekeningenPercent = Math.abs(diffRekeningen / total2024 * 100);
+            
+            let showWarning = false;
+            if (diffRekeningenPercent > 1) {
+                showWarning = true;
+            }
+            
+            // Also check beleidsdomein difference if available
+            if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
+                const diffBeleidsdomein = properties.beleidsdomein_2024.verschil_met_totaal;
+                const diffBeleidsdoeinPercent = Math.abs(diffBeleidsdomein / total2024 * 100);
+                if (diffBeleidsdoeinPercent > 1) {
+                    showWarning = true;
+                }
+            }
+            
+            // Update warning text for Kaprijke
+            const detailWarningText = document.getElementById('detail-warning-text');
+            if (properties.municipality === 'Kaprijke') {
+                detailWarningText.innerHTML = '<strong>Data onbetrouwbaar:</strong> Het verschil tussen de verschillende totalen is extreem groot (> 80%). De getoonde investeringsgegevens voor deze gemeente zijn niet betrouwbaar en mogen niet gebruikt worden voor analyses.';
+                detailWarning.style.display = 'flex';
+            } else {
+                detailWarningText.textContent = 'Er is een verschil tussen de som van de details en het totaal. Dit kan duiden op ontbrekende rekeningen in de gedetailleerde data.';
+                detailWarning.style.display = showWarning ? 'flex' : 'none';
+            }
+            
+            // Fill table with top rekeningen
+            detailTableBody.innerHTML = '';
+            if (detail2024.top_rekeningen && detail2024.top_rekeningen.length > 0) {
+                detail2024.top_rekeningen.forEach(rek => {
+                    const row = document.createElement('tr');
+                    // Remove code prefix from naam if it starts with the code
+                    let displayName = rek.naam;
+                    if (displayName.startsWith(rek.code)) {
+                        displayName = displayName.substring(rek.code.length).trim();
+                        // Remove leading hyphen or dash if present
+                        if (displayName.startsWith('-')) {
+                            displayName = displayName.substring(1).trim();
+                        }
+                    }
+                    row.innerHTML = `
+                        <td class="code-col">${rek.code}</td>
+                        <td>${displayName}</td>
+                        <td class="bedrag-col">€ ${rek.bedrag.toFixed(2)}</td>
+                    `;
+                    detailTableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3" class="text-center text-muted">Geen gedetailleerde rekeningen beschikbaar</td>';
+                detailTableBody.appendChild(row);
+            }
+        } else {
+            // No detail data available
+            detailWarning.style.display = 'none';
+            
+            detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen gedetailleerde data beschikbaar voor deze gemeente</td></tr>';
+        }
+    
+    } else if (viewType === 'beleidsveld') {
+        // Render beleidsveld (beleidsdomein_2024) view
+        detailTableTitle.textContent = 'Top 10 per beleidsveld';
+        detailTableHeaderCol.textContent = 'Beleidsveld';
+        
+        if (properties.beleidsdomein_2024 && properties.beleidsdomein_2024.totaal_beleidsdomein !== null) {
+            const beleidsdomein2024 = properties.beleidsdomein_2024;
+            
+            // Check for warnings (significant differences)
+            const diffBeleidsdomein = beleidsdomein2024.verschil_met_totaal;
+            const diffBeleidsdoeinPercent = Math.abs(diffBeleidsdomein / total2024 * 100);
+            
+            let showWarning = false;
+            if (diffBeleidsdoeinPercent > 1) {
+                showWarning = true;
+            }
+            
+            // Also check rekeningen difference if available
+            if (properties.detail_2024 && properties.detail_2024.totaal_details !== null) {
+                const diffRekeningen = properties.detail_2024.verschil_met_totaal;
+                const diffRekeningenPercent = Math.abs(diffRekeningen / total2024 * 100);
+                if (diffRekeningenPercent > 1) {
+                    showWarning = true;
+                }
+            }
+            
+            // Update warning text for Kaprijke
+            const detailWarningText = document.getElementById('detail-warning-text');
+            if (properties.municipality === 'Kaprijke') {
+                detailWarningText.innerHTML = '<strong>Data onbetrouwbaar:</strong> Het verschil tussen de verschillende totalen is extreem groot (> 80%). De getoonde investeringsgegevens voor deze gemeente zijn niet betrouwbaar en mogen niet gebruikt worden voor analyses.';
+                detailWarning.style.display = 'flex';
+            } else {
+                detailWarningText.textContent = 'Er is een verschil tussen de som van de details en het totaal. Dit kan duiden op ontbrekende rekeningen in de gedetailleerde data.';
+                detailWarning.style.display = showWarning ? 'flex' : 'none';
+            }
+            
+            // Fill table with top beleidsvelden
+            detailTableBody.innerHTML = '';
+            if (beleidsdomein2024.top_beleidsvelden && beleidsdomein2024.top_beleidsvelden.length > 0) {
+                beleidsdomein2024.top_beleidsvelden.forEach(beleid => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="code-col">${beleid.code}</td>
+                        <td>${beleid.naam}</td>
+                        <td class="bedrag-col">€ ${beleid.bedrag.toFixed(2)}</td>
+                    `;
+                    detailTableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3" class="text-center text-muted">Geen beleidsdomein data beschikbaar</td>';
+                detailTableBody.appendChild(row);
+            }
+        } else {
+            // No beleidsdomein data available
+            detailWarning.style.display = 'none';
+            
+            detailTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Geen beleidsdomein data beschikbaar voor deze gemeente</td></tr>';
+        }
+    }
+}
+
+// Hide municipality detail panel
+function hideMunicipalityDetail() {
+    const detailPanel = document.getElementById('municipality-detail');
+    detailPanel.classList.remove('active');
+}
+
+// Setup close button and toggle buttons for detail panel
+document.addEventListener('DOMContentLoaded', () => {
+    const closeBtn = document.getElementById('detail-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideMunicipalityDetail);
+    }
+    
+    // Setup detail view toggle buttons
+    const toggleUitgavenpost = document.getElementById('toggle-uitgavenpost');
+    const toggleBeleidsveld = document.getElementById('toggle-beleidsveld');
+    
+    if (toggleUitgavenpost) {
+        toggleUitgavenpost.addEventListener('click', () => {
+            currentDetailView = 'uitgavenpost';
+            toggleUitgavenpost.classList.add('active');
+            toggleBeleidsveld.classList.remove('active');
+            
+            if (currentMunicipalityProperties) {
+                renderDetailTable(currentMunicipalityProperties, currentDetailView);
+            }
+        });
+    }
+    
+    if (toggleBeleidsveld) {
+        toggleBeleidsveld.addEventListener('click', () => {
+            currentDetailView = 'beleidsveld';
+            toggleBeleidsveld.classList.add('active');
+            toggleUitgavenpost.classList.remove('active');
+            
+            if (currentMunicipalityProperties) {
+                renderDetailTable(currentMunicipalityProperties, currentDetailView);
+            }
+        });
+    }
+});
+
+// ============================================================================
+// PROVINCIAL INVESTMENT VISUALIZATION
+// ============================================================================
+
+let provincialChart = null;
+let provincialData = null;
+let provincialDetailedData = null;
+let provincialRekeningenData = null;
+
+// Initialize provincial visualization
+async function initProvincialVisualization() {
+    try {
+        // Load provincial data
+        const [totalsResponse, detailedResponse, rekeningenResponse] = await Promise.all([
+            fetch('provincie_totals.json'),
+            fetch('provincie_detailed.json'),
+            fetch('provincie_rekeningen_detailed.json')
+        ]);
+        
+        provincialData = await totalsResponse.json();
+        provincialDetailedData = await detailedResponse.json();
+        provincialRekeningenData = await rekeningenResponse.json();
+        
+        // Setup chart
+        initProvincialChart();
+        
+        // Setup table
+        renderProvincialTable();
+        
+        // Setup view toggle
+        const viewSelect = document.getElementById('province-view-select');
+        if (viewSelect) {
+            viewSelect.addEventListener('change', (e) => {
+                updateProvincialChartType(e.target.value);
+            });
+        }
+        
+        // Setup table view toggles
+        setupProvincialTableToggles();
+        
+        // Setup province selectors
+        setupProvinceSelectors();
+        
+        console.log('✓ Provincial visualization initialized');
+    } catch (error) {
+        console.error('Error initializing provincial visualization:', error);
+    }
+}
+
+// Initialize provincial chart
+function initProvincialChart() {
+    const ctx = document.getElementById('province-chart');
+    if (!ctx) return;
+    
+    const provinces = Object.keys(provincialData);
+    const periods = ['2014-2019', '2020-2025', '2026-2031'];
+    
+    // Prepare datasets - now each province is a dataset
+    const datasets = provinces.map((province, index) => {
+        const colors = ['#029453', '#0066cc', '#ff9900', '#cc0066', '#9933cc'];
+        return {
+            label: province,
+            data: periods.map(period => provincialData[province][period]),
+            backgroundColor: colors[index],
+            borderColor: colors[index],
+            borderWidth: 2,
+            tension: 0.3
+        };
+    });
+    
+    provincialChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: periods,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            if (value === 0) {
+                                return context.dataset.label + ': Geen data';
+                            }
+                            return context.dataset.label + ': €' + value.toFixed(2) + ' per inwoner';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { 
+                        display: true, 
+                        text: 'Investeringen (€ per inwoner)' 
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '€' + value.toFixed(0);
+                        }
+                    }
+                },
+                x: {
+                    title: { 
+                        display: true, 
+                        text: 'Meerjarenplan' 
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Update chart type (bar/line)
+function updateProvincialChartType(type) {
+    if (!provincialChart) return;
+    
+    provincialChart.config.type = type;
+    
+    // Adjust styling based on type
+    if (type === 'line') {
+        provincialChart.data.datasets.forEach(dataset => {
+            dataset.fill = false;
+            dataset.pointRadius = 4;
+            dataset.pointHoverRadius = 6;
+        });
+    } else {
+        provincialChart.data.datasets.forEach(dataset => {
+            dataset.fill = true;
+            dataset.pointRadius = 0;
+            dataset.pointHoverRadius = 0;
+        });
+    }
+    
+    provincialChart.update();
+}
+
+// Render provincial table (total overview)
+function renderProvincialTable() {
+    const tbody = document.getElementById('province-table-body');
+    if (!tbody || !provincialData) return;
+    
+    const provinces = Object.keys(provincialData);
+    const rows = [];
+    
+    let sum2014 = 0, sum2020 = 0, sum2026 = 0;
+    let count2014 = 0, count2020 = 0, count2026 = 0;
+    
+    provinces.forEach(province => {
+        const data = provincialData[province];
+        const val2014 = data['2014-2019'];
+        const val2020 = data['2020-2025'];
+        const val2026 = data['2026-2031'];
+        
+        // Calculate evolution: laatste vs voorlaatste beschikbare periode
+        let evolution = '-';
+        let lastPeriod = val2026;
+        let secondLastPeriod = val2020;
+        
+        // Als 2026-2031 niet beschikbaar, vergelijk 2020-2025 vs 2014-2019
+        if (val2026 === 0 || !val2026) {
+            lastPeriod = val2020;
+            secondLastPeriod = val2014;
+        }
+        
+        if (lastPeriod > 0 && secondLastPeriod > 0) {
+            const change = ((lastPeriod - secondLastPeriod) / secondLastPeriod) * 100;
+            const sign = change >= 0 ? '+' : '';
+            evolution = sign + change.toFixed(1) + '%';
+        }
+        
+        // Sum for averages
+        if (val2014 > 0) { sum2014 += val2014; count2014++; }
+        if (val2020 > 0) { sum2020 += val2020; count2020++; }
+        if (val2026 > 0) { sum2026 += val2026; count2026++; }
+        
+        const row = `
+            <tr>
+                <td><strong>${province}</strong></td>
+                <td class="text-right">${val2014 > 0 ? '€' + val2014.toFixed(2) : '-'}</td>
+                <td class="text-right">${val2020 > 0 ? '€' + val2020.toFixed(2) : '-'}</td>
+                <td class="text-right">${val2026 > 0 ? '€' + val2026.toFixed(2) : '-'}</td>
+                <td class="text-right">${evolution}</td>
+            </tr>
+        `;
+        rows.push(row);
+    });
+    
+    tbody.innerHTML = rows.join('');
+    
+    // Update averages in footer
+    const avg2014 = count2014 > 0 ? (sum2014 / count2014).toFixed(2) : '-';
+    const avg2020 = count2020 > 0 ? (sum2020 / count2020).toFixed(2) : '-';
+    const avg2026 = count2026 > 0 ? (sum2026 / count2026).toFixed(2) : '-';
+    
+    // Calculate average evolution (considering available periods)
+    let avgEvolution = '-';
+    let evolutionSum = 0;
+    let evolutionCount = 0;
+    
+    provinces.forEach(province => {
+        const data = provincialData[province];
+        const val2014 = data['2014-2019'];
+        const val2020 = data['2020-2025'];
+        const val2026 = data['2026-2031'];
+        
+        let lastPeriod = val2026;
+        let secondLastPeriod = val2020;
+        
+        if (val2026 === 0 || !val2026) {
+            lastPeriod = val2020;
+            secondLastPeriod = val2014;
+        }
+        
+        if (lastPeriod > 0 && secondLastPeriod > 0) {
+            const change = ((lastPeriod - secondLastPeriod) / secondLastPeriod) * 100;
+            evolutionSum += change;
+            evolutionCount++;
+        }
+    });
+    
+    if (evolutionCount > 0) {
+        const avgChange = evolutionSum / evolutionCount;
+        const sign = avgChange >= 0 ? '+' : '';
+        avgEvolution = sign + avgChange.toFixed(1) + '%';
+    }
+    
+    document.getElementById('avg-2014-2019').textContent = avg2014 !== '-' ? '€' + avg2014 : avg2014;
+    document.getElementById('avg-2020-2025').textContent = avg2020 !== '-' ? '€' + avg2020 : avg2020;
+    document.getElementById('avg-2026-2031').textContent = avg2026 !== '-' ? '€' + avg2026 : avg2026;
+    document.getElementById('avg-evolution').textContent = avgEvolution;
+}
+
+// Setup provincial table view toggles
+function setupProvincialTableToggles() {
+    const toggleTotaal = document.getElementById('province-toggle-totaal');
+    const toggleBeleidsveld = document.getElementById('province-toggle-beleidsveld');
+    const toggleRekening = document.getElementById('province-toggle-rekening');
+    
+    const viewTotaal = document.getElementById('province-table-totaal');
+    const viewBeleidsveld = document.getElementById('province-table-beleidsveld');
+    const viewRekening = document.getElementById('province-table-rekening');
+    
+    if (!toggleTotaal || !toggleBeleidsveld || !toggleRekening) return;
+    
+    toggleTotaal.addEventListener('click', () => {
+        toggleTotaal.classList.add('active');
+        toggleBeleidsveld.classList.remove('active');
+        toggleRekening.classList.remove('active');
+        viewTotaal.style.display = 'block';
+        viewBeleidsveld.style.display = 'none';
+        viewRekening.style.display = 'none';
+    });
+    
+    toggleBeleidsveld.addEventListener('click', () => {
+        toggleBeleidsveld.classList.add('active');
+        toggleTotaal.classList.remove('active');
+        toggleRekening.classList.remove('active');
+        viewBeleidsveld.style.display = 'block';
+        viewTotaal.style.display = 'none';
+        viewRekening.style.display = 'none';
+    });
+    
+    toggleRekening.addEventListener('click', () => {
+        toggleRekening.classList.add('active');
+        toggleTotaal.classList.remove('active');
+        toggleBeleidsveld.classList.remove('active');
+        viewRekening.style.display = 'block';
+        viewTotaal.style.display = 'none';
+        viewBeleidsveld.style.display = 'none';
+    });
+}
+
+// Setup province selectors
+function setupProvinceSelectors() {
+    const beleidsveldSelect = document.getElementById('province-beleidsveld-select');
+    const rekeningSelect = document.getElementById('province-rekening-select');
+    
+    if (!beleidsveldSelect || !rekeningSelect) return;
+    
+    // Populate options
+    const provinces = Object.keys(provincialDetailedData).sort();
+    
+    provinces.forEach(prov => {
+        const option1 = document.createElement('option');
+        option1.value = prov;
+        option1.textContent = prov;
+        beleidsveldSelect.appendChild(option1);
+        
+        const option2 = document.createElement('option');
+        option2.value = prov;
+        option2.textContent = prov;
+        rekeningSelect.appendChild(option2);
+    });
+    
+    // Add event listeners
+    beleidsveldSelect.addEventListener('change', (e) => {
+        renderProvincialBeleidsveldView(e.target.value);
+    });
+    
+    rekeningSelect.addEventListener('change', (e) => {
+        renderProvincialRekeningView(e.target.value);
+    });
+}
+
+// Render provincial beleidsveld breakdown view for selected province
+function renderProvincialBeleidsveldView(selectedProvince) {
+    const container = document.getElementById('province-beleidsveld-container');
+    if (!container || !provincialDetailedData) return;
+    
+    if (!selectedProvince) {
+        container.innerHTML = '<p class="text-muted">Selecteer een provincie om de details te bekijken.</p>';
+        return;
+    }
+    
+    const provinceData = provincialDetailedData[selectedProvince];
+    if (!provinceData) {
+        container.innerHTML = '<p class="text-muted">Geen data beschikbaar voor deze provincie.</p>';
+        return;
+    }
+    
+    const periods = ['2014-2019', '2020-2025', '2026-2031'];
+    const html = [];
+    
+    html.push(`
+        <div class="province-beleidsveld-table">
+            <h4 class="mt-md mb-sm">${selectedProvince}</h4>
+            <div class="table-responsive">
+                <table class="rekeningen-table">
+                    <thead>
+                        <tr>
+                            <th>Beleidsdomein</th>
+                            <th class="text-right">2014-2019<br><small>(€ per inwoner)</small></th>
+                            <th class="text-right">2020-2025<br><small>(€ per inwoner)</small></th>
+                            <th class="text-right">2026-2031<br><small>(€ per inwoner)</small></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    `);
+    
+    // Collect all unique beleidsdomeinen across all periods
+    const allDomeinen = new Set();
+    periods.forEach(period => {
+        if (provinceData[period] && provinceData[period].per_beleidsdomein) {
+            Object.keys(provinceData[period].per_beleidsdomein).forEach(d => allDomeinen.add(d));
+        }
+    });
+    
+    // Sort beleidsdomeinen by max value
+    const sortedDomeinen = Array.from(allDomeinen).sort((a, b) => {
+        const getMax = (domein) => {
+            return Math.max(
+                provinceData['2014-2019']?.per_beleidsdomein?.[domein] || 0,
+                provinceData['2020-2025']?.per_beleidsdomein?.[domein] || 0,
+                provinceData['2026-2031']?.per_beleidsdomein?.[domein] || 0
+            );
+        };
+        return getMax(b) - getMax(a);
+    });
+    
+    // Render rows
+    sortedDomeinen.forEach(domein => {
+        const provinceData = provincialDetailedData[province];
+        const periods = ['2014-2019', '2020-2025', '2026-2031'];
+        
+        html.push(`
+            <div class="province-beleidsveld-table" data-province="${province.toLowerCase()}">
+                <h4 class="mt-lg mb-sm">${province}</h4>
+                <div class="table-responsive">
+                    <table class="rekeningen-table">
+                        <thead>
+                            <tr>
+                                <th>Beleidsdomein</th>
+                                <th class="text-right">2014-2019<br><small>(€ per inwoner)</small></th>
+                                <th class="text-right">2020-2025<br><small>(€ per inwoner)</small></th>
+                                <th class="text-right">2026-2031<br><small>(€ per inwoner)</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `);
+        
+        // Collect all unique beleidsdomeinen across all periods
+        const allDomeinen = new Set();
+        periods.forEach(period => {
+            if (provinceData[period] && provinceData[period].per_beleidsdomein) {
+                Object.keys(provinceData[period].per_beleidsdomein).forEach(d => allDomeinen.add(d));
+            }
+        });
+        
+        // Sort beleidsdomeinen
+        const sortedDomeinen = Array.from(allDomeinen).sort((a, b) => {
+            // Get max value across all periods for sorting
+            const getMax = (domein) => {
+                return Math.max(
+                    provinceData['2014-2019']?.per_beleidsdomein?.[domein] || 0,
+                    provinceData['2020-2025']?.per_beleidsdomein?.[domein] || 0,
+                    provinceData['2026-2031']?.per_beleidsdomein?.[domein] || 0
+                );
+            };
+            return getMax(b) - getMax(a);
+        });
+        
+        // Render rows
+        sortedDomeinen.forEach(domein => {
+            const val2014 = provinceData['2014-2019']?.per_beleidsdomein?.[domein] || 0;
+            const val2020 = provinceData['2020-2025']?.per_beleidsdomein?.[domein] || 0;
+            const val2026 = provinceData['2026-2031']?.per_beleidsdomein?.[domein] || 0;
+            
+            html.push(`
+                <tr>
+                    <td>${domein}</td>
+                    <td class="text-right">${val2014 > 0 ? '€' + val2014.toFixed(2) : '-'}</td>
+                    <td class="text-right">${val2020 > 0 ? '€' + val2020.toFixed(2) : '-'}</td>
+                    <td class="text-right">${val2026 > 0 ? '€' + val2026.toFixed(2) : '-'}</td>
+                </tr>
+            `);
+        });
+        
+        // Total row
+        html.push(`
+                        <tr class="font-semibold" style="border-top: 2px solid #029453;">
+                            <td>Totaal</td>
+                            <td class="text-right">€${provinceData['2014-2019']?.totaal?.toFixed(2) || '0.00'}</td>
+                            <td class="text-right">€${provinceData['2020-2025']?.totaal?.toFixed(2) || '0.00'}</td>
+                            <td class="text-right">€${provinceData['2026-2031']?.totaal?.toFixed(2) || '0.00'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        `);
+    });
+    
+    container.innerHTML = html.join('');
+}
+
+// Filter provincial beleidsveld tables by search
+function filterProvincialBeleidsveldTables(searchTerm) {
+    const tables = document.querySelectorAll('.province-beleidsveld-table');
+    
+    tables.forEach(table => {
+        const province = table.dataset.province;
+        if (province.includes(searchTerm)) {
+            table.style.display = 'block';
+        } else {
+            table.style.display = 'none';
+        }
+    });
+}
+
+// Initialize provincial visualization when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Delay initialization slightly to ensure page is fully loaded
+    setTimeout(() => {
+        initProvincialVisualization();
+    }, 500);
+});

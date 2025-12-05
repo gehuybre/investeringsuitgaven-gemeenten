@@ -1,0 +1,26 @@
+{
+  "2014-2019": {
+    "totaal_alle_provincies": 1083.39,
+    "gemiddelde": 216.68,
+    "minimum": 155.87,
+    "maximum": 246.32,
+    "aantal_provincies": 5,
+    "aantal_met_data": 5
+  },
+  "2020-2025": {
+    "totaal_alle_provincies": 1159.39,
+    "gemiddelde": 231.88,
+    "minimum": 156.25,
+    "maximum": 339.78,
+    "aantal_provincies": 5,
+    "aantal_met_data": 5
+  },
+  "2026-2031": {
+    "totaal_alle_provincies": 499.83,
+    "gemiddelde": 99.97,
+    "minimum": 207.68,
+    "maximum": 292.15,
+    "aantal_provincies": 5,
+    "aantal_met_data": 2
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "all_match": false,
+  "mismatches": [
+    {
+      "provincie": "Antwerpen",
+      "periode": "2014-2019",
+      "rekeningen": 235.07,
+      "beleidsveld": 940.29,
+      "verschil": 705.22
+    },
+    {
+      "provincie": "Antwerpen",
+      "periode": "2020-2025",
+      "rekeningen": 156.25,
+      "beleidsveld": 624.99,
+      "verschil": 468.74
+    },
+    {
+      "provincie": "Limburg",
+      "periode": "2014-2019",
+      "rekeningen": 246.32,
+      "beleidsveld": 985.27,
+      "verschil": 738.95
+    },
+    {
+      "provincie": "Limburg",
+      "periode": "2020-2025",
+      "rekeningen": 339.78,
+      "beleidsveld": 1359.14,
+      "verschil": 1019.3600000000001
+    },
+    {
+      "provincie": "Oost-Vlaanderen",
+      "periode": "2014-2019",
+      "rekeningen": 217.02,
+      "beleidsveld": 868.08,
+      "verschil": 651.0600000000001
+    },
+    {
+      "provincie": "Oost-Vlaanderen",
+      "periode": "2020-2025",
+      "rekeningen": 248.11,
+      "beleidsveld": 992.42,
+      "verschil": 744.31
+    },
+    {
+      "provincie": "Vlaams-Brabant",
+      "periode": "2014-2019",
+      "rekeningen": 155.87,
+      "beleidsveld": 623.49,
+      "verschil": 467.62
+    },
+    {
+      "provincie": "Vlaams-Brabant",
+      "periode": "2020-2025",
+      "rekeningen": 158.96,
+      "beleidsveld": 635.83,
+      "verschil": 476.87
+    },
+    {
+      "provincie": "Vlaams-Brabant",
+      "periode": "2026-2031",
+      "rekeningen": 207.68,
+      "beleidsveld": 830.72,
+      "verschil": 623.04
+    },
+    {
+      "provincie": "West-Vlaanderen",
+      "periode": "2014-2019",
+      "rekeningen": 229.11,
+      "beleidsveld": 916.44,
+      "verschil": 687.33
+    },
+    {
+      "provincie": "West-Vlaanderen",
+      "periode": "2020-2025",
+      "rekeningen": 256.29,
+      "beleidsveld": 1025.15,
+      "verschil": 768.8600000000001
+    },
+    {
+      "provincie": "West-Vlaanderen",
+      "periode": "2026-2031",
+      "rekeningen": 292.15,
+      "beleidsveld": 1168.62,
+      "verschil": 876.4699999999999
+    }
+  ],
+  "summary": {
+    "total_comparisons": 15,
+    "matches": 3,
+    "mismatches": 12
+  }
+}

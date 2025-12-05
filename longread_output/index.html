@@ -213,6 +213,13 @@
             font-weight: 600;
         }
 
+        .rekeningen-table .evolution-col {
+            background: #f0f8f4;
+            text-align: right;
+            font-style: italic;
+            color: #555;
+        }
+
         .rekeningen-table .code-col {
             font-family: monospace;
             color: #666;
@@ -348,6 +355,55 @@
 
         .small-multiple-chart canvas {
             max-height: 200px;
+        }
+
+        /* Common legend for grid */
+        .common-legend {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+
+        .legend-label {
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Provincial Table View Styles */
+        .province-table-view {
+            margin-top: 1.5rem;
+        }
+
+        .province-beleidsveld-table {
+            margin-bottom: 3rem;
+        }
+
+        .province-beleidsveld-table h4 {
+            color: #029453;
+            font-size: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
         }
         
         .info-panel {
@@ -635,6 +691,7 @@
                     <a href="#intro">Info</a>
                     <a href="#kaart">Kaart</a>
                     <a href="#dashboard">Dashboard</a>
+                    <a href="#provincies-sectie">Provincies</a>
                 </nav>
             </div>
         </div>
@@ -857,6 +914,162 @@
         </div>
     </section>
 
+    <!-- Provincial Investment Section -->
+    <section id="provincies-sectie" class="content-section bg-gray">
+        <div class="container">
+            <h2 class="mb-md">Provinciale investeringen</h2>
+            <div class="info-panel">
+                <h3>Geplande investeringen uit meerjarenplannen</h3>
+                <p>
+                    Deze sectie toont de <strong>geplande investeringsuitgaven per inwoner</strong> van de vijf Vlaamse provinciebesturen, 
+                    gebaseerd op hun meerjarenplannen. In tegenstelling tot de gemeentelijke cijfers (werkelijk gerealiseerde investeringen), 
+                    gaat het hier om voorgenomen investeringen voor toekomstige periodes.
+                </p>
+                <p class="mt-sm">
+                    We vergelijken drie meerjarenplannen:
+                </p>
+                <ul>
+                    <li><strong>2014-2019:</strong> Eerste legislatuur (totale geplande investeringen voor deze periode)</li>
+                    <li><strong>2020-2025:</strong> Tweede legislatuur (gefilterd: alleen jaren 2020-2025 uit het 2020-2027 plan)</li>
+                    <li><strong>2026-2031:</strong> Huidige legislatuur (totale geplande investeringen voor deze periode)</li>
+                </ul>
+                <p class="mt-sm">
+                    <small><em>Let op: Niet alle provincies hebben volledige cijfers voor 2026-2031 beschikbaar.</em></small>
+                </p>
+            </div>
+
+            <!-- Provincial Chart Dashboard -->
+            <div class="dashboard-chart-container">
+                <div class="chart-header">
+                    <div>
+                        <h3 id="province-selected-label" class="mb-sm">Alle provincies</h3>
+                        <p class="text-muted mb-md">
+                            <span id="province-subtitle-text">Geplande investeringsuitgaven per inwoner (€) per periode</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="chart-controls-row">
+                    <div class="inflation-toggle-group">
+                        <div class="price-checkbox-container">
+                            <div class="price-checkbox-item">
+                                <input type="checkbox" id="province-toggle-nominal" checked>
+                                <label for="province-toggle-nominal">Nominaal</label>
+                            </div>
+                            <div class="price-checkbox-item">
+                                <input type="checkbox" id="province-toggle-adjusted">
+                                <label for="province-toggle-adjusted">Reëel (2014)</label>
+                            </div>
+                            <div class="price-checkbox-item">
+                                <input type="checkbox" id="province-toggle-stacked">
+                                <label for="province-toggle-stacked">Opgesplitst per beleidsdomein</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-wrapper" id="province-chart-wrapper">
+                        <canvas id="province-chart"></canvas>
+                    </div>
+                    <div id="province-legend-container" style="display: none;">
+                        <!-- Common legend will be generated here -->
+                    </div>
+                    <div class="small-multiples-container" id="province-small-multiples-container" style="display: none;">
+                        <!-- Small multiples will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Provincial Detail Tables -->
+            <div class="dashboard-chart-container mt-lg">
+                <h3>Detailcijfers per provincie</h3>
+                
+                <!-- Tab Navigation for Provincial Data -->
+                <div class="detail-table-header">
+                    <div class="detail-view-toggle">
+                        <button class="detail-toggle-btn active" id="province-toggle-totaal">Totaal</button>
+                        <button class="detail-toggle-btn" id="province-toggle-beleidsveld">Per Beleidsveld</button>
+                        <button class="detail-toggle-btn" id="province-toggle-rekening">Per Rekening</button>
+                    </div>
+                </div>
+
+                <!-- Total Overview Table -->
+                <div id="province-table-totaal" class="province-table-view">
+                    <div class="table-responsive">
+                        <table class="rekeningen-table">
+                            <thead>
+                                <tr>
+                                    <th>Provincie</th>
+                                    <th class="text-right">2014-2019<br><small>(€ per inwoner)</small></th>
+                                    <th class="text-right evolution-col">Evolutie<br><small>(t.o.v. vorige)</small></th>
+                                    <th class="text-right">2020-2025<br><small>(€ per inwoner)</small></th>
+                                    <th class="text-right evolution-col">Evolutie<br><small>(t.o.v. vorige)</small></th>
+                                    <th class="text-right">2026-2031<br><small>(€ per inwoner)</small></th>
+                                </tr>
+                            </thead>
+                            <tbody id="province-table-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="font-semibold">
+                                    <td>Gemiddelde</td>
+                                    <td class="text-right" id="avg-2014-2019">-</td>
+                                    <td class="text-right evolution-col" id="avg-evolution-1">-</td>
+                                    <td class="text-right" id="avg-2020-2025">-</td>
+                                    <td class="text-right evolution-col" id="avg-evolution-2">-</td>
+                                    <td class="text-right" id="avg-2026-2031">-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <p class="mt-sm text-muted">
+                        <small>
+                            * Bedragen zijn uitgedrukt in euro per inwoner voor de hele periode van het meerjarenplan.<br>
+                            ** Niet alle provincies hebben volledige data voor 2026-2031.<br>
+                            *** Evolutie wordt berekend tussen de laatste beschikbare periode en de voorlaatste periode.
+                        </small>
+                    </p>
+                </div>
+
+                <!-- Per Beleidsveld Table -->
+                <div id="province-table-beleidsveld" class="province-table-view" style="display: none;">
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm"><strong>Selecteer provincie:</strong></p>
+                        <div class="detail-view-toggle" id="province-beleidsveld-buttons">
+                            <!-- Populated by JS: Province buttons -->
+                        </div>
+                    </div>
+                    
+                    <div id="province-beleidsveld-container">
+                        <!-- Populated by JS: Table showing beleidsdomein breakdown for selected province -->
+                    </div>
+                </div>
+
+                <!-- Per Rekening Table -->
+                <div id="province-table-rekening" class="province-table-view" style="display: none;">
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm"><strong>Selecteer provincie:</strong></p>
+                        <div class="detail-view-toggle" id="province-rekening-buttons">
+                            <!-- Populated by JS: Province buttons -->
+                        </div>
+                    </div>
+
+                    <div class="warning-box mb-md">
+                        <span class="warning-icon">⚠</span>
+                        <div class="warning-text">
+                            <strong>Let op:</strong> De rekeningen data is een subset van de totale investeringen. 
+                            Niet alle investeringen zijn opgesplitst per rekening in het bronbestand. 
+                            De som van de rekeningen is daarom lager dan het totaal per beleidsveld.
+                        </div>
+                    </div>
+                    
+                    <div id="province-rekening-container">
+                        <!-- Populated by JS: Table showing rekening breakdown for selected province -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -871,7 +1084,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- App Logic -->
-    <script src="js/app.js?v=20251126-2"></script>
+    <!-- App Logic - Modular Structure -->
+    <script type="module" src="js/app.js?v=20251204"></script>
 </body>
 </html>

@@ -1,0 +1,296 @@
+{
+  "West-Vlaanderen": {
+    "2014-2019": {
+      "totaal": 229.11,
+      "per_rekening": {
+        "REK664 Toegestane investeringssubsidies": 64.63,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 52.27,
+        "REK222-0 Bebouwde terreinen - gemeenschapsgoederen - aanschaffingswaarde": 46.81,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 15.62,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 11.35,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 7.83,
+        "REK270-0 Onroerend erfgoed - aanschaffingswaarde": 7.65,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 6.32,
+        "REK231-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 4.85,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.65,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 2.5,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.32,
+        "REK225-7 Andere infrastructuur betreffende de wegen - activa in aanbouw": 2.05,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 1.07,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 0.82,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.28,
+        "REK210-0 Kosten van ontwikkeling - aanschaffingswaarde": 0.08,
+        "REK288 Borgtochten betaald in contanten": 0.02,
+        "REK2811 Belangen in intergemeentelijke samenwerkingsverbanden en soortgelijke entiteiten - nog te storten bedragen (-)": 0.0
+      }
+    },
+    "2020-2025": {
+      "totaal": 256.29,
+      "per_rekening": {
+        "REK222-0 Bebouwde terreinen - gemeenschapsgoederen - aanschaffingswaarde": 68.56,
+        "REK664 Toegestane investeringssubsidies": 68.34,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 47.86,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 19.6,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 14.71,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 11.59,
+        "REK270-0 Onroerend erfgoed - aanschaffingswaarde": 5.27,
+        "REK231-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 5.17,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 4.63,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 4.2,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 2.44,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.33,
+        "REK222-7 Bebouwde terreinen - gemeenschapsgoederen - activa in aanbouw": 0.81,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 0.56,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.14,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.06,
+        "REK288 Borgtochten betaald in contanten": 0.03
+      }
+    },
+    "2026-2031": {
+      "totaal": 292.15,
+      "per_rekening": {
+        "REK664 Toegestane investeringssubsidies": 94.07,
+        "REK222-0 Bebouwde terreinen - gemeenschapsgoederen - aanschaffingswaarde": 79.65,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 36.0,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 33.08,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 17.08,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 6.43,
+        "REK231-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 5.42,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 5.08,
+        "REK270-0 Onroerend erfgoed - aanschaffingswaarde": 4.55,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 3.74,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 3.5,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 3.28,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.24,
+        "REK288 Borgtochten betaald in contanten": 0.02
+      }
+    }
+  },
+  "Limburg": {
+    "2014-2019": {
+      "totaal": 246.32,
+      "per_rekening": {
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 71.95,
+        "REK664 Toegestane investeringssubsidies": 67.97,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 26.21,
+        "REK250-0 Terreinen en gebouwen in leasing of op grond van een soortgelijk recht - gemeenschapsgoederen - aanschaffingswaarde": 14.69,
+        "REK222-7 Bebouwde terreinen - gemeenschapsgoederen - activa in aanbouw": 12.48,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 9.98,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 9.3,
+        "REK242-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 7.73,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 6.66,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 4.67,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 4.45,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 3.1,
+        "REK260-0 Terreinen en gebouwen - andere materiële vaste activa - aanschaffingswaarde": 2.88,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 1.81,
+        "REK220-7 Terreinen - gemeenschapsgoederen - activa in aanbouw": 1.12,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.03,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.26,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 0.04
+      }
+    },
+    "2020-2025": {
+      "totaal": 339.78,
+      "per_rekening": {
+        "REK664 Toegestane investeringssubsidies": 109.26,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 107.9,
+        "REK222-7 Bebouwde terreinen - gemeenschapsgoederen - activa in aanbouw": 32.02,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 19.13,
+        "REK250-0 Terreinen en gebouwen in leasing of op grond van een soortgelijk recht - gemeenschapsgoederen - aanschaffingswaarde": 14.82,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 14.67,
+        "REK242-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 11.39,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 9.85,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 9.45,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 4.53,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.75,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 2.05,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 0.91,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 0.82,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.18,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.06,
+        "REK210-7 Kosten van ontwikkeling - activa in aanbouw": 0.01,
+        "REK223-0 Andere zakelijke rechten op onroerende goederen - gemeenschapsgoederen - aanschaffingswaarde": 0.0,
+        "REK2801 Belangen in extern verzelfstandigde agentschappen - nog te storten bedragen (-)": 0.0,
+        "REK288 Borgtochten betaald in contanten": 0.0
+      }
+    },
+    "2026-2031": {
+      "totaal": 0.0,
+      "per_rekening": {}
+    }
+  },
+  "Oost-Vlaanderen": {
+    "2014-2019": {
+      "totaal": 217.02,
+      "per_rekening": {
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 84.01,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 22.67,
+        "REK664 Toegestane investeringssubsidies": 22.65,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 13.06,
+        "REK224-7 Wegen - activa in aanbouw": 10.35,
+        "REK220-7 Terreinen - gemeenschapsgoederen - activa in aanbouw": 10.3,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 9.54,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 8.82,
+        "REK250-0 Terreinen en gebouwen in leasing of op grond van een soortgelijk recht - gemeenschapsgoederen - aanschaffingswaarde": 7.01,
+        "REK242-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 7.0,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 5.64,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 4.81,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 3.08,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.72,
+        "REK2811 Belangen in intergemeentelijke samenwerkingsverbanden en soortgelijke entiteiten - nog te storten bedragen (-)": 1.63,
+        "REK228-7 Andere onroerende infrastructuur - activa in aanbouw": 1.57,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.39,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 0.65,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.54,
+        "REK225-0 Andere infrastructuur betreffende de wegen - aanschaffingswaarde": 0.3,
+        "REK288 Borgtochten betaald in contanten": 0.26,
+        "REK223-0 Andere zakelijke rechten op onroerende goederen - gemeenschapsgoederen - aanschaffingswaarde": 0.01
+      }
+    },
+    "2020-2025": {
+      "totaal": 248.11,
+      "per_rekening": {
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 67.35,
+        "REK664 Toegestane investeringssubsidies": 40.62,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 30.52,
+        "REK228-7 Andere onroerende infrastructuur - activa in aanbouw": 19.68,
+        "REK228-0 Andere onroerende infrastructuur - aanschaffingswaarde": 17.22,
+        "REK224-7 Wegen - activa in aanbouw": 13.46,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 12.48,
+        "REK242-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 11.89,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 10.28,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 8.33,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 7.26,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 2.54,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.18,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.04,
+        "REK225-0 Andere infrastructuur betreffende de wegen - aanschaffingswaarde": 0.99,
+        "REK270-0 Onroerend erfgoed - aanschaffingswaarde": 0.51,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.26,
+        "REK250-0 Terreinen en gebouwen in leasing of op grond van een soortgelijk recht - gemeenschapsgoederen - aanschaffingswaarde": 0.25,
+        "REK288 Borgtochten betaald in contanten": 0.11,
+        "REK260-7 Terreinen en gebouwen - andere materiële vaste activa - activa in aanbouw": 0.07,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.05,
+        "REK223-0 Andere zakelijke rechten op onroerende goederen - gemeenschapsgoederen - aanschaffingswaarde": 0.01
+      }
+    },
+    "2026-2031": {
+      "totaal": 0.0,
+      "per_rekening": {}
+    }
+  },
+  "Vlaams-Brabant": {
+    "2014-2019": {
+      "totaal": 155.87,
+      "per_rekening": {
+        "REK664 Toegestane investeringssubsidies": 76.35,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 32.74,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 8.91,
+        "REK220-7 Terreinen - gemeenschapsgoederen - activa in aanbouw": 8.52,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 6.75,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 4.38,
+        "REK225-7 Andere infrastructuur betreffende de wegen - activa in aanbouw": 4.37,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 3.86,
+        "REK240-7 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - activa in aanbouw": 3.46,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.12,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.11,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 0.97,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 0.94,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 0.77,
+        "REK228-7 Andere onroerende infrastructuur - activa in aanbouw": 0.25,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.24,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.11,
+        "REK223-7 Andere zakelijke rechten op onroerende goederen - gemeenschapsgoederen - activa in aanbouw": 0.03,
+        "REK288 Borgtochten betaald in contanten": 0.02,
+        "REK223-0 Andere zakelijke rechten op onroerende goederen - gemeenschapsgoederen - aanschaffingswaarde": 0.0
+      }
+    },
+    "2020-2025": {
+      "totaal": 158.96,
+      "per_rekening": {
+        "REK664 Toegestane investeringssubsidies": 69.76,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 19.76,
+        "REK225-7 Andere infrastructuur betreffende de wegen - activa in aanbouw": 18.0,
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 14.68,
+        "REK220-7 Terreinen - gemeenschapsgoederen - activa in aanbouw": 7.18,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 5.89,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 5.63,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 4.89,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 4.06,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 3.97,
+        "REK242-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.19,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.86,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 0.45,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 0.31,
+        "REK240-7 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - activa in aanbouw": 0.12,
+        "REK288 Borgtochten betaald in contanten": 0.11,
+        "REK225-0 Andere infrastructuur betreffende de wegen - aanschaffingswaarde": 0.07,
+        "REK223-0 Andere zakelijke rechten op onroerende goederen - gemeenschapsgoederen - aanschaffingswaarde": 0.02,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.01
+      }
+    },
+    "2026-2031": {
+      "totaal": 207.68,
+      "per_rekening": {
+        "REK664 Toegestane investeringssubsidies": 65.51,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 61.83,
+        "REK225-7 Andere infrastructuur betreffende de wegen - activa in aanbouw": 27.84,
+        "REK220-7 Terreinen - gemeenschapsgoederen - activa in aanbouw": 14.79,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 12.78,
+        "REK211-0 Concessies, octrooien, licenties, knowhow, merken en soortgelijke rechten - aanschaffingswaarde": 10.33,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 5.44,
+        "REK226-7 Waterlopen en waterbekkens - activa in aanbouw": 5.16,
+        "REK242-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 2.19,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.37,
+        "REK240-7 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - activa in aanbouw": 0.28,
+        "REK288 Borgtochten betaald in contanten": 0.17
+      }
+    }
+  },
+  "Antwerpen": {
+    "2014-2019": {
+      "totaal": 235.07,
+      "per_rekening": {
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 78.34,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 67.1,
+        "REK228-0 Andere onroerende infrastructuur - aanschaffingswaarde": 33.66,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 13.36,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 10.75,
+        "REK222-0 Bebouwde terreinen - gemeenschapsgoederen - aanschaffingswaarde": 9.92,
+        "REK270-0 Onroerend erfgoed - aanschaffingswaarde": 8.59,
+        "REK2811 Belangen in intergemeentelijke samenwerkingsverbanden en soortgelijke entiteiten - nog te storten bedragen (-)": 6.09,
+        "REK664 Toegestane investeringssubsidies": 2.2,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.67,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 1.28,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 1.14,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 0.8,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.1,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.09
+      }
+    },
+    "2020-2025": {
+      "totaal": 156.25,
+      "per_rekening": {
+        "REK221-0 Gebouwen - gemeenschapsgoederen - aanschaffingswaarde": 50.3,
+        "REK228-0 Andere onroerende infrastructuur - aanschaffingswaarde": 29.62,
+        "REK664 Toegestane investeringssubsidies": 15.55,
+        "REK221-7 Gebouwen - gemeenschapsgoederen - activa in aanbouw": 14.87,
+        "REK226-0 Waterlopen en waterbekkens - aanschaffingswaarde": 13.66,
+        "REK222-0 Bebouwde terreinen - gemeenschapsgoederen - aanschaffingswaarde": 12.29,
+        "REK270-0 Onroerend erfgoed - aanschaffingswaarde": 7.27,
+        "REK220-0 Terreinen - gemeenschapsgoederen - aanschaffingswaarde": 6.44,
+        "REK214-0 Plannen en studies - aanschaffingswaarde": 2.9,
+        "REK241-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 1.47,
+        "REK230-0 Installaties, machines en uitrusting - gemeenschapsgoederen - aanschaffingswaarde": 1.0,
+        "REK240-0 Meubilair, kantooruitrusting en rollend materieel - gemeenschapsgoederen - aanschaffingswaarde": 0.78,
+        "REK2841 Andere aandelen - nog te storten bedragen (-)": 0.07,
+        "REK275-0 Roerend erfgoed - aanschaffingswaarde": 0.04
+      }
+    },
+    "2026-2031": {
+      "totaal": 0.0,
+      "per_rekening": {}
+    }
+  }
+}
