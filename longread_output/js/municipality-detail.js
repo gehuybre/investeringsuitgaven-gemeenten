@@ -9,39 +9,37 @@ export class MunicipalityDetailManager {
 
     // Setup event listeners
     setupEventListeners() {
-        document.addEventListener('DOMContentLoaded', () => {
-            const closeBtn = document.getElementById('detail-close-btn');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => this.hide());
-            }
-            
-            const toggleUitgavenpost = document.getElementById('toggle-uitgavenpost');
-            const toggleBeleidsveld = document.getElementById('toggle-beleidsveld');
-            
-            if (toggleUitgavenpost) {
-                toggleUitgavenpost.addEventListener('click', () => {
-                    this.currentDetailView = 'uitgavenpost';
-                    toggleUitgavenpost.classList.add('active');
-                    toggleBeleidsveld.classList.remove('active');
-                    
-                    if (this.currentMunicipalityProperties) {
-                        this.renderDetailTable(this.currentMunicipalityProperties, this.currentDetailView);
-                    }
-                });
-            }
-            
-            if (toggleBeleidsveld) {
-                toggleBeleidsveld.addEventListener('click', () => {
-                    this.currentDetailView = 'beleidsveld';
-                    toggleBeleidsveld.classList.add('active');
-                    toggleUitgavenpost.classList.remove('active');
-                    
-                    if (this.currentMunicipalityProperties) {
-                        this.renderDetailTable(this.currentMunicipalityProperties, this.currentDetailView);
-                    }
-                });
-            }
-        });
+        const closeBtn = document.getElementById('detail-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.hide());
+        }
+        
+        const toggleUitgavenpost = document.getElementById('toggle-uitgavenpost');
+        const toggleBeleidsveld = document.getElementById('toggle-beleidsveld');
+        
+        if (toggleUitgavenpost) {
+            toggleUitgavenpost.addEventListener('click', () => {
+                this.currentDetailView = 'uitgavenpost';
+                toggleUitgavenpost.classList.add('active');
+                toggleBeleidsveld.classList.remove('active');
+                
+                if (this.currentMunicipalityProperties) {
+                    this.renderDetailTable(this.currentMunicipalityProperties, this.currentDetailView);
+                }
+            });
+        }
+        
+        if (toggleBeleidsveld) {
+            toggleBeleidsveld.addEventListener('click', () => {
+                this.currentDetailView = 'beleidsveld';
+                toggleBeleidsveld.classList.add('active');
+                toggleUitgavenpost.classList.remove('active');
+                
+                if (this.currentMunicipalityProperties) {
+                    this.renderDetailTable(this.currentMunicipalityProperties, this.currentDetailView);
+                }
+            });
+        }
     }
 
     // Show municipality detail panel
